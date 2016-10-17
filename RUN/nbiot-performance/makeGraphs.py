@@ -350,13 +350,13 @@ if __name__ == "__main__":
 
 	#i+=1
 	#pl.subplot(j,k,i)
-	#pl.clf()
-	#pl.margins(0.05, 0.05)
-	#pl.title("CDF UL-SINRs reported")
-	#for scenario in cdfs["SINRs"]:
-		#plotCDF(cdfs["SINRs"][scenario], scenario)
-	#pl.legend(loc="best")
-	#pl.savefig("SINRs_CDF.png")
+	pl.clf()
+	pl.margins(0.05, 0.05)
+	pl.title("CDF UL-SINRs reported")
+	for scenario in cdfs["SINRs"]:
+		plotCDF(cdfs["SINRs"][scenario], scenario)
+	pl.legend(loc="best")
+	pl.savefig("SINRs_CDF.png")
 
 	#pl.subplots_adjust(.05, .1, .975, .9, .2, .45)
 
