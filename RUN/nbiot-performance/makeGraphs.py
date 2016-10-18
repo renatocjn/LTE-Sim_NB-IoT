@@ -10,7 +10,7 @@ from glob import glob
 import os
 import pylab as pl
 import itertools as it
-
+from natsort import natsorted
 
 def readDataFromFile(filePath):
 	inputfile = open(filePath)
@@ -230,7 +230,7 @@ if __name__ == "__main__":
 	pl.margins(0.05, 0.05)
 	#pl.xlabel(xlabel)
 	pl.title("CDF total delay for queued PKGs (s)")
-	for scenario in cdfs["queueDelay"]:
+	for scenario in natsorted(cdfs["queueDelay"].keys()):
 		plotCDF(cdfs["queueDelay"][scenario], scenario)
 	pl.legend(loc="best")
 	pl.savefig("queueDelayCDF.png")
@@ -250,7 +250,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.title("CDF total delay for dropped PKGs (ms)")
-	for scenario in cdfs["droppedDelay"]:
+	for scenario in natsorted(cdfs["droppedDelay"].keys()):
 		plotCDF(cdfs["droppedDelay"][scenario], scenario)
 	pl.legend(loc="best")
 	pl.savefig("droppedDelayCDF.png")
@@ -270,7 +270,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.title("CDF total delay for received PKGs (ms)")
-	for scenario in cdfs["rxDelay"]:
+	for scenario in natsorted(cdfs["rxDelay"].keys()):
 		plotCDF(cdfs["rxDelay"][scenario], scenario)
 	pl.legend(loc="best")
 	pl.savefig("rxDelayCDF.png")
@@ -289,7 +289,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.title("CDF of user throughput(Kbit/s)")
-	for scenario in cdfs["userThroughput"]:
+	for scenario in natsorted(cdfs["userThroughput"].keys()):
 		plotCDF(cdfs["userThroughput"][scenario], scenario)
 	pl.legend(loc="best")
 	pl.savefig("userThroughputCDF.png")
@@ -353,7 +353,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.title("CDF UL-SINRs reported")
-	for scenario in cdfs["SINRs"]:
+	for scenario in natsorted(cdfs["SINRs"].keys()):
 		plotCDF(cdfs["SINRs"][scenario], scenario)
 	pl.legend(loc="best")
 	pl.savefig("SINRs_CDF.png")
