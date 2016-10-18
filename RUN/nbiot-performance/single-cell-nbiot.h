@@ -219,11 +219,42 @@ static void SingleCellNbIot (double radius,
 			 * 30% ED / 70% TD
 			 */
 
-			int nbED = ceil(0.3*nbUE);
-			int nbTD = nbUE - nbED;
+			//int nbED = ceil(0.3*nbUE);
+			//int nbTD = nbUE - nbED;
 
-			std::cout << "NB-IoT traffic not yet implemented!" << std::endl;
-			return;
+            // For now only time driven
+            double t = 0.05 + GetRandomVariable(5 - 0.05);
+            
+            CBR* cbrApplication = new CBR();
+			cbrApplication->SetSource (ue);
+			cbrApplication->SetDestination (gw);
+			cbrApplication->SetApplicationID (applicationID);
+			cbrApplication->SetStartTime(start_time);
+			cbrApplication->SetStopTime(duration_time);
+			cbrApplication->SetInterval (t);
+			cbrApplication->SetSize (125);
+
+			// create qos parameters
+			QoSParameters *qosParameters = new QoSParameters ();
+			qosParameters->SetMaxDelay (t);
+
+			cbrApplication->SetQoSParameters (qosParameters);
+
+
+			//create classifier parameters
+			ClassifierParameters *cp = new ClassifierParameters (ue->GetIDNetworkNode(),
+																 gw->GetIDNetworkNode(),
+																 0,
+																 destinationPort,
+																 TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
+			cbrApplication->SetClassifierParameters (cp);
+
+			std::cout << "CREATED CBR APPLICATION, ID " << applicationID << std::endl;
+
+			appContainer->push_back((Application*) cbrApplication);
+			//update counter
+			destinationPort++;
+			applicationID++;
 
 		} else if (strcmp (trafficType, "voip") == 0) {
 			VoIP* voIPApplication = new VoIP();
