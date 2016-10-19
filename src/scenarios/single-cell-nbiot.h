@@ -126,8 +126,10 @@ static void SingleCellNbIot (double radius,
 		enb->SetULScheduler (ENodeB::ULScheduler_TYPE_ROUNDROBIN);
 	} else if ( strcmp (scheduler, "maximumthroughput") == 0 || strcmp (scheduler, "mt") == 0 ) {
 		enb->SetULScheduler (ENodeB::ULScheduler_TYPE_MAXIMUM_THROUGHPUT);
+	} else if ( strcmp (scheduler, "proportionallyfair") == 0 || strcmp (scheduler, "pf") == 0 ) {
+		enb->SetULScheduler (ENodeB::ULScheduler_TYPE_PF);
 	} else {
-		std::cout << "\tThe Scheduler \"" << scheduler << "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n" << std::endl;
+		std::cout << "\tThe Scheduler \"" << scheduler << "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n" << std::endl;
 		return;
 	}
 
@@ -222,10 +224,10 @@ static void SingleCellNbIot (double radius,
 			//int nbED = ceil(0.3*nbUE);
 			//int nbTD = nbUE - nbED;
 
-            // For now only time driven
-            double t = 0.05 + GetRandomVariable(5 - 0.05);
-            
-            CBR* cbrApplication = new CBR();
+			// For now only time driven
+			double t = 0.05 + GetRandomVariable(5 - 0.05);
+
+			CBR* cbrApplication = new CBR();
 			cbrApplication->SetSource (ue);
 			cbrApplication->SetDestination (gw);
 			cbrApplication->SetApplicationID (applicationID);
@@ -245,8 +247,8 @@ static void SingleCellNbIot (double radius,
 			ClassifierParameters *cp = new ClassifierParameters (ue->GetIDNetworkNode(),
 																 gw->GetIDNetworkNode(),
 																 0,
-																 destinationPort,
-																 TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
+														destinationPort,
+														TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 			cbrApplication->SetClassifierParameters (cp);
 
 			std::cout << "CREATED CBR APPLICATION, ID " << applicationID << std::endl;

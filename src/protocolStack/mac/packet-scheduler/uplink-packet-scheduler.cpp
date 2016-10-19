@@ -146,95 +146,114 @@ UplinkPacketScheduler::RBsAllocation ()
 	UsersToSchedule *users = GetUsersToSchedule ();
 	int nbOfRBs = GetMacEntity ()->GetDevice ()->GetPhy ()->GetBandwidthManager ()->GetUlSubChannels ().size ();
 
+	bool* allocatedUsers = new bool[users->size()];
+	for (int i=0; i<users->size(); i++)
+		allocatedUsers[i] = false;
+	int nbAllocatedUsers = 0;
+	std::vector<double> * AllocatedUsersSINR = new std::vector<double>[users->size ()];
+
 	//create a matrix of flow metrics
 	double metrics[nbOfRBs][users->size ()];
 	for (int i = 0; i < nbOfRBs; i++)
-		{
+	{
 		for (int j = 0; j < users->size (); j++)
-			{
+		{
 			metrics[i][j] = ComputeSchedulingMetric (users->at (j), i);
-			}
 		}
+	}
 
 #ifdef SCHEDULER_DEBUG
-std::cout << ", available RBs " << nbOfRBs << ", users " << users->size () << std::endl;
-for (int ii = 0; ii < users->size (); ii++)
+	std::cout << ", available RBs " << nbOfRBs << ", users " << users->size () << std::endl;
+	for (int ii = 0; ii < users->size (); ii++)
 	{
-	std::cout << "\t metrics for user "
+		std::cout << "\t metrics for user "
 			<< users->at (ii)->m_userToSchedule->GetIDNetworkNode ();
-	for (int jj = 0; jj < nbOfRBs; jj++)
+		for (int jj = 0; jj < nbOfRBs; jj++)
 		{
-		std::cout << " " << metrics[jj][ii];
+			std::cout << " " << metrics[jj][ii];
 		}
-	std::cout << std::endl;
+		std::cout << std::endl;
 	}
 #endif
 
-//RBs allocation
-int s = 0;
-while (s < nbOfRBs)
+	//RBs allocation
+	int s = 0;
+	//while (s < nbOfRBs)
+	for (int s=0; s<nbOfRBs; s++)
 	{
-	double targetMetric = metrics[0][0];
-	bool RBIsAllocated = false;
-	UserToSchedule* scheduledUser;
+		double targetMetric = metrics[s][0];
+		bool RBIsAllocated = false;
+		UserToSchedule* scheduledUser;
+		int scheduledUseri;
 
-	//select user for this RB
-	for (int k = 0; k < users->size (); k++)
+		//select user for this RB
+		for (int k = 0; k < users->size (); k++)
 		{
-		if (metrics[s][k] >= targetMetric)
+			if (metrics[s][k] >= targetMetric && !allocatedUsers[k])
 			{
-			targetMetric = metrics[s][k];
-			RBIsAllocated = true;
-			scheduledUser = users->at (k);
+				targetMetric = metrics[s][k];
+				RBIsAllocated = true;
+				scheduledUser = users->at (k);
+				scheduledUseri = k;
 			}
 		}
 
-	if (RBIsAllocated)
+		if (RBIsAllocated)
 		{
-		int dataToTransmit = scheduledUser->m_dataToTransmit;
-		int availableRBs = nbOfRBs - s;
-		std::vector<double> sinrs;
-		for (std::vector<int>::iterator c = scheduledUser->m_channelContition.begin ();
-				c != scheduledUser->m_channelContition.end (); c++)
-			{
-			sinrs.push_back (GetMacEntity ()->GetAmcModule ()->GetSinrFromCQI (*c));
-			}
-		double effectiveSinr =  GetEesmEffectiveSinr (sinrs);
-		int mcs = GetMacEntity ()->GetAmcModule ()->GetMCSFromCQI (
-				GetMacEntity ()->GetAmcModule ()->GetCQIFromSinr (effectiveSinr));
-		int tbs = (GetMacEntity ()->GetAmcModule ()->GetTBSizeFromMCS (mcs, availableRBs)) / 8;
+			int dataToTransmit = scheduledUser->m_dataToTransmit;
+			scheduledUser->m_listOfAllocatedRBs.push_back (s);
 
-		if (tbs <= dataToTransmit)
-			{
-			s = nbOfRBs;
-			scheduledUser->m_transmittedData = tbs;
+			double sinr = GetMacEntity ()->GetAmcModule ()->GetSinrFromCQI (scheduledUser->m_channelContition.at(s));
+			AllocatedUsersSINR[scheduledUseri].push_back(sinr);
 
-		for (int ss = s; ss < nbOfRBs; ss++)
-				{
-				scheduledUser->m_listOfAllocatedRBs.push_back (ss); // XXX it doesn't describe correctly assigned PRBs, edit: maybe it does now?
-				}
+			double effectiveSinr =  GetEesmEffectiveSinr (AllocatedUsersSINR[scheduledUseri]);
+			int mcs = GetMacEntity ()->GetAmcModule ()->GetMCSFromCQI (
+					GetMacEntity ()->GetAmcModule ()->GetCQIFromSinr (effectiveSinr));
+			int tbs = (GetMacEntity ()->GetAmcModule ()->GetTBSizeFromMCS (mcs, scheduledUser->m_listOfAllocatedRBs.size())) / 8;
 			scheduledUser->m_selectedMCS = mcs;
-			}
-		else
+
+			if (tbs >= dataToTransmit)
 			{
-				//int rbsNeeded = (floor) (scheduledUser->m_dataToTransmit /
-				//		(GetMacEntity ()->GetAmcModule ()->GetTBSizeFromMCS (mcs, 1) / 8));
-
-				int rbsNeeded = 0;
-				int availableData;
-				do {
-					rbsNeeded++;
-					availableData = GetMacEntity ()->GetAmcModule ()->GetTBSizeFromMCS (mcs, rbsNeeded) / 8;
-				} while (scheduledUser->m_dataToTransmit <= availableData);
-
-				scheduledUser->m_transmittedData = availableData;
-				s += rbsNeeded;
-
-				for (int ss = s; ss < s+rbsNeeded; ss++) {
-					scheduledUser->m_listOfAllocatedRBs.push_back (ss); // XXX it doesn't describe correctly assigned PRBs, edit: maybe it does now?
-				}
-				scheduledUser->m_selectedMCS = mcs;
+				scheduledUser->m_transmittedData = dataToTransmit;
+				allocatedUsers[scheduledUseri] = true;
+				nbAllocatedUsers++;
 			}
+			else
+			{
+				scheduledUser->m_transmittedData = tbs;
+			}
+
+// 			if (tbs <= dataToTransmit)
+// 			{
+// 				s = nbOfRBs;
+// 				scheduledUser->m_transmittedData = tbs;
+//
+// 				for (int ss = s; ss < nbOfRBs; ss++)
+// 				{
+// 					scheduledUser->m_listOfAllocatedRBs.push_back (ss); // XXX it doesn't describe correctly assigned PRBs, edit: maybe it does now?
+// 				}
+// 				scheduledUser->m_selectedMCS = mcs;
+// 			}
+// 			else
+// 			{
+// 				//int rbsNeeded = (floor) (scheduledUser->m_dataToTransmit /
+// 				//		(GetMacEntity ()->GetAmcModule ()->GetTBSizeFromMCS (mcs, 1) / 8));
+//
+// 				int rbsNeeded = 0;
+// 				int availableData;
+// 				do {
+// 					rbsNeeded++;
+// 					availableData = GetMacEntity ()->GetAmcModule ()->GetTBSizeFromMCS (mcs, rbsNeeded) / 8;
+// 				} while (scheduledUser->m_dataToTransmit <= availableData);
+//
+// 				scheduledUser->m_transmittedData = availableData;
+// 				s += rbsNeeded;
+//
+// 				for (int ss = s; ss < s+rbsNeeded; ss++) {
+// 					scheduledUser->m_listOfAllocatedRBs.push_back (ss); // XXX it doesn't describe correctly assigned PRBs, edit: maybe it does now?
+// 				}
+// 				scheduledUser->m_selectedMCS = mcs;
+// 			}
 		}
 	}
 }
