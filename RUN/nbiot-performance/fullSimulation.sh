@@ -2,19 +2,30 @@
 
 cd ~/Programas/lte-sim-r5
 
-nRuns=5
+nRuns=20
 
-for traffic in cbr video voip; do
+nChilds=0
+
+for traffic in nbiot cbr video voip; do
 for scheduler in rr pf mt; do
-#for nUe in 10 20 30 40 50 75 100 125 150 175 200 225 250 275 300; do
-for nUe in 10 50 100; do
+for nUe in 10 20 30 40 50 75 100 125 150 200 250 300 400 500 600; do
+#for nUe in 10 50 100; do
 for r in $(seq $nRuns); do
 	outDir="Executions/traffic=$traffic/scheduler=$scheduler/nUe=$nUe/$r/"
 	mkdir -p "$outDir"
 
 	seed=$((RANDOM * RANDOM))
-	(time ./LTE-Sim SingleCellNbIot 2 $nUe $traffic $scheduler $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt
+
+	if [ $nChilds -lt 4 ]; then
+		nChilds=$(($nChilds+1))
+	else
+		wait
+		nChilds=0
+	fi
+
+	(time ./LTE-Sim SingleCellNbIot 2 $nUe $traffic $scheduler $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
 done
+nChilds=0
 done
 ./RUN/nbiot-performance/makeScenarioGraphs.py "Executions/traffic=$traffic/scheduler=$scheduler/"
 done
