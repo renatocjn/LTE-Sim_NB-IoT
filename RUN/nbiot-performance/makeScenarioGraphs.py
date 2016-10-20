@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
 	clean = lambda x: float( filter( lambda x: x.isdigit() or x=='.', x ) )
 
-	xlabel = "Number of UE"
+	xlabel = "Numero de UEs"
 	experimentDirectory = "Executions/default"
 	superTitle = "Default Execution"
 
@@ -70,7 +70,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.xlabel(xlabel)
-	pl.title("Delay for queued PKGs (s)")
+	pl.ylabel("Segundos")
 	pl.errorbar(X, plots["queueDelay"]["y"], plots["queueDelay"]["ci"])
 	pl.savefig("queueDelay.png")
 
@@ -78,8 +78,7 @@ if __name__ == "__main__":
 	#pl.subplot(j,k,i)
 	pl.clf()
 	pl.margins(0.05, 0.05)
-	#pl.xlabel(xlabel)
-	pl.title("CDF total delay for queued PKGs (s)")
+	pl.xlabel("Segundos")
 	for scenario in natsorted(cdfs["queueDelay"].keys()):
 		plotCDF(cdfs["queueDelay"][scenario], scenario)
 	pl.legend(loc="best")
@@ -91,7 +90,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.xlabel(xlabel)
-	pl.title("Delay for dropped PKGs(ms)")
+	pl.ylabel("Millisegundos")
 	pl.errorbar(X, plots["droppedDelay"]["y"], plots["droppedDelay"]["ci"])
 	pl.savefig("droppedDelay.png")
 
@@ -99,7 +98,7 @@ if __name__ == "__main__":
 	#pl.subplot(j,k,i)
 	pl.clf()
 	pl.margins(0.05, 0.05)
-	pl.title("CDF total delay for dropped PKGs (ms)")
+	pl.xlabel("Millisegundos")
 	for scenario in natsorted(cdfs["droppedDelay"].keys()):
 		plotCDF(cdfs["droppedDelay"][scenario], scenario)
 	pl.legend(loc="best")
@@ -111,7 +110,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.xlabel(xlabel)
-	pl.title("Received delay (ms)")
+	pl.ylabel("Millisegundos")
 	pl.errorbar(X, plots["rxDelay"]["y"], plots["rxDelay"]["ci"])
 	pl.savefig("rxDelay.png")
 
@@ -119,7 +118,7 @@ if __name__ == "__main__":
 	#pl.subplot(j,k,i)
 	pl.clf()
 	pl.margins(0.05, 0.05)
-	pl.title("CDF total delay for received PKGs (ms)")
+	pl.xlabel("Millisegundos")
 	for scenario in natsorted(cdfs["rxDelay"].keys()):
 		plotCDF(cdfs["rxDelay"][scenario], scenario)
 	pl.legend(loc="best")
@@ -130,7 +129,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.xlabel(xlabel)
-	pl.title("User throughput(Kbit/s)")
+	pl.ylabel("Kbit/s")
 	pl.errorbar(X, plots["userThroughput"]["y"], plots["userThroughput"]["ci"])
 	pl.savefig("userThroughput.png")
 
@@ -138,7 +137,7 @@ if __name__ == "__main__":
 	#pl.subplot(j,k,i)
 	pl.clf()
 	pl.margins(0.05, 0.05)
-	pl.title("CDF of user throughput(Kbit/s)")
+	pl.xlabel("Kbit/s")
 	for scenario in natsorted(cdfs["userThroughput"].keys()):
 		plotCDF(cdfs["userThroughput"][scenario], scenario)
 	pl.legend(loc="best")
@@ -149,7 +148,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.xlabel(xlabel)
-	pl.title("Aggregated received throughput(Kbit/s)")
+	pl.ylabel("Kbit/s")
 	pl.errorbar(X, plots["RxThroughput"]["y"], plots["RxThroughput"]["ci"])
 	pl.savefig("RxThroughput.png")
 
@@ -158,7 +157,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.xlabel(xlabel)
-	pl.title("Aggregated transmitted throughput (Kbit/s)")
+	pl.ylabel("Kbit/s")
 	pl.errorbar(X, plots["TxThroughput"]["y"], plots["TxThroughput"]["ci"])
 	pl.savefig("TxThroughput.png")
 
@@ -167,7 +166,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.xlabel(xlabel)
-	pl.title("Delivery rate(%)")
+	pl.ylabel("%")
 	pl.errorbar(X, plots["deliveryRate"]["y"], plots["deliveryRate"]["ci"])
 	pl.savefig("deliveryRate.png")
 
@@ -176,7 +175,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.xlabel(xlabel)
-	pl.title("Nb transmitted PKGs")
+	#pl.title("Nb transmitted PKGs")
 	pl.errorbar(X, plots["transmittedPkgs"]["y"], plots["transmittedPkgs"]["ci"])
 	pl.savefig("transmittedPkgs.png")
 
@@ -185,7 +184,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.xlabel(xlabel)
-	pl.title("Nb lost packages")
+	#pl.title("Nb lost packages")
 	pl.errorbar(X, plots["lostPkgs"]["y"], plots["lostPkgs"]["ci"])
 	pl.savefig("lostPkgs.png")
 
@@ -194,7 +193,7 @@ if __name__ == "__main__":
 	pl.clf()
 	pl.margins(0.05, 0.05)
 	pl.xlabel(xlabel)
-	pl.title("Nb dropped PKGs in L2")
+	#pl.title("Nb dropped PKGs in L2")
 	pl.errorbar(X, plots["droppedPkgs"]["y"], plots["droppedPkgs"]["ci"])
 	pl.savefig("droppedPkgs.png")
 
@@ -202,7 +201,7 @@ if __name__ == "__main__":
 	#pl.subplot(j,k,i)
 	pl.clf()
 	pl.margins(0.05, 0.05)
-	pl.title("CDF UL-SINRs reported")
+	pl.xlabel("SINR")
 	for scenario in natsorted(cdfs["SINRs"].keys()):
 		plotCDF(cdfs["SINRs"][scenario], scenario)
 	pl.legend(loc="best")

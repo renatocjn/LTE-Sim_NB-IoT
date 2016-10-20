@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
 	clean = lambda x: float( filter( lambda x: x.isdigit() or x=='.', x ) )
 
-	xlabel = "Number of UE"
+	xlabel = "Numero de UEs"
 	experimentDirectory = "Executions/default"
 	superTitle = "Default Execution"
 
@@ -67,7 +67,7 @@ if __name__ == "__main__":
 			ax = f.add_axes(rect)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
-			ax.set_title("Delay for queued PKGs (s)")
+			ax.set_ylabel("Segundos")
 			figure["queueDelay"] = {'figure': f, 'axes': ax}
 		ax = figure["queueDelay"]['axes']
 		ax.errorbar(X, plots[sch]["queueDelay"]["y"], plots[sch]["queueDelay"]["ci"], label="scheduler "+sch)
@@ -78,7 +78,7 @@ if __name__ == "__main__":
 			ax = f.add_axes(rect)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
-			ax.set_title("Delay for dropped PKGs(ms)")
+			ax.set_ylabel("Millisegundos")
 			figure["droppedDelay"] = {'figure': f, 'axes': ax}
 		ax = figure["droppedDelay"]['axes']
 		ax.errorbar(X, plots[sch]["droppedDelay"]["y"], plots[sch]["droppedDelay"]["ci"], label="scheduler "+sch)
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 			ax = f.add_axes(rect)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
-			ax.set_title("Received delay (ms)")
+			ax.set_ylabel("Millisegundos")
 			figure["rxDelay"] = {'figure': f, 'axes': ax}
 		ax = figure["rxDelay"]['axes']
 		ax.errorbar(X, plots[sch]["rxDelay"]["y"], plots[sch]["rxDelay"]["ci"], label="scheduler "+sch)
@@ -100,7 +100,7 @@ if __name__ == "__main__":
 			ax = f.add_axes(rect)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
-			ax.set_title("User throughput(Kbit/s)")
+			ax.set_ylabel("Kbit/s")
 			figure["userThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["userThroughput"]['axes']
 		ax.errorbar(X, plots[sch]["userThroughput"]["y"], plots[sch]["userThroughput"]["ci"], label="scheduler "+sch)
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 			ax = f.add_axes(rect)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
-			ax.set_title("Aggregated received throughput(Kbit/s)")
+			ax.set_ylabel("Kbit/s")
 			figure["RxThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["RxThroughput"]['axes']
 		ax.errorbar(X, plots[sch]["RxThroughput"]["y"], plots[sch]["RxThroughput"]["ci"], label="scheduler "+sch)
@@ -122,7 +122,7 @@ if __name__ == "__main__":
 			ax = f.add_axes(rect)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
-			ax.set_title("Aggregated transmitted throughput (Kbit/s)")
+			ax.set_ylabel("Kbit/s")
 			figure["TxThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["TxThroughput"]['axes']
 		ax.errorbar(X, plots[sch]["TxThroughput"]["y"], plots[sch]["TxThroughput"]["ci"], label="scheduler "+sch)
@@ -133,7 +133,8 @@ if __name__ == "__main__":
 			ax = f.add_axes(rect)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
-			ax.set_title("Delivery rate(%)")
+			ax.set_ylabel("%")
+			ax.set_ylim(0,100)
 			figure["deliveryRate"] = {'figure': f, 'axes': ax}
 		ax = figure["deliveryRate"]['axes']
 		ax.errorbar(X, plots[sch]["deliveryRate"]["y"], plots[sch]["deliveryRate"]["ci"], label="scheduler "+sch)
@@ -144,7 +145,7 @@ if __name__ == "__main__":
 			ax = f.add_axes(rect)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
-			ax.set_title("Nb transmitted PKGs")
+			#ax.set_title("Nb transmitted PKGs")
 			figure["transmittedPkgs"] = {'figure': f, 'axes': ax}
 		ax = figure["transmittedPkgs"]['axes']
 		ax.errorbar(X, plots[sch]["transmittedPkgs"]["y"], plots[sch]["transmittedPkgs"]["ci"], label="scheduler "+sch)
@@ -156,7 +157,7 @@ if __name__ == "__main__":
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
 			ax.set_title("Nb lost packages")
-			figure["lostPkgs"] = {'figure': f, 'axes': ax}
+			#figure["lostPkgs"] = {'figure': f, 'axes': ax}
 		ax = figure["lostPkgs"]['axes']
 		ax.errorbar(X, plots[sch]["lostPkgs"]["y"], plots[sch]["lostPkgs"]["ci"], label="scheduler "+sch)
 
@@ -167,7 +168,7 @@ if __name__ == "__main__":
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
 			ax.set_title("Nb dropped PKGs in L2")
-			figure["droppedPkgs"] = {'figure': f, 'axes': ax}
+			#figure["droppedPkgs"] = {'figure': f, 'axes': ax}
 		ax = figure["droppedPkgs"]['axes']
 		ax.errorbar(X, plots[sch]["droppedPkgs"]["y"], plots[sch]["droppedPkgs"]["ci"], label="scheduler "+sch)
 
