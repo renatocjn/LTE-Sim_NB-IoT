@@ -30,3 +30,7 @@
 
 #results ltesim
 *.txt
+
+*.zip
+*.tar*
+*.rar

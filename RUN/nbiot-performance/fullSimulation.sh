@@ -6,7 +6,7 @@ nRuns=20
 
 nChilds=0
 
-for traffic in nbiot cbr video voip; do
+for traffic in video voip; do
 for scheduler in rr pf mt; do
 for nUe in 10 20 30 40 50 75 100 125 150 200 250 300 400 500 600; do
 #for nUe in 10 50 100; do

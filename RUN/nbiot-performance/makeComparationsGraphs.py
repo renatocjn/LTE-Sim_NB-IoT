@@ -32,6 +32,7 @@ if __name__ == "__main__":
 
 	os.chdir(experimentDirectory)
 	schedulers = ['rr', 'mt', 'pf']
+	sch_labels = {'rr': 'Round Robin', 'mt': 'Maximum Throughput', 'pf': 'Proportionally Fair'}
 
 	X = set()
 	plots = {'rr': dict(), 'pf': dict(), 'mt': dict()}
@@ -70,7 +71,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Segundos")
 			figure["queueDelay"] = {'figure': f, 'axes': ax}
 		ax = figure["queueDelay"]['axes']
-		ax.errorbar(X, plots[sch]["queueDelay"]["y"], plots[sch]["queueDelay"]["ci"], label="scheduler "+sch)
+		ax.errorbar(X, plots[sch]["queueDelay"]["y"], plots[sch]["queueDelay"]["ci"], label="Scheduler "+sch_labels[sch])
 
 
 		if "droppedDelay" not in figure:
@@ -81,7 +82,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Millisegundos")
 			figure["droppedDelay"] = {'figure': f, 'axes': ax}
 		ax = figure["droppedDelay"]['axes']
-		ax.errorbar(X, plots[sch]["droppedDelay"]["y"], plots[sch]["droppedDelay"]["ci"], label="scheduler "+sch)
+		ax.errorbar(X, plots[sch]["droppedDelay"]["y"], plots[sch]["droppedDelay"]["ci"], label="Scheduler "+sch_labels[sch])
 
 
 		if "rxDelay" not in figure:
@@ -92,7 +93,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Millisegundos")
 			figure["rxDelay"] = {'figure': f, 'axes': ax}
 		ax = figure["rxDelay"]['axes']
-		ax.errorbar(X, plots[sch]["rxDelay"]["y"], plots[sch]["rxDelay"]["ci"], label="scheduler "+sch)
+		ax.errorbar(X, plots[sch]["rxDelay"]["y"], plots[sch]["rxDelay"]["ci"], label="Scheduler "+sch_labels[sch])
 
 
 		if "userThroughput" not in figure:
@@ -103,7 +104,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Kbit/s")
 			figure["userThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["userThroughput"]['axes']
-		ax.errorbar(X, plots[sch]["userThroughput"]["y"], plots[sch]["userThroughput"]["ci"], label="scheduler "+sch)
+		ax.errorbar(X, plots[sch]["userThroughput"]["y"], plots[sch]["userThroughput"]["ci"], label="Scheduler "+sch_labels[sch])
 
 
 		if "RxThroughput" not in figure:
@@ -114,7 +115,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Kbit/s")
 			figure["RxThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["RxThroughput"]['axes']
-		ax.errorbar(X, plots[sch]["RxThroughput"]["y"], plots[sch]["RxThroughput"]["ci"], label="scheduler "+sch)
+		ax.errorbar(X, plots[sch]["RxThroughput"]["y"], plots[sch]["RxThroughput"]["ci"], label="Scheduler "+sch_labels[sch])
 
 
 		if "TxThroughput" not in figure:
@@ -125,7 +126,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Kbit/s")
 			figure["TxThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["TxThroughput"]['axes']
-		ax.errorbar(X, plots[sch]["TxThroughput"]["y"], plots[sch]["TxThroughput"]["ci"], label="scheduler "+sch)
+		ax.errorbar(X, plots[sch]["TxThroughput"]["y"], plots[sch]["TxThroughput"]["ci"], label="Scheduler "+sch_labels[sch])
 
 
 		if "deliveryRate" not in figure:
@@ -137,7 +138,7 @@ if __name__ == "__main__":
 			ax.set_ylim(0,100)
 			figure["deliveryRate"] = {'figure': f, 'axes': ax}
 		ax = figure["deliveryRate"]['axes']
-		ax.errorbar(X, plots[sch]["deliveryRate"]["y"], plots[sch]["deliveryRate"]["ci"], label="scheduler "+sch)
+		ax.errorbar(X, plots[sch]["deliveryRate"]["y"], plots[sch]["deliveryRate"]["ci"], label="Scheduler "+sch_labels[sch])
 
 
 		if "transmittedPkgs" not in figure:
@@ -148,7 +149,7 @@ if __name__ == "__main__":
 			#ax.set_title("Nb transmitted PKGs")
 			figure["transmittedPkgs"] = {'figure': f, 'axes': ax}
 		ax = figure["transmittedPkgs"]['axes']
-		ax.errorbar(X, plots[sch]["transmittedPkgs"]["y"], plots[sch]["transmittedPkgs"]["ci"], label="scheduler "+sch)
+		ax.errorbar(X, plots[sch]["transmittedPkgs"]["y"], plots[sch]["transmittedPkgs"]["ci"], label="Scheduler "+sch_labels[sch])
 
 
 		if "lostPkgs" not in figure:
@@ -159,7 +160,7 @@ if __name__ == "__main__":
 			ax.set_title("Nb lost packages")
 			#figure["lostPkgs"] = {'figure': f, 'axes': ax}
 		ax = figure["lostPkgs"]['axes']
-		ax.errorbar(X, plots[sch]["lostPkgs"]["y"], plots[sch]["lostPkgs"]["ci"], label="scheduler "+sch)
+		ax.errorbar(X, plots[sch]["lostPkgs"]["y"], plots[sch]["lostPkgs"]["ci"], label="Scheduler "+sch_labels[sch])
 
 
 		if "droppedPkgs" not in figure:
@@ -170,7 +171,7 @@ if __name__ == "__main__":
 			ax.set_title("Nb dropped PKGs in L2")
 			#figure["droppedPkgs"] = {'figure': f, 'axes': ax}
 		ax = figure["droppedPkgs"]['axes']
-		ax.errorbar(X, plots[sch]["droppedPkgs"]["y"], plots[sch]["droppedPkgs"]["ci"], label="scheduler "+sch)
+		ax.errorbar(X, plots[sch]["droppedPkgs"]["y"], plots[sch]["droppedPkgs"]["ci"], label="Scheduler "+sch_labels[sch])
 
 
 	del plots
