@@ -143,8 +143,8 @@ def getStatisticsForScenario(scenarioDirPath):
 		metrics[m] = CalculateStatistics (metrics[m])
 	return metrics, metrics_cdfs
 
-def plotCDF(data, plabel):
+def plotCDF(data, plabel, target=pl, mark=''):
 	sortedData = sort(data)
 	s = len(data)
 	p = 1. * arange(s) / (s - 1)
-	pl.plot(sortedData, p, label=plabel, markevery=int(.1*s))
+	target.plot(sortedData, p, label=plabel, markevery=int(.1*s), marker=mark)
