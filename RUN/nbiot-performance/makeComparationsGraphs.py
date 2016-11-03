@@ -31,7 +31,7 @@ if __name__ == "__main__":
 		exit(1)
 
 	os.chdir(experimentDirectory)
-	schedulers = ['rr', 'mt', 'pf']
+	schedulers = ['pf', 'mt']
 	sch_labels = {'rr': 'Round Robin', 'mt': 'Maximum Throughput', 'pf': 'Proportionally Fair'}
 	markers = {'rr': 'o', 'mt': 'd', 'pf': '*'}
 	
@@ -43,10 +43,11 @@ if __name__ == "__main__":
 		scenarios = natsorted(glob('scheduler='+sch+'/*=*'))
 		for scenario in scenarios:
 			x = clean(scenario)
-			X.add(x)
+			X.add(8*x)
+			#print sch, scenario
 			statistics, cdf = getStatisticsForScenario (scenario)
 
-			if x == 200:
+			if x == 1500:
 				for k in cdf.keys(): 
 					cdfs[sch][k] = cdf[k]
 

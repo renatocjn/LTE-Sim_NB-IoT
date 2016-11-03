@@ -146,5 +146,5 @@ def getStatisticsForScenario(scenarioDirPath):
 def plotCDF(data, plabel, target=pl, mark=''):
 	sortedData = sort(data)
 	s = len(data)
-	p = 1. * arange(s) / (s - 1)
+	p = 100. * arange(s) / (s - 1)
 	target.plot(sortedData, p, label=plabel, markevery=int(.1*s), marker=mark)
