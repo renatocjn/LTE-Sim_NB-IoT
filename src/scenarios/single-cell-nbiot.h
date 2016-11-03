@@ -63,10 +63,10 @@ static void SingleCellNbIot (double radius,
 	// define simulation times
 	double duration = 6;
 	double flow_duration = 5;
+	double nbiotTxBwConfiguration = 15;
 
-
-	int cluster = 4;
-	double bandwidth = 5;
+	//int cluster = 4;
+	double bandwidth = 1.4;
 
 	// CREATE COMPONENT MANAGER
 	Simulator *simulator = Simulator::Init();
@@ -98,7 +98,9 @@ static void SingleCellNbIot (double radius,
 			<< " " << c->GetCellCenterPosition ()->GetCoordinateY () << std::endl;
 
 
-	std::vector <BandwidthManager*> spectrums = RunFrequencyReuseTechniques (1, cluster, bandwidth);
+	//std::vector <BandwidthManager*> spectrums = RunFrequencyReuseTechniques (1, cluster, bandwidth);
+	BandwidthManager* spectrum = new BandwidthManager (bandwidth, bandwidth, 0, 0);
+	NbIotBandwidthManager* nbiotSpectrum = createNbIotBwManager (spectrum, nbiotTxBwConfiguration);
 
 	//Create a set of a couple of channels
 	std::vector <LteChannel*> *dlChannels = new std::vector <LteChannel*>;
@@ -133,7 +135,7 @@ static void SingleCellNbIot (double radius,
 		return;
 	}
 
-	enb->GetPhy ()->SetBandwidthManager (spectrums.at (0));
+	enb->GetPhy ()->SetBandwidthManager (spectrum);
 
 	std::cout << "Created enb, id " << enb->GetIDNetworkNode()
 			<< ", cell id " << enb->GetCell ()->GetIdCell ()
@@ -142,7 +144,9 @@ static void SingleCellNbIot (double radius,
 			<< ", channels id " << enb->GetPhy ()->GetDlChannel ()->GetChannelId ()
 			<< enb->GetPhy ()->GetUlChannel ()->GetChannelId ()  << std::endl;
 
-	spectrums.at (0)->Print ();
+	spectrum->Print ();
+	nbiotSpectrum->Print();
+	return;
 	ulChannels->at (0)->AddDevice((NetworkNode*) enb);
 
 	nm->GetENodeBContainer ()->push_back (enb);
