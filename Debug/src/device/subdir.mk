@@ -8,24 +8,21 @@ CPP_SRCS += \
 ../src/device/Gateway.cpp \
 ../src/device/HeNodeB.cpp \
 ../src/device/NetworkNode.cpp \
-../src/device/UserEquipment.cpp \
-../src/device/NbIotUserEquipment.cpp
+../src/device/UserEquipment.cpp
 
 OBJS += \
 ./src/device/ENodeB.o \
 ./src/device/Gateway.o \
 ./src/device/HeNodeB.o \
 ./src/device/NetworkNode.o \
-./src/device/UserEquipment.o \
-../src/device/NbIotUserEquipment.o
+./src/device/UserEquipment.o
 
 CPP_DEPS += \
 ./src/device/ENodeB.d \
 ./src/device/Gateway.d \
 ./src/device/HeNodeB.d \
 ./src/device/NetworkNode.d \
-./src/device/UserEquipment.d \
-../src/device/NbIotUserEquipment.d
+./src/device/UserEquipment.d
 
 
 # Each subdirectory must supply rules for building sources it contributes

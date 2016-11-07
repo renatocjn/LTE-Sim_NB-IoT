@@ -39,6 +39,14 @@ public:
 				   Cell *cell,
 				   NetworkNode* target,
 				   bool handover, Mobility::MobilityModel model);
+
+	UserEquipment (int idElement,
+				   double posx, double posy,
+				Cell *cell,
+				NetworkNode* target,
+				NetworkNode::NodeType ueType,
+				bool handover);
+
 	UserEquipment (int idElement,
 				   double posx, double posy, int speed, double speedDirection,
 				   Cell *cell,

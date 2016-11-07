@@ -30,17 +30,13 @@ class EnbLtePhy :public LtePhy {
 	//#ifdef TEST_UL_SINR
 private:
 	int counter;
-	BandwidthManager* m_nbiotBandwidthManager;
 	//#endif
 public:
 	EnbLtePhy();
 	virtual ~EnbLtePhy();
 
-	BandwidthManager* GetNbIotBandwidthManager (void);
-	void SetNbIotBandwidthManager (BandwidthManager* nbiotbm);
-
 	BandwidthManager* GetBandwidthManager (void);
-	void SetBandwidthManager (BandwidthManager* nbiotbm);
+	void SetBandwidthManager (BandwidthManager* bandwidthManager);
 	virtual void DoSetBandwidthManager (void);
 
 	virtual void StartTx (PacketBurst* p);

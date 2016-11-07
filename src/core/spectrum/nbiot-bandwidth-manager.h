@@ -33,7 +33,7 @@
  */
 class NbIotBandwidthManager : public BandwidthManager {
 public:
-	NbIotBandwidthManager() {}
+	NbIotBandwidthManager();
 	NbIotBandwidthManager(double ulRbChannel, double dlRbChannel, double ulTxBwConf, double dlTxBwConf);
 	virtual ~NbIotBandwidthManager();
 

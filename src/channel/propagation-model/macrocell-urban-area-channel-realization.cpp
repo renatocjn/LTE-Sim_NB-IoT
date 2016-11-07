@@ -206,12 +206,12 @@ MacroCellUrbanAreaChannelRealization::GetLoss ()
   int index = now_ms - lastUpdate_ms;
 
   int nbOfSubChannels;
-  if (GetSourceNode()->GetNodeType() == NetworkNode::TYPE_ENODEB &&
-	  GetDestinationNode()->GetNodeType() == NetworkNode::TYPE_NBIOT_UE) {
-	  nbOfSubChannels = GetSourceNode ()->GetPhy ()->GetNbIotBandwidthManager ()->GetDlSubChannels ().size ();
-  } else {
+//   if (GetSourceNode()->GetNodeType() == NetworkNode::TYPE_ENODEB &&
+// 	  GetDestinationNode()->GetNodeType() == NetworkNode::TYPE_NBIOT_UE) {
+// 	  nbOfSubChannels = GetSourceNode ()->GetPhy ()->GetNbIotBandwidthManager ()->GetDlSubChannels ().size ();
+//   } else {
 	  nbOfSubChannels = GetSourceNode ()->GetPhy ()->GetBandwidthManager ()->GetDlSubChannels ().size ();
-  }
+//   }
 
   for (int i = 0; i < nbOfSubChannels; i++)
     {

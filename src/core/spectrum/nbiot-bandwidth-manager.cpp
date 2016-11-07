@@ -28,6 +28,10 @@
 #define TONES_FOR_3_75KHz 48
 #define TONES_FOR_15KHz 12
 
+NbIotBandwidthManager::NbIotBandwidthManager()
+{}
+
+
 NbIotBandwidthManager::NbIotBandwidthManager(double ulRbChannel, double dlRbChannel, double ulTxBwConf, double dlTxBwConf)
 {
 	// txBwConf = Transmission bandwidth configuration (3.75 / 15)

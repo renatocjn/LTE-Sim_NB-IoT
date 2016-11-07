@@ -94,17 +94,6 @@ EnbLtePhy::DoSetBandwidthManager (void)
   SetTxSignal (txSignal);
 }
 
-BandwidthManager*
-EnbLtePhy::GetNbIotBandwidthManager (void) {
-	return m_nbiotBandwidthManager;
-}
-
-
-void
-EnbLtePhy::SetNbIotBandwidthManager (BandwidthManager* nbiotbm) {
-
-}
-
 void
 EnbLtePhy::StartTx (PacketBurst* p)
 {

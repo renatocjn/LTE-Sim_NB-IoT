@@ -23,6 +23,7 @@
 #include "../phy/enb-lte-phy.h"
 #include "../phy/ue-lte-phy.h"
 #include "../core/spectrum/bandwidth-manager.h"
+#include "../core/spectrum/nbiot-bandwidth-manager.h"
 #include "../networkTopology/Cell.h"
 #include "../protocolStack/packet/packet-burst.h"
 #include "../protocolStack/packet/Packet.h"
@@ -39,6 +40,7 @@
 #include "../componentManagers/FrameManager.h"
 #include "../utility/seed.h"
 #include "../utility/RandomVariable.h"
+#include "../utility/nbiot-bw-manager-helper.h"
 #include "../phy/wideband-cqi-eesm-error-model.h"
 #include "../phy/simple-error-model.h"
 #include "../channel/propagation-model/macrocell-urban-area-channel-realization.h"
@@ -177,9 +179,11 @@ static void SingleCellNbIot (double radius,
 												posX, posY,0, 0,
 												c,
 												enb,
-												0, //handover false!
-												Mobility::CONSTANT_POSITION);
+												NetworkNode::TYPE_NBIOT_UE,
+												0); //handover false!
 		std::cout << "Created UE - id " << idUE << " position " << posX << " " << posY << " direction " << speedDirection << std::endl;
+
+		ue->GetPhy()->SetBandwidthManager(nbiotSpectrum)
 
 		ue->GetMobilityModel()->GetAbsolutePosition()->Print();
 		ue->GetPhy ()->SetDlChannel (enb->GetPhy ()->GetDlChannel ());

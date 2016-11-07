@@ -28,6 +28,7 @@
 #include <math.h>
 #include <vector>
 #include "../core/spectrum/bandwidth-manager.h"
+#include "../core/spectrum/nbiot-bandwidth-manager.h"
 #include "../componentManagers/FrameManager.h"
 
 

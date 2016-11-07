@@ -108,6 +108,52 @@ UserEquipment::UserEquipment (int idElement,
   m_isIndoor = false;
 }
 
+UserEquipment (int idElement,
+			   double posx, double posy,
+			   Cell *cell,
+			   NetworkNode* target,
+			   NetworkNode::NodeType ueType,
+			   bool handover)
+{
+	SetIDNetworkNode (idElement);
+	SetNodeType(ueType);
+	SetCell(cell);
+
+	m_targetNode = target;
+
+	ProtocolStack *stack = new ProtocolStack (this);
+	SetProtocolStack (stack);
+
+	Classifier *classifier = new Classifier ();
+	classifier->SetDevice (this);
+	SetClassifier (classifier);
+	SetNodeState(STATE_IDLE);
+
+	//Setup Mobility Model
+	Mobility *m = new ConstantPosition ();
+	CartesianCoordinates *position = new CartesianCoordinates (posx, posy);
+	m->SetHandover (handover);
+	m->SetAbsolutePosition (position);
+	m->SetNodeID (idElement);
+	SetMobilityModel (m);
+
+	m_timePositionUpdate = 0.001;
+	Simulator::Init()->Schedule(m_timePositionUpdate,
+								&UserEquipment::UpdateUserPosition,
+							 this,
+							 Simulator::Init ()->Now());
+
+	delete position;
+
+	UeLtePhy *phy = new UeLtePhy ();
+	phy->SetDevice(this);
+	phy->SetBandwidthManager (target->GetPhy ()->GetBandwidthManager ());
+	SetPhy(phy);
+
+	m_cqiManager = NULL;
+	m_isIndoor = false;
+}
+
 UserEquipment::UserEquipment (int idElement,
 							  double posx,
 							  double posy,
