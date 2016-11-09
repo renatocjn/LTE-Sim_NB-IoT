@@ -34,7 +34,12 @@
 
 
 UserEquipment::UserEquipment ()
-{}
+{
+	m_cqiManager = NULL;
+	m_targetNode = NULL;
+	m_isIndoor = false;
+	m_timePositionUpdate = 0.0;
+}
 
 UserEquipment::UserEquipment (int idElement,
 							  double posx,
@@ -108,7 +113,7 @@ UserEquipment::UserEquipment (int idElement,
   m_isIndoor = false;
 }
 
-UserEquipment (int idElement,
+UserEquipment::UserEquipment (int idElement,
 			   double posx, double posy,
 			   Cell *cell,
 			   NetworkNode* target,

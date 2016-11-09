@@ -48,10 +48,19 @@ public:
     double
     GetInterval (void) const;
 
+	PacketTAGs::ApplicationType getTagType() const {
+		return tagType;
+	}
+
+	void setTagType(PacketTAGs::ApplicationType tagType) {
+		this->tagType = tagType;
+	}
+
 private:
 
 	double m_interval;
 	int m_size;
+	PacketTAGs::ApplicationType tagType;
 };
 
 #endif /* CBR_H_ */

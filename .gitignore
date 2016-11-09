@@ -34,3 +34,5 @@
 *.zip
 *.tar*
 *.rar
+/linuxDebug/
+/testDebug/

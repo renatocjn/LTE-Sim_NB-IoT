@@ -37,7 +37,6 @@ public:
 	NbIotBandwidthManager(double ulRbChannel, double dlRbChannel, double ulTxBwConf, double dlTxBwConf);
 	virtual ~NbIotBandwidthManager();
 
-
 	BandwidthManager* Copy ();
 
 	void Print (void);

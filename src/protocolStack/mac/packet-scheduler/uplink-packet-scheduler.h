@@ -35,6 +35,7 @@ public:
 	    NetworkNode* m_userToSchedule;
 	    int m_transmittedData;	//bytes
 	    int m_dataToTransmit;		//bytes
+	    //TODO Utilizar a variável UserToSchedule.m_averageSchedulingGrant
 	    double m_averageSchedulingGrant; // in bytes
 
 	    std::vector<int> m_listOfAllocatedRBs;

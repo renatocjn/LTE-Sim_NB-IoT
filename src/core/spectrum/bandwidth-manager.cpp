@@ -38,6 +38,11 @@
 
 BandwidthManager::BandwidthManager()
 {
+	m_dlBandwidth = 0;
+	m_ulBandwidth = 0;
+	m_operativeSubBand = 1;
+	m_dlOffsetBw = 0;
+	m_ulOffsetBw = 0;
 }
 
 BandwidthManager::BandwidthManager(double ulBw, double dlBw, int ulOffset, int dlOffset)
@@ -393,7 +398,7 @@ BandwidthManager::Copy ()
 void
 BandwidthManager::Print (void)
 {
-  std::cout << "BandwidthManager: " << this << std::endl;
+  std::cout << "BandwidthManager: " << std::endl;
 
   std::cout << "\t operative sub band: " << m_operativeSubBand <<
 		  "\n\t m_dlBandwidth " << m_dlBandwidth <<
@@ -402,14 +407,14 @@ BandwidthManager::Print (void)
   	      "\n\t m_ulOffsetBw " << m_ulOffsetBw << std::endl;
 
   std::cout << "\t DL channels: ";
-  for (int i = 0; i < m_dlSubChannels.size (); i++)
+  for (unsigned i = 0; i < m_dlSubChannels.size (); i++)
     {
 	  std::cout << m_dlSubChannels.at (i) << " ";
     }
   std::cout <<  std::endl;
 
   std::cout << "\t UL channels: ";
-  for (int i = 0; i < m_ulSubChannels.size (); i++)
+  for (unsigned i = 0; i < m_ulSubChannels.size (); i++)
     {
 	  std::cout << m_ulSubChannels.at (i) << " ";
     }

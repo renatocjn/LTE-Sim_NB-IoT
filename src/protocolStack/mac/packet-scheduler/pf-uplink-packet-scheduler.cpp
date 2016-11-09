@@ -35,6 +35,7 @@
 #include "../../../core/idealMessages/ideal-control-messages.h"
 #include "../../../flows/QoS/QoSParameters.h"
 #include "../../../flows/MacQueue.h"
+#include "../../../utility/split-users-to-schedule.h"
 
 ProportionallyFairUplinkPacketScheduler::ProportionallyFairUplinkPacketScheduler()
 {
@@ -193,30 +194,35 @@ ProportionallyFairUplinkPacketScheduler::RBsAllocation ()
 	#endif
 
 	UsersToSchedule *users = GetUsersToSchedule ();
+	UsersToSchedule *regularUsers = new UsersToSchedule();
+	UsersToSchedule *nbiotUsers = new UsersToSchedule();
+
+	splitUsersToSchedule(users, regularUsers, nbiotUsers);
+
 	int nbOfRBs = GetMacEntity ()->GetDevice ()->GetPhy ()->GetBandwidthManager ()->GetUlSubChannels ().size ();
 
-	bool* allocatedUsers = new bool[users->size()];
-	for (int i=0; i<users->size(); i++)
+	bool* allocatedUsers = new bool[regularUsers->size()];
+	for (unsigned i=0; i<regularUsers->size(); i++)
 		allocatedUsers[i] = false;
 	int nbAllocatedUsers = 0;
-	std::vector<double> * AllocatedUsersSINR = new std::vector<double>[users->size ()];
+	std::vector<double> * AllocatedUsersSINR = new std::vector<double>[regularUsers->size ()];
 
 	//create a matrix of flow metrics
-	double metrics[nbOfRBs][users->size ()];
+	double metrics[nbOfRBs][regularUsers->size ()];
 	for (int i = 0; i < nbOfRBs; i++)
 	{
-		for (int j = 0; j < users->size (); j++)
+		for (unsigned j = 0; j < regularUsers->size (); j++)
 		{
-			metrics[i][j] = ComputeSchedulingMetric (users->at (j), i);
+			metrics[i][j] = ComputeSchedulingMetric (regularUsers->at (j), i);
 		}
 	}
 
 	#ifdef SCHEDULER_DEBUG
-	std::cout << ", available RBs " << nbOfRBs << ", users " << users->size () << std::endl;
-	for (int ii = 0; ii < users->size (); ii++)
+	std::cout << ", available RBs " << nbOfRBs << ", Users " << regularUsers->size () << std::endl;
+	for (int ii = 0; ii < regularUsers->size (); ii++)
 	{
 		std::cout << "\t metrics for user "
-		<< users->at (ii)->m_userToSchedule->GetIDNetworkNode ();
+		<< regularUsers->at (ii)->m_userToSchedule->GetIDNetworkNode ();
 		for (int jj = 0; jj < nbOfRBs; jj++)
 		{
 			std::cout << " " << metrics[jj][ii];
@@ -236,13 +242,13 @@ ProportionallyFairUplinkPacketScheduler::RBsAllocation ()
 		int scheduledUseri;
 
 		//select user for this RB
-		for (int k = 0; k < users->size (); k++)
+		for (unsigned k = 0; k < regularUsers->size (); k++)
 		{
 			if (metrics[s][k] >= targetMetric && !allocatedUsers[k])
 			{
 				targetMetric = metrics[s][k];
 				RBIsAllocated = true;
-				scheduledUser = users->at (k);
+				scheduledUser = regularUsers->at (k);
 				scheduledUseri = k;
 			}
 		}
@@ -306,7 +312,7 @@ ProportionallyFairUplinkPacketScheduler::RBsAllocation ()
 		}
 	}
 
-	for (int i=0; i < users->size(); i++) {
+	for (unsigned i=0; i < users->size(); i++) {
 		if (allocatedUsers[i]) {
 			int uid = users->at(i)->m_userToSchedule->GetIDNetworkNode();
 			userTransmittedData[uid] += users->at(i)->m_transmittedData;

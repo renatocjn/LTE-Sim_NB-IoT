@@ -35,8 +35,8 @@ public:
 	EnbLtePhy();
 	virtual ~EnbLtePhy();
 
-	BandwidthManager* GetBandwidthManager (void);
-	void SetBandwidthManager (BandwidthManager* bandwidthManager);
+//	BandwidthManager* GetBandwidthManager (void);
+//	void SetBandwidthManager (BandwidthManager* bandwidthManager);
 	virtual void DoSetBandwidthManager (void);
 
 	virtual void StartTx (PacketBurst* p);

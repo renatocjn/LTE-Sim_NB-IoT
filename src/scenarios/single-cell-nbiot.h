@@ -176,14 +176,14 @@ static void SingleCellNbIot (double radius,
 		double speedDirection = GetRandomVariable (360.) * ((2.*3.14)/360.);
 
 		UserEquipment* ue = new UserEquipment (idUE,
-												posX, posY,0, 0,
+												posX, posY,
 												c,
 												enb,
 												NetworkNode::TYPE_NBIOT_UE,
 												0); //handover false!
 		std::cout << "Created UE - id " << idUE << " position " << posX << " " << posY << " direction " << speedDirection << std::endl;
 
-		ue->GetPhy()->SetBandwidthManager(nbiotSpectrum)
+		ue->GetPhy()->SetBandwidthManager(nbiotSpectrum);
 
 		ue->GetMobilityModel()->GetAbsolutePosition()->Print();
 		ue->GetPhy ()->SetDlChannel (enb->GetPhy ()->GetDlChannel ());
@@ -215,7 +215,7 @@ static void SingleCellNbIot (double radius,
 		double duration_time = start_time + flow_duration;
 
 		if ( strcmp (trafficType, "nbiot") == 0 ) {
-			/** TODO
+			/** TODO nbiot event driven
 			 * Event driven
 			 * 	Intervalo entre pacotes: Poisson(y=0.02/tti)
 			 * 	Tamanho do pacote: 125bytes

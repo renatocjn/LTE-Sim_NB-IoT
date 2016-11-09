@@ -64,10 +64,16 @@ NbIotBandwidthManager::NbIotBandwidthManager(double ulRbChannel, double dlRbChan
 	for(i=ulRbChannel; i<ulRbChannel+.18; i+=ulTxBwConf) {
 		ulSubChannels.push_back(i);
 	}
+	SetUlSubChannels(ulSubChannels);
 
 	for(i=dlRbChannel; i<dlRbChannel+.18; i+=dlTxBwConf) {
-		ulSubChannels.push_back(i);
+		dlSubChannels.push_back(i);
 	}
+	SetDlSubChannels(dlSubChannels);
+}
+
+NbIotBandwidthManager::~NbIotBandwidthManager() {
+
 }
 
 BandwidthManager*
@@ -88,7 +94,7 @@ NbIotBandwidthManager::Copy ()
 void
 NbIotBandwidthManager::Print (void)
 {
-	std::cout << "NbIotBandwidthManager: " << this << std::endl;
+	std::cout << "NbIotBandwidthManager: " << std::endl;
 
 	std::cout << "\t operative sub band: " << GetOperativeSubBand() <<
 	"\n\t m_dlBandwidth " << GetDlBandwidth() <<
@@ -96,7 +102,7 @@ NbIotBandwidthManager::Print (void)
 
 	std::vector<double> subchannels = GetDlSubChannels();
 	std::cout << "\t DL channels: ";
-	for (int i = 0; i < subchannels.size (); i++)
+	for (unsigned i = 0; i < subchannels.size (); i++)
 	{
 		std::cout << subchannels.at (i) << " ";
 	}
@@ -104,7 +110,7 @@ NbIotBandwidthManager::Print (void)
 
 	subchannels = GetUlSubChannels();
 	std::cout << "\t UL channels: ";
-	for (int i = 0; i < subchannels.size (); i++)
+	for (unsigned i = 0; i < subchannels.size (); i++)
 	{
 		std::cout << subchannels.at (i) << " ";
 	}

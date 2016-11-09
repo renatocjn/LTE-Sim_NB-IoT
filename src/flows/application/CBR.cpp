@@ -29,6 +29,7 @@
 CBR::CBR()
 {
   SetApplicationType (Application::APPLICATION_TYPE_CBR);
+  setTagType(PacketTAGs::APPLICATION_TYPE_CBR);
 }
 
 CBR::~CBR()
@@ -68,7 +69,7 @@ CBR::Send (void)
   packet->SetSize (GetSize ());
 
   PacketTAGs *tags = new PacketTAGs ();
-  tags->SetApplicationType(PacketTAGs::APPLICATION_TYPE_CBR);
+  tags->SetApplicationType(getTagType());
   tags->SetApplicationSize (packet->GetSize ());
   packet->SetPacketTags(tags);
 
