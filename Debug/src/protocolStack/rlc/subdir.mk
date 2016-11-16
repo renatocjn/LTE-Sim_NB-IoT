@@ -3,6 +3,9 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
+CC_SRCS += \
+../src/protocolStack/rlc/rlc-entity.cc 
+
 CPP_SRCS += \
 ../src/protocolStack/rlc/am-rlc-entity.cpp \
 ../src/protocolStack/rlc/am-state-variables.cpp \
@@ -10,8 +13,8 @@ CPP_SRCS += \
 ../src/protocolStack/rlc/tm-rlc-entity.cpp \
 ../src/protocolStack/rlc/um-rlc-entity.cpp 
 
-CC_SRCS += \
-../src/protocolStack/rlc/rlc-entity.cc 
+CC_DEPS += \
+./src/protocolStack/rlc/rlc-entity.d 
 
 OBJS += \
 ./src/protocolStack/rlc/am-rlc-entity.o \
@@ -20,9 +23,6 @@ OBJS += \
 ./src/protocolStack/rlc/rlc-entity.o \
 ./src/protocolStack/rlc/tm-rlc-entity.o \
 ./src/protocolStack/rlc/um-rlc-entity.o 
-
-CC_DEPS += \
-./src/protocolStack/rlc/rlc-entity.d 
 
 CPP_DEPS += \
 ./src/protocolStack/rlc/am-rlc-entity.d \
@@ -36,14 +36,14 @@ CPP_DEPS += \
 src/protocolStack/rlc/%.o: ../src/protocolStack/rlc/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
 src/protocolStack/rlc/%.o: ../src/protocolStack/rlc/%.cc
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

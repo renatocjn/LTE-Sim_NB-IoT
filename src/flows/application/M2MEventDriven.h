@@ -22,9 +22,8 @@ public:
 	void ScheduleTransmit (double time);
 	void Send (void);
 private:
-	static std::vector<double> makeVectorP();
-	static std::vector<double> P = makeVectorP();
 	static const int PKGSIZE = 125;
+	static const double P[];
 };
 
 #endif /* SRC_FLOWS_APPLICATION_M2MEVENTDRIVEN_H_ */

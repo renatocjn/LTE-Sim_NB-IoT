@@ -325,3 +325,8 @@ UserEquipment::Print (void)
       "\n\t m_speedDirection = " << GetMobilityModel ()->GetSpeedDirection () <<
       std::endl;
 }
+
+UserEquipment *UserEquipment::CreateNbIoTUe(int idElement, double posx, double posy,
+		Cell* cell, NetworkNode* target) {
+	return new UserEquipment(idElement, posx, posy, cell, target, NetworkNode::TYPE_NBIOT_UE, 0);
+}

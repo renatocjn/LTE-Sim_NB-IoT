@@ -19,8 +19,6 @@
  * Author: Giuseppe Piro <g.piro@poliba.it>
  */
 
-
-
 #ifndef USEREQUIPMENT_H_
 #define USEREQUIPMENT_H_
 
@@ -30,46 +28,36 @@ class ENodeB;
 class Gateway;
 class CqiManager;
 
-
-class UserEquipment : public NetworkNode {
+class UserEquipment: public NetworkNode {
 public:
-	UserEquipment ();
-	UserEquipment (int idElement,
-				   double posx, double posy,
-				   Cell *cell,
-				   NetworkNode* target,
-				   bool handover, Mobility::MobilityModel model);
+	UserEquipment();
+	UserEquipment(int idElement, double posx, double posy, Cell *cell,
+			NetworkNode* target, bool handover, Mobility::MobilityModel model);
 
-	UserEquipment (int idElement,
-				   double posx, double posy,
-				Cell *cell,
-				NetworkNode* target,
-				NetworkNode::NodeType ueType,
-				bool handover);
-
-	UserEquipment (int idElement,
-				   double posx, double posy, int speed, double speedDirection,
-				   Cell *cell,
-				   NetworkNode* target,
-				   bool handover, Mobility::MobilityModel model);
+	UserEquipment(int idElement, double posx, double posy, int speed,
+			double speedDirection, Cell *cell, NetworkNode* target,
+			bool handover, Mobility::MobilityModel model);
 
 	virtual ~UserEquipment();
 
-	void SetTargetNode (NetworkNode *n);
-	NetworkNode* GetTargetNode (void);
+	void SetTargetNode(NetworkNode *n);
+	NetworkNode* GetTargetNode(void);
 
-	void UpdateUserPosition (double time);
+	void UpdateUserPosition(double time);
 
-	void SetCqiManager (CqiManager *cm);
-	CqiManager* GetCqiManager (void);
+	void SetCqiManager(CqiManager *cm);
+	CqiManager* GetCqiManager(void);
 
 	void
-	SetIndoorFlag ( bool flag );
+	SetIndoorFlag(bool flag);
 	bool
-	IsIndoor (void);
+	IsIndoor(void);
 
 	//Debug
-	void Print (void);
+	void Print(void);
+
+	static UserEquipment* CreateNbIoTUe(int idElement, double posx, double posy,
+			Cell *cell, NetworkNode *target);
 
 protected:
 	NetworkNode* m_targetNode;
@@ -78,6 +66,9 @@ protected:
 	bool m_isIndoor;
 
 	double m_timePositionUpdate;
+private:
+	UserEquipment(int idElement, double posx, double posy, Cell *cell,
+			NetworkNode* target, NetworkNode::NodeType ueType, bool handover);
 };
 
 #endif /* USEREQUIPMENT_H_ */
