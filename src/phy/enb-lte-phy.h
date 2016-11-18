@@ -29,7 +29,7 @@ class IdealControlMessage;
 class EnbLtePhy :public LtePhy {
 	//#ifdef TEST_UL_SINR
 private:
-	int counter;
+	int counter = 0;
 	//#endif
 public:
 	EnbLtePhy();

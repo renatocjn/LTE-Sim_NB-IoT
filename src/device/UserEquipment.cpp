@@ -94,6 +94,8 @@ UserEquipment::UserEquipment (int idElement,
   m->SetHandover (handover);
   m->SetAbsolutePosition (position);
   m->SetNodeID (idElement);
+  m->SetSpeed(0);
+  m->SetSpeedDirection(0);
   SetMobilityModel (m);
 
   m_timePositionUpdate = 0.001;
@@ -140,6 +142,8 @@ UserEquipment::UserEquipment (int idElement,
 	m->SetHandover (handover);
 	m->SetAbsolutePosition (position);
 	m->SetNodeID (idElement);
+	m->SetSpeed(0);
+	m->SetSpeedDirection(0);
 	SetMobilityModel (m);
 
 	m_timePositionUpdate = 0.001;
