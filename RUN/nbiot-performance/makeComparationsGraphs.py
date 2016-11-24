@@ -31,24 +31,24 @@ if __name__ == "__main__":
 		exit(1)
 
 	os.chdir(experimentDirectory)
-	schedulers = ['pf', 'mt']
+	schedulers = ['pf', 'mt', 'rr']
 	sch_labels = {'rr': 'Round Robin', 'mt': 'Maximum Throughput', 'pf': 'Proportionally Fair'}
 	markers = {'rr': 'o', 'mt': 'd', 'pf': '*'}
-	
+
 	X = set()
 	plots = {'rr': dict(), 'pf': dict(), 'mt': dict()}
 	cdfs = {'rr': dict(), 'pf': dict(), 'mt': dict()}
-	
+
 	for sch in schedulers:
 		scenarios = natsorted(glob('scheduler='+sch+'/*=*'))
 		for scenario in scenarios:
 			x = clean(scenario)
-			X.add(8*x)
+			X.add(x)
 			#print sch, scenario
 			statistics, cdf = getStatisticsForScenario (scenario)
 
-			if x == 1500:
-				for k in cdf.keys(): 
+			if x == 200:
+				for k in cdf.keys():
 					cdfs[sch][k] = cdf[k]
 
 			for k in statistics.keys():
@@ -65,7 +65,8 @@ if __name__ == "__main__":
 	figure = dict();
 	rect = [0.1, 0.1, 0.8, 0.8]
 	for sch in schedulers:
-
+		#print "cdfs:", cdfs[sch].keys()
+		#print "plots:", plots[sch].keys()
 		if "queueDelay" not in figure:
 			f = pl.figure()
 			ax = f.add_axes(rect)
@@ -136,6 +137,15 @@ if __name__ == "__main__":
 		ax = figure["RxThroughput"]['axes']
 		ax.errorbar(X, plots[sch]["RxThroughput"]["y"], plots[sch]["RxThroughput"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
 
+		if "justiceRatio" not in figure:
+			f = pl.figure()
+			ax = f.add_axes(rect)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			ax.set_ylabel("Jain Justice Ratio")
+			figure["justiceRatio"] = {'figure': f, 'axes': ax}
+		ax = figure["justiceRatio"]['axes']
+		ax.errorbar(X, plots[sch]["justiceRatio"]["y"], plots[sch]["justiceRatio"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
 
 		if "TxThroughput" not in figure:
 			f = pl.figure()
@@ -190,8 +200,8 @@ if __name__ == "__main__":
 			figure["droppedPkgs"] = {'figure': f, 'axes': ax}
 		ax = figure["droppedPkgs"]['axes']
 		ax.errorbar(X, plots[sch]["droppedPkgs"]["y"], plots[sch]["droppedPkgs"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
-		
-		
+
+
 
 
 	del plots

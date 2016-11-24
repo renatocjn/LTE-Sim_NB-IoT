@@ -1,8 +1,8 @@
 
 
 from sys import argv, exit
-from numpy import mean, array, sqrt, cumsum, sort, arange
-from pprint import PrettyPrinter as pp
+from numpy import mean, array, sqrt, cumsum, sort, arange, square
+from pprint import pprint as pp
 from glob import glob
 import os
 import pylab as pl
@@ -31,6 +31,7 @@ def readDataFromFile(filePath):
 			stats["delay"] = None
 			stats["dropped"] = False
 			stats["user"] = int(l[5])
+			stats["appType"] = l[1]
 			pkgs[l[3]] = stats
 
 		if l[0] == "RX":
@@ -63,10 +64,15 @@ def getMetricsForFile(filePath):
 	queueDelayList = list()
 	droppedDelayList = list()
 	users = dict()
-
+	userAppType = dict()
+	appTypes = set()
 
 	for p in pkgs:
 		transmittedData += p["txSize"]
+		if p["user"] not in users: users[p["user"]] = 0
+		userAppType[p["user"]] = p["appType"]
+		appTypes.add(p["appType"])
+
 		if p["txTime"] < firstTx:
 				firstTx = p["txTime"]
 		if p["delay"] == None:
@@ -81,13 +87,24 @@ def getMetricsForFile(filePath):
 
 			rxDelayList.append(p["delay"] * 1000.0)
 			dataReceived += p["rxSize"]
-			if p["user"] not in users: users[p["user"]] = 0
 			users[p["user"]] += 8*p["rxSize"]/1000
 
 	transmittedPkgs = len(pkgs)
 	droppedPkgs = len(droppedDelayList)
 	d = lastRx - firstTx
-	users_throughput = [ rxData/d for rxData in users.values() ]
+	users_throughput = { uid:(rxData/d) for uid,rxData in users.iteritems() }
+
+	maxThroughput = { i:1 for i in appTypes }
+	for uid, throughput in users_throughput.iteritems():
+		if maxThroughput[userAppType[uid]] < throughput:
+			maxThroughput[userAppType[uid]] = throughput
+	justiceRatios = [ t/maxThroughput[userAppType[uid]] for uid,t in users_throughput.iteritems() ]
+	justiceRatio = square(sum(justiceRatios))/(sum(square(justiceRatios))*len(users))
+
+	#print filePath
+	#pp(users_throughput)
+	#pp(maxThroughput)
+	#print
 
 	stats = {#"rxDelayMean": mean(rxDelayList),
 			"rxDelay": rxDelayList,
@@ -96,11 +113,12 @@ def getMetricsForFile(filePath):
 			#"droppedDelayMean": mean(droppedDelayList),
 			"droppedDelay": droppedDelayList,
 			#"userThroughputMean": mean(users_throughput),
-			"userThroughput": users_throughput,
+			"userThroughput": users_throughput.values(),
 			"RxThroughput": 8.0*dataReceived/d,
 			"TxThroughput": 8.0*transmittedData/d,
 			"deliveryRate": 100.0*(transmittedPkgs-lostPkgs)/transmittedPkgs,
 			"transmittedPkgs": transmittedPkgs,
+			"justiceRatio": justiceRatio,
 			"lostPkgs": lostPkgs,
 			"droppedPkgs": droppedPkgs,
 			"SINRs": sinr}
@@ -112,6 +130,7 @@ def getMetricsForFile(filePath):
 
 def CalculateStatistics(lvals):
 	vals = array(lvals)
+	#pp(lvals)
 	if vals.size == 0 : return 0, 0
 	mean = vals.mean()
 	#if lvals.count(vals[0]) == len(vals): return mean, 0

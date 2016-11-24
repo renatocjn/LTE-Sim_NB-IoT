@@ -28,7 +28,7 @@
 
 
 /* path */
-static std::string path ("/home/great/Programas/lte-sim-r5/");
+static std::string path ("/home/great/Programas/LTE-Sim_NBIot/");
 
 
 /* tracing */

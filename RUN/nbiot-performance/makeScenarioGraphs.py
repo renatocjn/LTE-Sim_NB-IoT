@@ -7,12 +7,13 @@ import os
 import pylab as pl
 from natsort import natsorted
 from graphs_utils import *
+from pprint import pprint as pp
 
 if __name__ == "__main__":
 
 	clean = lambda x: float( filter( lambda x: x.isdigit() or x=='.', x ) )
 
-	xlabel = "Numero de UEs"
+	xlabel = "Number of UEs"
 	experimentDirectory = "Executions/default"
 	superTitle = "Default Execution"
 
@@ -53,7 +54,8 @@ if __name__ == "__main__":
 			plots[k]["ci"].append(ci)
 
 
-
+	#pp(plots)
+	#pp(cdfs)
 
 #	pl.clf()
 
@@ -169,6 +171,15 @@ if __name__ == "__main__":
 	pl.ylabel("%")
 	pl.errorbar(X, plots["deliveryRate"]["y"], plots["deliveryRate"]["ci"])
 	pl.savefig("deliveryRate.png")
+
+	#i+=1
+	#pl.subplot(j,k,i)
+	pl.clf()
+	pl.margins(0.05, 0.05)
+	pl.xlabel(xlabel)
+	#pl.ylabel("%")
+	pl.errorbar(X, plots["justiceRatio"]["y"], plots["justiceRatio"]["ci"])
+	pl.savefig("justiceRatio.png")
 
 	#i+=1
 	#pl.subplot(j,k,i)

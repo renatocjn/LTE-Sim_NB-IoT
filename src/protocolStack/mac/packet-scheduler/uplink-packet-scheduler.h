@@ -24,6 +24,7 @@
 #define UPLINKPACKETSCHEDULER_H_
 
 #include "packet-scheduler.h"
+#include "../../../flows/QoS/QoSParameters.h"
 
 class UplinkPacketScheduler: public PacketScheduler {
 public:
@@ -35,8 +36,9 @@ public:
 	    NetworkNode* m_userToSchedule;
 	    int m_transmittedData;	//bytes
 	    int m_dataToTransmit;		//bytes
-	    //TODO Utilizar a variável UserToSchedule.m_averageSchedulingGrant
 	    double m_averageSchedulingGrant; // in bytes
+	    double m_averageTransmissionRate;
+	    QoSParameters* m_qosParameters;
 
 	    std::vector<int> m_listOfAllocatedRBs;
 	    int m_selectedMCS;

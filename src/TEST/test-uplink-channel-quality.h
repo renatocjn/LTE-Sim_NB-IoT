@@ -36,8 +36,8 @@
 #include "../flows/radio-bearer.h"
 #include "../channel/propagation-model/channel-realization-helper.h"
 #include "../channel/propagation-model/propagation-loss-model.h"
-#include "../protocolStack/mac/packet-scheduler/mt-uplink-packet-scheduler.h"
 #include "../componentManagers/FlowsManager.h"
+#include "../protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.h"
 
 static void TestUplinkChannelQuality ()
 {

@@ -25,7 +25,6 @@
 #include "ENodeB.h"
 #include "Gateway.h"
 #include "../protocolStack/mac/packet-scheduler/packet-scheduler.h"
-#include "../protocolStack/mac/packet-scheduler/mt-uplink-packet-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/dl-pf-packet-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/dl-mlwdf-packet-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/dl-exp-packet-scheduler.h"
@@ -33,10 +32,11 @@
 #include "../protocolStack/mac/packet-scheduler/exp-rule-downlink-packet-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/log-rule-downlink-packet-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/enhanced-uplink-packet-scheduler.h"
-#include "../protocolStack/mac/packet-scheduler/roundrobin-uplink-packet-scheduler.h"
-#include "../protocolStack/mac/packet-scheduler/pf-uplink-packet-scheduler.h"
 #include "../phy/enb-lte-phy.h"
 #include "../core/spectrum/bandwidth-manager.h"
+#include "../protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/ul-pf-packet-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/ul-rr-packet-scheduler.h"
 #include "../protocolStack/packet/packet-burst.h"
 
 ENodeB::ENodeB ()
