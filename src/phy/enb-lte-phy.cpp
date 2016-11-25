@@ -35,7 +35,7 @@
 #include "../protocolStack/mac/AMCModule.h"
 #include "../utility/eesm-effective-sinr.h"
 #include "../componentManagers/FrameManager.h"
-
+#include <map>
 
 /*
  * Noise is computed as follows:
@@ -58,8 +58,8 @@ EnbLtePhy::EnbLtePhy()
   SetErrorModel (NULL);
   SetInterference (NULL);
   SetTxPower(43); //dBm
+//  counters = new std::map<NetworkNode*, int>();
   //#ifdef TEST_UL_SINR
-  counter = 0;
   //#endif
 }
 
@@ -209,6 +209,11 @@ EnbLtePhy::ReceiveIdealControlMessage (IdealControlMessage *msg)
 void
 EnbLtePhy::ReceiveReferenceSymbols (NetworkNode* n, TransmittedSignal* s)
 {
+//#ifdef TEST_UL_SINR
+  if (counters.find(n) == counters.end())
+	  counters[n] = 0;
+//#endif
+
   ENodeB::UserEquipmentRecord* user = ((ENodeB*) GetDevice ())->
 		  GetUserEquipmentRecord (n->GetIDNetworkNode ());
   TransmittedSignal* rxSignal;
@@ -241,8 +246,8 @@ EnbLtePhy::ReceiveReferenceSymbols (NetworkNode* n, TransmittedSignal* s)
 
 
 //#ifdef TEST_UL_SINR
-  if (counter >= 100) {
-	counter  = 0;
+  if (counters[n] >= 100) {
+	counters[n] = 0;
 	double effectiveSinr = GetEesmEffectiveSinr (ulQuality);
 	if (effectiveSinr > 40) effectiveSinr = 40;
 	int mcs = amc->GetMCSFromCQI (amc->GetCQIFromSinr(effectiveSinr));
@@ -251,7 +256,7 @@ EnbLtePhy::ReceiveReferenceSymbols (NetworkNode* n, TransmittedSignal* s)
 		  << n->GetMobilityModel ()->GetAbsolutePosition()->GetCoordinateY () << " "
 		  << effectiveSinr << " " << mcs << std::endl;
   }
-  counter++;
+  counters[n]++;
 //#endif
 
 

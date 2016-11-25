@@ -24,12 +24,14 @@
 #define ENB_LTE_PHY_H_
 
 #include "lte-phy.h"
+#include <map>
+#include "../device/NetworkNode.h"
 
 class IdealControlMessage;
 class EnbLtePhy :public LtePhy {
 	//#ifdef TEST_UL_SINR
 private:
-	int counter = 0;
+	std::map<NetworkNode*, int> counters;
 	//#endif
 public:
 	EnbLtePhy();

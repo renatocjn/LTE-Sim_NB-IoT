@@ -75,7 +75,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Segundos")
 			figure["queueDelay"] = {'figure': f, 'axes': ax}
 		ax = figure["queueDelay"]['axes']
-		ax.errorbar(X, plots[sch]["queueDelay"]["y"], plots[sch]["queueDelay"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
+		ax.errorbar(X, plots[sch]["queueDelay"]["y"], plots[sch]["queueDelay"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 		if "droppedDelay" not in figure:
 			f = pl.figure()
@@ -85,7 +85,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Millisegundos")
 			figure["droppedDelay"] = {'figure': f, 'axes': ax}
 		ax = figure["droppedDelay"]['axes']
-		ax.errorbar(X, plots[sch]["droppedDelay"]["y"], plots[sch]["droppedDelay"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
+		ax.errorbar(X, plots[sch]["droppedDelay"]["y"], plots[sch]["droppedDelay"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 
 		if "rxDelay" not in figure:
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Millisegundos")
 			figure["rxDelay"] = {'figure': f, 'axes': ax}
 		ax = figure["rxDelay"]['axes']
-		ax.errorbar(X, plots[sch]["rxDelay"]["y"], plots[sch]["rxDelay"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
+		ax.errorbar(X, plots[sch]["rxDelay"]["y"], plots[sch]["rxDelay"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 		if "rxDelayCDF" not in figure:
 			f = pl.figure()
@@ -105,7 +105,7 @@ if __name__ == "__main__":
 			ax.set_xlabel("Millisegundos")
 			figure["rxDelayCDF"] = {'figure': f, 'axes': ax}
 		ax = figure["rxDelayCDF"]['axes']
-		plotCDF(cdfs[sch]["rxDelay"], "Escalonador "+sch_labels[sch], target=ax, mark=markers[sch])
+		plotCDF(cdfs[sch]["rxDelay"], sch_labels[sch], target=ax, mark=markers[sch])
 
 
 		if "userThroughput" not in figure:
@@ -116,7 +116,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Kbit/s")
 			figure["userThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["userThroughput"]['axes']
-		ax.errorbar(X, plots[sch]["userThroughput"]["y"], plots[sch]["userThroughput"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
+		ax.errorbar(X, plots[sch]["userThroughput"]["y"], plots[sch]["userThroughput"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 		if "userThroughputCDF" not in figure:
 			f = pl.figure()
@@ -125,7 +125,7 @@ if __name__ == "__main__":
 			ax.set_xlabel("Kbit/s")
 			figure["userThroughputCDF"] = {'figure': f, 'axes': ax}
 		ax = figure["userThroughputCDF"]['axes']
-		plotCDF(cdfs[sch]["userThroughput"], "Escalonador "+sch_labels[sch], target=ax, mark=markers[sch])
+		plotCDF(cdfs[sch]["userThroughput"], sch_labels[sch], target=ax, mark=markers[sch])
 
 		if "RxThroughput" not in figure:
 			f = pl.figure()
@@ -135,7 +135,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Kbit/s")
 			figure["RxThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["RxThroughput"]['axes']
-		ax.errorbar(X, plots[sch]["RxThroughput"]["y"], plots[sch]["RxThroughput"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
+		ax.errorbar(X, plots[sch]["RxThroughput"]["y"], plots[sch]["RxThroughput"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 		if "justiceRatio" not in figure:
 			f = pl.figure()
@@ -145,7 +145,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Jain Justice Ratio")
 			figure["justiceRatio"] = {'figure': f, 'axes': ax}
 		ax = figure["justiceRatio"]['axes']
-		ax.errorbar(X, plots[sch]["justiceRatio"]["y"], plots[sch]["justiceRatio"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
+		ax.errorbar(X, plots[sch]["justiceRatio"]["y"], plots[sch]["justiceRatio"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 		if "TxThroughput" not in figure:
 			f = pl.figure()
@@ -155,7 +155,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Kbit/s")
 			figure["TxThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["TxThroughput"]['axes']
-		ax.errorbar(X, plots[sch]["TxThroughput"]["y"], plots[sch]["TxThroughput"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
+		ax.errorbar(X, plots[sch]["TxThroughput"]["y"], plots[sch]["TxThroughput"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 
 		if "deliveryRate" not in figure:
@@ -167,7 +167,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("%")
 			figure["deliveryRate"] = {'figure': f, 'axes': ax}
 		ax = figure["deliveryRate"]['axes']
-		ax.errorbar(X, plots[sch]["deliveryRate"]["y"], plots[sch]["deliveryRate"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
+		ax.errorbar(X, plots[sch]["deliveryRate"]["y"], plots[sch]["deliveryRate"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 
 		if "transmittedPkgs" not in figure:
@@ -178,7 +178,7 @@ if __name__ == "__main__":
 			#ax.set_title("Nb transmitted PKGs")
 			figure["transmittedPkgs"] = {'figure': f, 'axes': ax}
 		ax = figure["transmittedPkgs"]['axes']
-		ax.errorbar(X, plots[sch]["transmittedPkgs"]["y"], plots[sch]["transmittedPkgs"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
+		ax.errorbar(X, plots[sch]["transmittedPkgs"]["y"], plots[sch]["transmittedPkgs"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 		if "lostPkgs" not in figure:
 			f = pl.figure()
@@ -188,7 +188,7 @@ if __name__ == "__main__":
 			#ax.set_title("Nb lost packages")
 			figure["lostPkgs"] = {'figure': f, 'axes': ax}
 		ax = figure["lostPkgs"]['axes']
-		ax.errorbar(X, plots[sch]["lostPkgs"]["y"], plots[sch]["lostPkgs"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
+		ax.errorbar(X, plots[sch]["lostPkgs"]["y"], plots[sch]["lostPkgs"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 
 		if "droppedPkgs" not in figure:
@@ -199,7 +199,7 @@ if __name__ == "__main__":
 			#ax.set_title("Nb dropped PKGs in L2")
 			figure["droppedPkgs"] = {'figure': f, 'axes': ax}
 		ax = figure["droppedPkgs"]['axes']
-		ax.errorbar(X, plots[sch]["droppedPkgs"]["y"], plots[sch]["droppedPkgs"]["ci"], label="Escalonador "+sch_labels[sch], marker=markers[sch])
+		ax.errorbar(X, plots[sch]["droppedPkgs"]["y"], plots[sch]["droppedPkgs"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 
 

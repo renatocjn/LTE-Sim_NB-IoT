@@ -232,7 +232,7 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 		double start_time = 0.1 + GetRandomVariable(0.4);
 		double duration_time = start_time + flow_duration;
 
-		if (strcmp(trafficType, "nbiot") == 0) {
+		if (strcmp(trafficType, "m2m") == 0) {
 
 			if (nbED > 0) {
 				M2MEventDriven* edApplication = new M2MEventDriven();
@@ -461,7 +461,7 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 			}
 		} else {
 			std::cout << "\tThe traffic \"" << trafficType
-					<< "\" is not implemented!\n\t options are:\n \tnbiot\n\tvoip\n\tvideo\n\tcbr\n\tmixed\n"
+					<< "\" is not implemented!\n\t options are:\n \tm2m\n\tvoip\n\tvideo\n\tcbr\n\tmixed\n"
 					<< std::endl;
 			return;
 		}

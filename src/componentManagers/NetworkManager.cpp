@@ -961,7 +961,7 @@ NetworkManager::TransferBearerInfo (UserEquipment* ue, NetworkNode* target)
 std::vector <BandwidthManager*>
 RunFrequencyReuse (int nodes, int cluster, double bandwidth)
 {
-  RunFrequencyReuseTechniques (nodes, cluster, bandwidth);
+  return RunFrequencyReuseTechniques (nodes, cluster, bandwidth);
 }
 
 void

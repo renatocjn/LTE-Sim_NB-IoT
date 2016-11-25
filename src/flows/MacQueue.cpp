@@ -371,6 +371,10 @@ MacQueue::CheckForDropPackets (double maxDelay,
 				  std::cout << " CBR";
 			  else if (GetPacketQueue ()->begin ()->GetPacket()->GetPacketTags()->GetApplicationType() == PacketTAGs::APPLICATION_TYPE_INFINITE_BUFFER)
 				  std::cout << " INF_BUF";
+			  else if (GetPacketQueue ()->begin ()->GetPacket()->GetPacketTags()->GetApplicationType() == PacketTAGs::APPLICATION_TYPE_M2M_ED)
+			  	  std::cout << " M2M_ED";
+			  else if (GetPacketQueue ()->begin ()->GetPacket()->GetPacketTags()->GetApplicationType() == PacketTAGs::APPLICATION_TYPE_M2M_TD)
+			      std::cout << " M2M_TD";
 			  else
 				  std::cout << " UNKNOW";
 
