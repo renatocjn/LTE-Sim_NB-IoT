@@ -43,10 +43,12 @@ public:
 	GetMCSFromCQI (int cqi);
 	int
 	GetCQIFromMCS (int mcs);
-	int
+
+	virtual int
 	GetTBSizeFromMCS (int mcs);
-	int
+	virtual int
 	GetTBSizeFromMCS (int mcs, int nbRBs);
+
 	double
 	GetEfficiencyFromCQI (int cqi);
 	int
