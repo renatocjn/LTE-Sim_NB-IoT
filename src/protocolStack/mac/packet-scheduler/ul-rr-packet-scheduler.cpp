@@ -122,7 +122,7 @@ RoundRobinUplinkPacketScheduler::RBsAllocation ()
 	  scheduledUser->m_transmittedData = tbs;
 	  scheduledUser->m_selectedMCS = mcs;
 
-	  s = s + nbPrbToAssign;
+	  s += nbPrbToAssign;
 	  m_roundRobinId++;
 
 

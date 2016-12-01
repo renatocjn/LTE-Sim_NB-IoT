@@ -265,6 +265,15 @@ void UplinkPacketScheduler::DoStopSchedule(void) {
 			record->UpdateSchedulingGrants(user->m_dataToTransmit);
 
 		}
+
+		// Update Transmission Rate
+		RrcEntity *rrc = GetMacEntity ()->GetDevice ()->GetProtocolStack ()->GetRrcEntity ();
+		RrcEntity::RadioBearersContainer* bearers = rrc->GetRadioBearerContainer ();
+		for (std::vector<RadioBearer* >::iterator it = bearers->begin (); it != bearers->end (); it++)
+		{
+			RadioBearer *bearer = (*it);
+			bearer->UpdateAverageTransmissionRate ();
+		}
 	}
 
 	if (pdcchMsg->GetMessage()->size() > 0) {

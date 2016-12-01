@@ -57,6 +57,7 @@
 #include <cstring>
 #include <string>
 #include "scenarios/single-cell-m2m-under-lte.h"
+#include "scenarios/single-cell-m2m-under-nbiot.h"
 
 int main(int argc, char *argv[]) {
 
