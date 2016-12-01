@@ -4,17 +4,18 @@ cd ~/Programas/LTE-Sim_NBIot
 
 nChilds=0
 maxChilds=$(nproc)
-nRuns=10
+nRuns=3
 
-outFolder="testeNewBW"
+#Edit this for every execution
+outFolder="newPF"
 
 for traffic in mixed m2m cbr; do
 echo traffic $traffic
-for scheduler in rr; do
+for scheduler in mt pf rr; do
 echo "    scheduler" $scheduler
 #for nUe in 10 20 30 40 50 75 100 125 150 200 250 300 400 500 600; do
 for nUe in 10 25 50 75 100 125 150 125 200 225 250 275 300; do
-#for nUe in 10 50 200 300; do
+#for nUe in 10 50 200; do
 for r in $(seq $nRuns); do
 
  	if [ $nChilds -lt $maxChilds ]; then

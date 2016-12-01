@@ -80,8 +80,8 @@ void UplinkPacketScheduler::SelectUsersToSchedule() {
 	ENodeB::UserEquipmentRecord *record;
 	ENodeB::UserEquipmentRecords::iterator iter;
 
-	RrcEntity *rrc = GetMacEntity ()->GetDevice ()->GetProtocolStack ()->GetRrcEntity ();
-	RrcEntity::RadioBearersContainer* bearers = rrc->GetRadioBearerContainer ();
+	RrcEntity *rrc = GetMacEntity()->GetDevice()->GetProtocolStack()->GetRrcEntity();
+	RrcEntity::RadioBearersContainer* bearers = rrc->GetRadioBearerContainer();
 	RrcEntity::RadioBearersContainer::iterator iter2;
 
 #ifdef SCHEDULER_DEBUG
@@ -94,7 +94,7 @@ void UplinkPacketScheduler::SelectUsersToSchedule() {
 		if (record->GetSchedulingRequest() > 0) {
 			UserToSchedule* user = new UserToSchedule();
 			user->m_userToSchedule = (NetworkNode*) record->GetUE();
-			for(iter2 = bearers->begin(); iter2 != bearers->end(); iter2++) {
+			for (iter2 = bearers->begin(); iter2 != bearers->end(); iter2++) {
 				RadioBearer *bearer = *iter2;
 				if (bearer->GetDestination() == user->m_userToSchedule || bearer->GetSource() == user->m_userToSchedule) {
 					user->m_averageTransmissionRate = bearer->GetAverageTransmissionRate();
@@ -265,6 +265,14 @@ void UplinkPacketScheduler::DoStopSchedule(void) {
 			record->UpdateSchedulingGrants(user->m_dataToTransmit);
 
 		}
+	}
+
+	// Update avg tx rate
+	RrcEntity *rrc = GetMacEntity()->GetDevice()->GetProtocolStack()->GetRrcEntity();
+	RrcEntity::RadioBearersContainer* bearers = rrc->GetRadioBearerContainer();
+	for (std::vector<RadioBearer*>::iterator it = bearers->begin(); it != bearers->end(); it++) {
+		RadioBearer *bearer = (*it);
+		bearer->UpdateAverageTransmissionRate();
 	}
 
 	if (pdcchMsg->GetMessage()->size() > 0) {

@@ -57,13 +57,12 @@
 
 #define NBIOT_DEBUG
 
-static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
-		char* scheduler, int seed) {
+static void SingleCellNbIot(double radius, int nbUE, char* trafficType, char* scheduler, int seed) {
 
 	// define simulation times
-	double duration = 6;
-	double flow_duration = 5;
-	double nbiotTxBwConfiguration = 15;
+	double duration = 10;
+	double flow_duration = duration - 1;
+	double nbiotTxBwConfiguration = 15; //15KHz
 
 	//int cluster = 4;
 	double bandwidth = 1.4;
@@ -84,22 +83,18 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 
 	frameManager->SetFrameStructure(FrameManager::FRAME_STRUCTURE_FDD);
 
-	CartesianCoordinates center = GetCartesianCoordinatesForCell(0,
-			radius * 1000.);
+	CartesianCoordinates center = GetCartesianCoordinatesForCell(0, radius * 1000.);
 
 	std::vector<Cell*> *cells = new std::vector<Cell*>;
-	Cell *c = new Cell(0, radius, 0.035, center.GetCoordinateX(),
-			center.GetCoordinateY());
+	Cell *c = new Cell(0, radius, 0.035, center.GetCoordinateX(), center.GetCoordinateY());
 	cells->push_back(c);
 	nm->GetCellContainer()->push_back(c);
 
-	std::cout << "Created Cell, id " << c->GetIdCell() << ", position: "
-			<< c->GetCellCenterPosition()->GetCoordinateX() << " "
+	std::cout << "Created Cell, id " << c->GetIdCell() << ", position: " << c->GetCellCenterPosition()->GetCoordinateX() << " "
 			<< c->GetCellCenterPosition()->GetCoordinateY() << std::endl;
 
 	//std::vector <BandwidthManager*> spectrums = RunFrequencyReuseTechniques (1, cluster, bandwidth);
-	BandwidthManager* spectrum = new BandwidthManager(bandwidth, bandwidth, 0,
-			0);
+	BandwidthManager* spectrum = new BandwidthManager(bandwidth, bandwidth, 0, 0);
 	//NbIotBandwidthManager* nbiotSpectrum = createNbIotBwManager (spectrum, nbiotTxBwConfiguration);
 
 	//Create a set of a couple of channels
@@ -124,27 +119,21 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 	enb->SetDLScheduler(ENodeB::DLScheduler_TYPE_PROPORTIONAL_FAIR);
 	if (strcmp(scheduler, "roundrobin") == 0 || strcmp(scheduler, "rr") == 0) {
 		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_ROUNDROBIN);
-	} else if (strcmp(scheduler, "maximumthroughput") == 0
-			|| strcmp(scheduler, "mt") == 0) {
+	} else if (strcmp(scheduler, "maximumthroughput") == 0 || strcmp(scheduler, "mt") == 0) {
 		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_MAXIMUM_THROUGHPUT);
-	} else if (strcmp(scheduler, "proportionallyfair") == 0
-			|| strcmp(scheduler, "pf") == 0) {
+	} else if (strcmp(scheduler, "proportionallyfair") == 0 || strcmp(scheduler, "pf") == 0) {
 		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_PF);
 	} else {
 		std::cout << "\tThe Scheduler \"" << scheduler
-				<< "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n"
-				<< std::endl;
+				<< "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n" << std::endl;
 		return;
 	}
 
 	enb->GetPhy()->SetBandwidthManager(spectrum);
 
-	std::cout << "Created enb, id " << enb->GetIDNetworkNode() << ", cell id "
-			<< enb->GetCell()->GetIdCell() << ", position: "
-			<< enb->GetMobilityModel()->GetAbsolutePosition()->GetCoordinateX()
-			<< " "
-			<< enb->GetMobilityModel()->GetAbsolutePosition()->GetCoordinateY()
-			<< ", channels id " << enb->GetPhy()->GetDlChannel()->GetChannelId()
+	std::cout << "Created enb, id " << enb->GetIDNetworkNode() << ", cell id " << enb->GetCell()->GetIdCell() << ", position: "
+			<< enb->GetMobilityModel()->GetAbsolutePosition()->GetCoordinateX() << " "
+			<< enb->GetMobilityModel()->GetAbsolutePosition()->GetCoordinateY() << ", channels id " << enb->GetPhy()->GetDlChannel()->GetChannelId()
 			<< enb->GetPhy()->GetUlChannel()->GetChannelId() << std::endl;
 
 	spectrum->Print();
@@ -166,8 +155,7 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 	std::vector<CBR*> *cbrContainner = new std::vector<CBR*>;
 	std::vector<TraceBased*> *videoContainner = new std::vector<TraceBased*>;
 	std::vector<M2MTimeDriven*> *tdContainner = new std::vector<M2MTimeDriven*>;
-	std::vector<M2MEventDriven*> *edContainner =
-			new std::vector<M2MEventDriven*>;
+	std::vector<M2MEventDriven*> *edContainner = new std::vector<M2MEventDriven*>;
 
 	//Create UEs
 	int idUE = 1;
@@ -191,11 +179,9 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 		double speedDirection = GetRandomVariable(360.) * ((2. * 3.14) / 360.);
 
 		//UserEquipment* ue = new UserEquipment(idUE, posX, posY, c, enb, NetworkNode::TYPE_NBIOT_UE, 0); //handover false!
-		UserEquipment* ue = new UserEquipment(idUE, posX, posY, c, enb, 0,
-				Mobility::CONSTANT_POSITION);
+		UserEquipment* ue = new UserEquipment(idUE, posX, posY, c, enb, 0, Mobility::CONSTANT_POSITION);
 
-		std::cout << "Created UE - id " << idUE << " position " << posX << " "
-				<< posY << " direction " << speedDirection << std::endl;
+		std::cout << "Created UE - id " << idUE << " position " << posX << " " << posY << " direction " << speedDirection << std::endl;
 
 		//ue->GetPhy()->SetBandwidthManager(nbiotSpectrum);
 		ue->GetPhy()->SetBandwidthManager(spectrum);
@@ -219,14 +205,12 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 		enb->RegisterUserEquipment(ue);
 
 		// define the channel realization
-		MacroCellUrbanAreaChannelRealization* c_dl =
-				new MacroCellUrbanAreaChannelRealization(enb, ue);
-		enb->GetPhy()->GetDlChannel()->GetPropagationLossModel()->AddChannelRealization(
-				c_dl);
-		MacroCellUrbanAreaChannelRealization* c_ul =
-				new MacroCellUrbanAreaChannelRealization(ue, enb);
-		enb->GetPhy()->GetUlChannel()->GetPropagationLossModel()->AddChannelRealization(
-				c_ul);
+		MacroCellUrbanAreaChannelRealization* c_dl = new MacroCellUrbanAreaChannelRealization(enb, ue);
+		enb->GetPhy()->GetDlChannel()->GetPropagationLossModel()->AddChannelRealization(c_dl);
+		MacroCellUrbanAreaChannelRealization* c_ul = new MacroCellUrbanAreaChannelRealization(ue, enb);
+		enb->GetPhy()->GetUlChannel()->GetPropagationLossModel()->AddChannelRealization(c_ul);
+
+		ue->GetPhy ()->GetDlChannel ()->AddDevice (ue);
 
 		// CREATE UPLINK APPLICATION FOR THIS UE
 		double start_time = 0.1 + GetRandomVariable(0.4);
@@ -237,7 +221,7 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 			if (nbED > 0) {
 				M2MEventDriven* edApplication = new M2MEventDriven();
 				edApplication->SetSource(ue);
-				edApplication->SetDestination(gw);
+				edApplication->SetDestination(enb);
 				edApplication->SetApplicationID(applicationID);
 				edApplication->SetStartTime(start_time);
 				edApplication->SetStopTime(duration_time);
@@ -248,20 +232,17 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 				edApplication->SetQoSParameters(qosParameters);
 
 				//create classifier parameters
-				ClassifierParameters *cp = new ClassifierParameters(
-						ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0,
-						destinationPort,
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 				edApplication->SetClassifierParameters(cp);
 
 				edContainner->push_back(edApplication);
-				std::cout << "CREATED M2M_ED APPLICATION, ID " << applicationID
-						<< std::endl;
+				std::cout << "CREATED M2M_ED APPLICATION, ID " << applicationID << std::endl;
 				nbED--;
 			} else {
 				M2MTimeDriven* tdApplication = new M2MTimeDriven();
 				tdApplication->SetSource(ue);
-				tdApplication->SetDestination(gw);
+				tdApplication->SetDestination(enb);
 				tdApplication->SetApplicationID(applicationID);
 				tdApplication->SetStartTime(start_time);
 				tdApplication->SetStopTime(duration_time);
@@ -272,22 +253,18 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 				tdApplication->SetQoSParameters(qosParameters);
 
 				//create classifier parameters
-				ClassifierParameters *cp = new ClassifierParameters(
-						ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0,
-						destinationPort,
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 				tdApplication->SetClassifierParameters(cp);
 
 				tdContainner->push_back(tdApplication);
-				std::cout << "CREATED M2M_TD APPLICATION, ID " << applicationID
-						<< ", Interval: " << tdApplication->GetInterval()
-						<< std::endl;
+				std::cout << "CREATED M2M_TD APPLICATION, ID " << applicationID << ", Interval: " << tdApplication->GetInterval() << std::endl;
 			}
 
 		} else if (strcmp(trafficType, "voip") == 0) {
 			VoIP* voIPApplication = new VoIP();
 			voIPApplication->SetSource(ue);
-			voIPApplication->SetDestination(gw);
+			voIPApplication->SetDestination(enb);
 			voIPApplication->SetApplicationID(applicationID);
 			voIPApplication->SetStartTime(start_time);
 			voIPApplication->SetStopTime(duration_time);
@@ -297,21 +274,18 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 			voIPApplication->SetQoSParameters(qos);
 
 			//create classifier parameters
-			ClassifierParameters *cp = new ClassifierParameters(
-					ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0,
-					destinationPort,
+			ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 					TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 			voIPApplication->SetClassifierParameters(cp);
 
-			std::cout << "CREATED VOIP APPLICATION, ID " << applicationID
-					<< std::endl;
+			std::cout << "CREATED VOIP APPLICATION, ID " << applicationID << std::endl;
 
 			voipContainner->push_back(voIPApplication);
 
 		} else if (strcmp(trafficType, "video") == 0) {
 			TraceBased* videoApplication = new TraceBased();
 			videoApplication->SetSource(ue);
-			videoApplication->SetDestination(gw);
+			videoApplication->SetDestination(enb);
 			videoApplication->SetApplicationID(applicationID);
 			videoApplication->SetStartTime(start_time);
 			videoApplication->SetStopTime(duration_time);
@@ -320,9 +294,7 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 			//string video_trace ("highway_H264_");
 			//string video_trace ("mobile_H264_");
 
-			string _file(
-					path + "src/flows/application/Trace/" + video_trace
-							+ "128k.dat");
+			string _file(path + "src/flows/application/Trace/" + video_trace + "128k.dat");
 			videoApplication->SetTraceFile(_file);
 			std::cout << "		selected video @ 128k " << _file << std::endl;
 
@@ -331,21 +303,18 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 			videoApplication->SetQoSParameters(qos);
 
 			//create classifier parameters
-			ClassifierParameters *cp = new ClassifierParameters(
-					ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0,
-					destinationPort,
+			ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 					TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 			videoApplication->SetClassifierParameters(cp);
 
-			std::cout << "CREATED VIDEO APPLICATION, ID " << applicationID
-					<< std::endl;
+			std::cout << "CREATED VIDEO APPLICATION, ID " << applicationID << std::endl;
 
 			videoContainner->push_back(videoApplication);
 
 		} else if (strcmp(trafficType, "cbr") == 0) {
 			CBR* cbrApplication = new CBR();
 			cbrApplication->SetSource(ue);
-			cbrApplication->SetDestination(gw);
+			cbrApplication->SetDestination(enb);
 			cbrApplication->SetApplicationID(applicationID);
 			cbrApplication->SetStartTime(start_time);
 			cbrApplication->SetStopTime(duration_time);
@@ -359,14 +328,11 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 			cbrApplication->SetQoSParameters(qosParameters);
 
 			//create classifier parameters
-			ClassifierParameters *cp = new ClassifierParameters(
-					ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0,
-					destinationPort,
+			ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 					TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 			cbrApplication->SetClassifierParameters(cp);
 
-			std::cout << "CREATED CBR APPLICATION, ID " << applicationID
-					<< std::endl;
+			std::cout << "CREATED CBR APPLICATION, ID " << applicationID << std::endl;
 
 			cbrContainner->push_back(cbrApplication);
 
@@ -375,7 +341,7 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 			if (nbCBR > 0) {
 				CBR* cbrApplication = new CBR();
 				cbrApplication->SetSource(ue);
-				cbrApplication->SetDestination(gw);
+				cbrApplication->SetDestination(enb);
 				cbrApplication->SetApplicationID(applicationID);
 				cbrApplication->SetStartTime(start_time);
 				cbrApplication->SetStopTime(duration_time);
@@ -389,22 +355,18 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 				cbrApplication->SetQoSParameters(qosParameters);
 
 				//create classifier parameters
-				ClassifierParameters *cp = new ClassifierParameters(
-						ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0,
-						destinationPort,
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 				cbrApplication->SetClassifierParameters(cp);
 
-				std::cout << "CREATED CBR APPLICATION, ID " << applicationID
-						<< ", Interval: " << cbrApplication->GetInterval()
-						<< std::endl;
+				std::cout << "CREATED CBR APPLICATION, ID " << applicationID << ", Interval: " << cbrApplication->GetInterval() << std::endl;
 
 				cbrContainner->push_back(cbrApplication);
 				nbCBR--;
 			} else if (nbVideo > 0) {
 				TraceBased* videoApplication = new TraceBased();
 				videoApplication->SetSource(ue);
-				videoApplication->SetDestination(gw);
+				videoApplication->SetDestination(enb);
 				videoApplication->SetApplicationID(applicationID);
 				videoApplication->SetStartTime(start_time);
 				videoApplication->SetStopTime(duration_time);
@@ -413,9 +375,7 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 				//string video_trace ("highway_H264_");
 				//string video_trace ("mobile_H264_");
 
-				string _file(
-						path + "src/flows/application/Trace/" + video_trace
-								+ "128k.dat");
+				string _file(path + "src/flows/application/Trace/" + video_trace + "128k.dat");
 				videoApplication->SetTraceFile(_file);
 				std::cout << "		selected video @ 128k " << _file << std::endl;
 
@@ -424,21 +384,18 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 				videoApplication->SetQoSParameters(qos);
 
 				//create classifier parameters
-				ClassifierParameters *cp = new ClassifierParameters(
-						ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0,
-						destinationPort,
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 				videoApplication->SetClassifierParameters(cp);
 
-				std::cout << "CREATED VIDEO APPLICATION, ID " << applicationID
-						<< std::endl;
+				std::cout << "CREATED VIDEO APPLICATION, ID " << applicationID << std::endl;
 
 				videoContainner->push_back(videoApplication);
 				nbVideo--;
 			} else {
 				VoIP* voIPApplication = new VoIP();
 				voIPApplication->SetSource(ue);
-				voIPApplication->SetDestination(gw);
+				voIPApplication->SetDestination(enb);
 				voIPApplication->SetApplicationID(applicationID);
 				voIPApplication->SetStartTime(start_time);
 				voIPApplication->SetStopTime(duration_time);
@@ -448,20 +405,16 @@ static void SingleCellNbIot(double radius, int nbUE, char* trafficType,
 				voIPApplication->SetQoSParameters(qos);
 
 				//create classifier parameters
-				ClassifierParameters *cp = new ClassifierParameters(
-						ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0,
-						destinationPort,
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 				voIPApplication->SetClassifierParameters(cp);
 
-				std::cout << "CREATED VOIP APPLICATION, ID " << applicationID
-						<< std::endl;
+				std::cout << "CREATED VOIP APPLICATION, ID " << applicationID << std::endl;
 
 				voipContainner->push_back(voIPApplication);
 			}
 		} else {
-			std::cout << "\tThe traffic \"" << trafficType
-					<< "\" is not implemented!\n\t options are:\n \tm2m\n\tvoip\n\tvideo\n\tcbr\n\tmixed\n"
+			std::cout << "\tThe traffic \"" << trafficType << "\" is not implemented!\n\t options are:\n \tm2m\n\tvoip\n\tvideo\n\tcbr\n\tmixed\n"
 					<< std::endl;
 			return;
 		}
