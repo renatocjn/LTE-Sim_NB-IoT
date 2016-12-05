@@ -150,7 +150,7 @@ EnhancedUplinkPacketScheduler::RBsAllocation ()
 	  for (int jj = 0; jj < nbOfRBs; jj++)
 	    {
 		  //std::cout  << setw(3) << metrics[jj][ii]/1000 << " ";
-		  printf("%3d  ", (int) (metrics[jj][ii]/1000.0));
+		  std::cout << metrics[jj][ii] << ' ';
 	    }
 	  std::cout << std::endl;
     }

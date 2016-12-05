@@ -60,7 +60,7 @@
 static void SingleCellNbIot(double radius, int nbUE, char* trafficType, char* scheduler, int seed) {
 
 	// define simulation times
-	double duration = 10;
+	double duration = 15;
 	double flow_duration = duration - 1;
 	double nbiotTxBwConfiguration = 15; //15KHz
 

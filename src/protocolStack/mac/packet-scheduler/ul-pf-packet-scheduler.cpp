@@ -61,24 +61,10 @@ ProportionallyFairUplinkPacketScheduler::ComputeSchedulingMetric (RadioBearer *b
 double
 ProportionallyFairUplinkPacketScheduler::ComputeSchedulingMetric (UserToSchedule* user, int subchannel)
 {
-//	int channelCondition = user->m_channelContition.at (subchannel);
-//	AMCModule* amc = user->m_userToSchedule->GetProtocolStack()->GetMacEntity ()->GetAmcModule ();
-//
-//	int mcs = amc->GetMCSFromCQI (channelCondition);
-//	int tbs = amc->GetTBSizeFromMCS (mcs);
-//
-//	int userId = user->m_userToSchedule->GetIDNetworkNode();
-//	long txData;
-//	double activeTime;
-//	if (userActiveTime.find(userId) == userActiveTime.end()) {
-//		userActiveTime[userId] = 0.0;
-//		userTransmittedData[userId] = 0;
-//	}
-//
-//	userActiveTime[userId] += 1;
-//	int metric = tbs/(userTransmittedData[userId]/userActiveTime[userId]);
-//	return metric;
 	int channelCondition = user->m_channelContition.at (subchannel);
 	double spectralEfficiency = GetMacEntity ()->GetAmcModule ()->GetSinrFromCQI (channelCondition);
-	return spectralEfficiency * 180000 / user->m_averageTransmissionRate;
+	double metric = spectralEfficiency * 180000 / user->m_averageTransmissionRate;
+	//std::cout << "[pf sched] user " << user->m_userToSchedule->GetIDNetworkNode() << " " << user->m_averageTransmissionRate << std::endl;
+	//std::cout << "[ul_pf] user " << user->m_userToSchedule->GetIDNetworkNode() << " " << user->m_averageTransmissionRate << std::endl;
+	return metric;
 }
