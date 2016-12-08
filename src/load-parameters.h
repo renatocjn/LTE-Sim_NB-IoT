@@ -56,7 +56,7 @@ static bool _channel_TU_ = true;
 static bool _channel_AWGN_ = false;
 
 /* debugging */
-#define APPLICATION_DEBUG
+//#define APPLICATION_DEBUG
 //#define BEARER_DEBUG
 //#define RLC_DEBUG
 //#define MAC_QUEUE_DEBUG
@@ -73,12 +73,12 @@ static bool _channel_AWGN_ = false;
 //#define TRANSMISSION_DEBUG
 //#define CHANNEL_REALIZATION_DEBUG
 //#define TEST_DEVICE_ON_CHANNEL
-#define TEST_START_APPLICATION
+//#define TEST_START_APPLICATION
 //#define TEST_ENQUEUE_PACKETS
 //#define TEST_PROPAGATION_LOSS_MODEL
 //#define INTERFERENCE_DEBUG
 //#define TEST_CQI_FEEDBACKS
-#define SCHEDULER_DEBUG
+//#define SCHEDULER_DEBUG
 //#define AMC_MAPPING
 //#define PLOT_USER_POSITION
 #define TEST_UL_SINR
