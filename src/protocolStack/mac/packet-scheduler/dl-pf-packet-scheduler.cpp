@@ -58,7 +58,7 @@ DL_PF_PacketScheduler::ComputeSchedulingMetric (RadioBearer *bearer, double spec
   double metric = (spectralEfficiency * 180000.)
 					  /
 					  bearer->GetAverageTransmissionRate();
-
+  //std::cout << "[dl_pf] user " << bearer->GetDestination()->GetIDNetworkNode() << " " << metric << std::endl;
   return metric;
 }
 

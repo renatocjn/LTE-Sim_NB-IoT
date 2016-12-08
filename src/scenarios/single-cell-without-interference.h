@@ -168,6 +168,7 @@ static void SingleCellWithoutInterference (double radius,
   enb->GetPhy ()->SetUlChannel (ulCh);
   enb->GetPhy ()->SetBandwidthManager (spectrum);
   ulCh->AddDevice (enb);
+  enb->SetULScheduler(ENodeB::ULScheduler_TYPE_PF);
   enb->SetDLScheduler (downlink_scheduler_type);
   networkManager->GetENodeBContainer ()->push_back (enb);
 

@@ -107,9 +107,11 @@ RadioBearer::UpdateAverageTransmissionRate ()
    * R'(t+1) = (0.8 * R'(t)) + (0.2 * r(t))
    */
 
-  double rate = (GetTransmittedBytes () * 8)/(Simulator::Init()->Now() - GetLastUpdate());
+  double txBytes = GetTransmittedBytes();
+  double lUpdate = GetLastUpdate();
+  double rate = (txBytes * 8)/(Simulator::Init()->Now() - lUpdate);
 
-  double beta = 0.2;
+  double beta = 0.01;
 
   m_averageTransmissionRate =
       ((1 - beta) * m_averageTransmissionRate) + (beta * rate);
@@ -129,7 +131,7 @@ RadioBearer::UpdateAverageTransmissionRate ()
 		  "\n\t new estimated rate " << m_averageTransmissionRate << std::endl;
 #endif
 */
-
+  //std::cout << m_averageTransmissionRate << std::endl;
   ResetTransmittedBytes();
 }
 

@@ -265,7 +265,8 @@ ENodeB::UserEquipmentRecord::SetSchedulingRequest (int r)
 void
 ENodeB::UserEquipmentRecord::UpdateSchedulingGrants (int b)
 {
-  m_averageSchedulingGrants = (0.9 * m_averageSchedulingGrants)	+ (0.1 * b);
+  double alpha = 0.01;
+  m_averageSchedulingGrants = ((1.0-alpha) * m_averageSchedulingGrants)	+ (alpha * b);
 }
 
 int

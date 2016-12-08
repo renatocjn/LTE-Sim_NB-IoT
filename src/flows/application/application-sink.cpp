@@ -113,6 +113,16 @@ ApplicationSink::Receive (Packet* p)
 		  std::cout << " INF_BUF";
 		  break;
 		}
+	  case Application::APPLICATION_TYPE_M2M_ED:
+	  		{
+	  		  std::cout << " M2M_ED";
+	  		  break;
+	  		}
+	  case Application::APPLICATION_TYPE_M2M_TD:
+	  		{
+	  		  std::cout << " M2M_TD";
+	  		  break;
+	  		}
 	  default:
 		{
 		  std::cout << " UNDEFINED";

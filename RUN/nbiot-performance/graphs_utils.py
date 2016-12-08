@@ -42,16 +42,18 @@ def readDataFromFile(filePath):
 			pkgs[l[3]]["dropped"] = True
 			pkgs[l[3]]["droppedTime"] = float(l[7])
 
-		if l[0] == "UL_SINR":
-			sinr.append(float(l[4]))
+		#if l[0] == "UL_SINR":
+			#sinr.append(float(l[4]))
 
 	del lines
 	del pkgLines
-	return pkgs.values(), sinr
+	#return pkgs.values(), sinr
+	return pkgs.values()
 
 
 def getMetricsForFile(filePath):
-	pkgs, sinr = readDataFromFile(filePath)
+	#pkgs, sinr = readDataFromFile(filePath)
+	pkgs = readDataFromFile(filePath)
 
 	firstTx = 999999
 	lastRx = 0
@@ -69,7 +71,7 @@ def getMetricsForFile(filePath):
 
 	for p in pkgs:
 		transmittedData += p["txSize"]
-		if p["user"] not in users: users[p["user"]] = 0
+		if p["user"] not in users: users[p["user"]] = 0.0
 		userAppType[p["user"]] = p["appType"]
 		appTypes.add(p["appType"])
 
@@ -78,7 +80,7 @@ def getMetricsForFile(filePath):
 		if p["delay"] == None:
 			lostPkgs += 1
 			if p["dropped"] == True:
-				droppedDelayList.append((p["droppedTime"] - p["txTime"]) * 1000)
+				droppedDelayList.append((p["droppedTime"] - p["txTime"]) * 1000.0)
 			else:
 				queueDelayList.append(5.0-p["txTime"])
 		else:
@@ -87,17 +89,18 @@ def getMetricsForFile(filePath):
 
 			rxDelayList.append(p["delay"] * 1000.0)
 			dataReceived += p["rxSize"]
-			users[p["user"]] += 8*p["rxSize"]/1000
+			users[p["user"]] += 8*p["rxSize"]/1000.0
 
 	transmittedPkgs = len(pkgs)
 	droppedPkgs = len(droppedDelayList)
 	d = lastRx - firstTx
 	users_throughput = { uid:(rxData/d) for uid,rxData in users.iteritems() }
+	appTypeThroughput = { appType:list() for appType in appTypes }
 
-	maxThroughput = { i:1 for i in appTypes }
 	for uid, throughput in users_throughput.iteritems():
-		if maxThroughput[userAppType[uid]] < throughput:
-			maxThroughput[userAppType[uid]] = throughput
+		appTypeThroughput[userAppType[uid]].append(throughput)
+	maxThroughput = {appType:max(max(appTypeThroughput[appType]),1.0) for appType in appTypes}
+
 	justiceRatios = [ t/maxThroughput[userAppType[uid]] for uid,t in users_throughput.iteritems() ]
 	justiceRatio = square(sum(justiceRatios))/(sum(square(justiceRatios))*len(users))
 
@@ -120,9 +123,17 @@ def getMetricsForFile(filePath):
 			"transmittedPkgs": transmittedPkgs,
 			"justiceRatio": justiceRatio,
 			"lostPkgs": lostPkgs,
-			"droppedPkgs": droppedPkgs,
-			"SINRs": sinr}
+			"droppedPkgs": droppedPkgs
+			}
+			#"SINRs": sinr}
 
+	#pp(appTypeThroughput)
+	for appType, throughputList in appTypeThroughput.iteritems():
+		stats[appType+"_justiceRatio"] = min(throughputList)/max(max(throughputList),1)
+
+	del maxThroughput
+	#del appTypeThroughput
+	del justiceRatios
 	del pkgs
 	del users
 	return stats

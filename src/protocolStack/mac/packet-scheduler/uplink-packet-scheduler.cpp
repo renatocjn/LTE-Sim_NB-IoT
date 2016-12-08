@@ -20,6 +20,7 @@
  */
 
 #include "../../../device/ENodeB.h"
+#include "../../../device/UserEquipment.h"
 #include "uplink-packet-scheduler.h"
 #include "../mac-entity.h"
 #include "../../packet/Packet.h"
@@ -35,6 +36,7 @@
 #include "../../../flows/MacQueue.h"
 #include "../../../utility/eesm-effective-sinr.h"
 #include "../../../flows/radio-bearer.h"
+#include "../../../device/NetworkNode.h"
 
 UplinkPacketScheduler::UplinkPacketScheduler() {
 }
@@ -80,28 +82,22 @@ void UplinkPacketScheduler::SelectUsersToSchedule() {
 	ENodeB::UserEquipmentRecord *record;
 	ENodeB::UserEquipmentRecords::iterator iter;
 
-	RrcEntity *rrc = GetMacEntity ()->GetDevice ()->GetProtocolStack ()->GetRrcEntity ();
-	RrcEntity::RadioBearersContainer* bearers = rrc->GetRadioBearerContainer ();
-	RrcEntity::RadioBearersContainer::iterator iter2;
-
 #ifdef SCHEDULER_DEBUG
 	std::cout << "UplinkPacketScheduler::SelectUsersToSchedule () "
-	" users " << node->GetUserEquipmentRecords ()->size ()<< std::endl;
+			" users " << node->GetUserEquipmentRecords()->size() << std::endl;
 #endif
 
 	for (iter = records->begin(); iter != records->end(); iter++) {
-		record = *iter;
+		record = (*iter);
 		if (record->GetSchedulingRequest() > 0) {
 			UserToSchedule* user = new UserToSchedule();
 			user->m_userToSchedule = (NetworkNode*) record->GetUE();
-			for(iter2 = bearers->begin(); iter2 != bearers->end(); iter2++) {
-				RadioBearer *bearer = *iter2;
-				if (bearer->GetDestination() == user->m_userToSchedule || bearer->GetSource() == user->m_userToSchedule) {
-					user->m_averageTransmissionRate = bearer->GetAverageTransmissionRate();
-					user->m_qosParameters = bearer->GetQoSParameters();
-				}
-			}
+			RadioBearer *bearer = user->m_userToSchedule->GetProtocolStack()->GetRrcEntity()->GetRadioBearerContainer()->at(0);
+			int i = user->m_userToSchedule->GetProtocolStack()->GetRrcEntity()->GetRadioBearerContainer()->size();
 
+//			bearer->UpdateAverageTransmissionRate();
+			user->m_averageTransmissionRate = bearer->GetAverageTransmissionRate();
+			user->m_qosParameters = bearer->GetQoSParameters();
 			user->m_dataToTransmit = record->GetSchedulingRequest();
 			user->m_listOfAllocatedRBs.clear();
 			user->m_selectedMCS = 0;
@@ -113,15 +109,25 @@ void UplinkPacketScheduler::SelectUsersToSchedule() {
 		}
 	}
 #ifdef SCHEDULER_DEBUG
-	std::cout << "users to be schedule = " << GetUsersToSchedule ()->size () << std::endl;
+	std::cout << "users to be schedule = " << GetUsersToSchedule()->size() << std::endl;
 #endif
 }
 
 void UplinkPacketScheduler::DoSchedule(void) {
 #ifdef SCHEDULER_DEBUG
-	std::cout << "Start UPLINK packet scheduler for node "
-	<< GetMacEntity ()->GetDevice ()->GetIDNetworkNode()<< std::endl;
+	std::cout << "Start UPLINK packet scheduler for node " << GetMacEntity()->GetDevice()->GetIDNetworkNode() << std::endl;
 #endif
+
+	ENodeB* enb = (ENodeB*) GetMacEntity()->GetDevice();
+	ENodeB::UserEquipmentRecords* records = enb->GetUserEquipmentRecords();
+	ENodeB::UserEquipmentRecords::iterator it;
+	for (it = records->begin(); it != records->end(); it++) {
+		ENodeB::UserEquipmentRecord* record = (*it);
+		if (record->m_UE->GetNodeState() == NetworkNode::STATE_ACTIVE) {
+			record->m_UE->GetProtocolStack()->GetRrcEntity()->GetRadioBearerContainer()->at(0)->UpdateAverageTransmissionRate();
+			int i = record->m_UE->GetProtocolStack()->GetRrcEntity()->GetRadioBearerContainer()->size();
+		}
+	}
 
 	SelectUsersToSchedule();
 
@@ -156,13 +162,10 @@ void UplinkPacketScheduler::RBsAllocation() {
 	}
 
 #ifdef SCHEDULER_DEBUG
-	std::cout << ", available RBs " << nbOfRBs << ", users " << users->size () << std::endl;
-	for (int ii = 0; ii < users->size (); ii++)
-	{
-		std::cout << "\t metrics for user "
-		<< users->at (ii)->m_userToSchedule->GetIDNetworkNode ();
-		for (int jj = 0; jj < nbOfRBs; jj++)
-		{
+	std::cout << ", available RBs " << nbOfRBs << ", users " << users->size() << std::endl;
+	for (int ii = 0; ii < users->size(); ii++) {
+		std::cout << "\t metrics for user " << users->at(ii)->m_userToSchedule->GetIDNetworkNode();
+		for (int jj = 0; jj < nbOfRBs; jj++) {
 			std::cout << " " << metrics[jj][ii];
 		}
 		std::cout << std::endl;
@@ -263,7 +266,9 @@ void UplinkPacketScheduler::DoStopSchedule(void) {
 				record->m_schedulingRequest = 0;
 			}
 			record->UpdateSchedulingGrants(user->m_dataToTransmit);
-
+			user->m_userToSchedule->GetProtocolStack()->GetRrcEntity()->GetRadioBearerContainer()->at(0)->UpdateTransmittedBytes(user->m_transmittedData / 8.0);
+			int i = user->m_userToSchedule->GetProtocolStack()->GetRrcEntity()->GetRadioBearerContainer()->size();
+			int j = 0;
 		}
 
 		// Update Transmission Rate
