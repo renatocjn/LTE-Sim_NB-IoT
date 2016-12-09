@@ -36,8 +36,9 @@
 #include "../../../flows/MacQueue.h"
 #include "../../../utility/eesm-effective-sinr.h"
 
-DownlinkPacketScheduler::DownlinkPacketScheduler()
-{}
+DownlinkPacketScheduler::DownlinkPacketScheduler(){
+	setNodeTypeToSchedule(NetworkNode::TYPE_UE);
+}
 
 DownlinkPacketScheduler::~DownlinkPacketScheduler()
 {
@@ -51,7 +52,6 @@ void DownlinkPacketScheduler::SelectFlowsToSchedule ()
 #endif
 
   ClearFlowsToSchedule ();
-
   RrcEntity *rrc = GetMacEntity ()->GetDevice ()->GetProtocolStack ()->GetRrcEntity ();
   RrcEntity::RadioBearersContainer* bearers = rrc->GetRadioBearerContainer ();
 
@@ -60,6 +60,8 @@ void DownlinkPacketScheduler::SelectFlowsToSchedule ()
 	{
 	  //SELECT FLOWS TO SCHEDULE
 	  RadioBearer *bearer = (*it);
+	  if (bearer->GetDestination()->GetNodeType() != getNodeTypeToSchedule()) continue;
+
 	  if (bearer->HasPackets () && bearer->GetDestination ()->GetNodeState () == NetworkNode::STATE_ACTIVE)
 		{
 		  //compute data to transmit

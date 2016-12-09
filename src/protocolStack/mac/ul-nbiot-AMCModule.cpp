@@ -6,10 +6,10 @@
  */
 
 #include "ul-nbiot-AMCModule.h"
+//TODO Finish Ul Nb-Iot AMC Module
+const unsigned short iRuToNRu[8] = {1, 2, 3, 4, 5, 6, 8, 10};
 
-unsigned short* iRuToNRu = {1, 2, 3, 4, 5, 6, 8, 10};
-
-unsigned short* tbsTable = {
+const unsigned short tbsTable[13][8] = {
 		{  16,   32,   56,   88,   120,  152,  208,  256 },
 		{  24,   56,   88,  144,   176,  208,  256,  344 },
 		{  32,   72,  144,  176,   208,  256,  328,  424 },

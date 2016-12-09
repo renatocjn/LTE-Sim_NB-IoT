@@ -213,6 +213,8 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* scheduler, in
 		MacroCellUrbanAreaChannelRealization* c_ul = new MacroCellUrbanAreaChannelRealization(ue, enb);
 		enb->GetPhy()->GetUlChannel()->GetPropagationLossModel()->AddChannelRealization(c_ul);
 
+		ue->GetPhy ()->GetDlChannel ()->AddDevice (ue);
+
 		// CREATE UPLINK APPLICATION FOR THIS UE
 		double start_time = 0.1 + GetRandomVariable(0.4);
 		double duration_time = start_time + flow_duration;

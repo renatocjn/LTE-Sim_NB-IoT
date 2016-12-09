@@ -258,3 +258,13 @@ PacketScheduler::CheckForDLDropPackets ()
 	    }
     }
 }
+
+NetworkNode::NodeType
+PacketScheduler::getNodeTypeToSchedule() {
+	return m_nodeTypeToSchedule;
+}
+
+void
+PacketScheduler::setNodeTypeToSchedule(NetworkNode::NodeType nodeType) {
+	m_nodeTypeToSchedule = nodeType;
+}

@@ -25,6 +25,7 @@
 
 #include <vector>
 #include "../../../core/idealMessages/ideal-control-messages.h"
+#include "../../../device/NetworkNode.h"
 
 class MacEntity;
 class PacketBurst;
@@ -100,10 +101,13 @@ public:
 
 	void CheckForDLDropPackets();
 
+    virtual NetworkNode::NodeType getNodeTypeToSchedule();
+    virtual void setNodeTypeToSchedule(NetworkNode::NodeType nodeType);
 
 private:
 	MacEntity *m_mac;
 	FlowsToSchedule *m_flowsToSchedule;
+	NetworkNode::NodeType m_nodeTypeToSchedule;
 };
 
 #endif /* PACKETSCHEDULER_H_ */

@@ -24,6 +24,8 @@
 #define ENODEB_H_
 
 #include "NetworkNode.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.h"
 
 class UserEquipment;
 class Gateway;
@@ -61,9 +63,7 @@ public:
 		std::vector<double> m_uplinkChannelStatusIndicator;
 		void SetUplinkChannelStatusIndicator (std::vector<double> vet);
 		std::vector<double> GetUplinkChannelStatusIndicator (void) const;
-
-
-	  };
+	};
 
 	typedef std::vector<UserEquipmentRecord*> UserEquipmentRecords;
 
@@ -107,12 +107,21 @@ public:
     void ResourceBlocksAllocation ();
     void UplinkResourceBlockAllocation ();
     void DownlinkResourceBlokAllocation ();
+    void NBIotUlResourceBlokAllocation ();
+    void NBIotDlResourceBlokAllocation ();
 
 	//Debug
 	void Print (void);
 
+	void SetNbIotDLScheduler(NbIotDlScheduler* scheduler);
+	NbIotDlScheduler* GetNbIotDLScheduler();
+	void SetNbIotULScheduler(NbIotUlScheduler* scheduler);
+	NbIotUlScheduler* GetNbIotUlScheduler();
+
 private:
 	UserEquipmentRecords *m_userEquipmentRecords;
+	NbIotUlScheduler* m_nbiotUlScheduler;
+	NbIotDlScheduler* m_nbiotDlScheduler;
 };
 
 #endif /* ENODEB_H_ */

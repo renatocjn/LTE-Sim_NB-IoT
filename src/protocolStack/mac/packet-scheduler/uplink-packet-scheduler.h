@@ -58,7 +58,6 @@ public:
 	virtual void RBsAllocation ();
 	virtual double ComputeSchedulingMetric (RadioBearer *bearer, double spectralEfficiency, int subChannel) = 0;
     virtual double ComputeSchedulingMetric (UserToSchedule* user, int subchannel) = 0;
-
 private:
     UsersToSchedule* m_usersToSchedule;
 };

@@ -39,6 +39,7 @@
 EnhancedUplinkPacketScheduler::EnhancedUplinkPacketScheduler()
 {
   SetMacEntity (0);
+  setNodeTypeToSchedule(NetworkNode::TYPE_UE);
   CreateUsersToSchedule ();
 }
 

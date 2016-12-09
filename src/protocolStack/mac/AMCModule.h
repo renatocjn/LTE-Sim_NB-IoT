@@ -29,7 +29,6 @@
  *  Adaptive Modulation And Coding Scheme
  */
 
-//TODO Create Nb-Iot AMC Module
 class AMCModule {
 public:
 	AMCModule();

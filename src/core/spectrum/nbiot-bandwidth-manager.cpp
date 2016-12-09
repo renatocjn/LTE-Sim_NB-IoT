@@ -25,50 +25,38 @@
 #include <iostream>
 #include <vector>
 
-#define TONES_FOR_3_75KHz 48
-#define TONES_FOR_15KHz 12
+#define NB_TONES_FOR_3_75KHz 48
+#define NB_TONES_FOR_15KHz 12
 
 NbIotBandwidthManager::NbIotBandwidthManager()
 {}
 
 
-NbIotBandwidthManager::NbIotBandwidthManager(double ulRbChannel, double dlRbChannel, double ulTxBwConf, double dlTxBwConf)
+NbIotBandwidthManager::NbIotBandwidthManager(double ulRbChannel, double dlRbChannel, double ulTxBwConf)
 {
-	// txBwConf = Transmission bandwidth configuration (3.75 / 15)
-	std::vector<double> dlSubChannels;
-	std::vector<double> ulSubChannels;
+	// txBwConf = Transmission bandwidth configuration (3.75KHz / 15KHz)
 
 	if (ulTxBwConf == 3.75) {
-		SetUlBandwidth(TONES_FOR_3_75KHz);
+		SetUlBandwidth(NB_TONES_FOR_3_75KHz);
 	} else if (ulTxBwConf == 15) {
-		SetUlBandwidth(TONES_FOR_15KHz);
+		SetUlBandwidth(NB_TONES_FOR_15KHz);
 	} else {
-		std::cout << "NbIotBandwidthManager: Invalid ulTxBwConf" << std::endl;
-		SetUlBandwidth(TONES_FOR_15KHz);
+		SetUlBandwidth(NB_TONES_FOR_15KHz); //default configuration
 		ulTxBwConf = 15;
 	}
 
-	if (dlTxBwConf == 3.75) {
-		SetDlBandwidth(TONES_FOR_3_75KHz);
-	} else if (dlTxBwConf == 15){
-		SetDlBandwidth(TONES_FOR_15KHz);
-	} else {
-		std::cout << "NbIotBandwidthManager: Invalid dlTxBwConf" << std::endl;
-		SetDlBandwidth(TONES_FOR_15KHz);
-		dlTxBwConf = 15;
-	}
-
+	std::vector<double> ulSubChannels;
 	ulTxBwConf *= 0.001;
-	dlTxBwConf *= 0.001;
 	double i;
 	for(i=ulRbChannel; i<ulRbChannel+.18; i+=ulTxBwConf) {
 		ulSubChannels.push_back(i);
 	}
 	SetUlSubChannels(ulSubChannels);
 
-	for(i=dlRbChannel; i<dlRbChannel+.18; i+=dlTxBwConf) {
-		dlSubChannels.push_back(i);
-	}
+
+	std::vector<double> dlSubChannels;
+	SetDlBandwidth(1);
+	dlSubChannels.push_back(dlRbChannel);
 	SetDlSubChannels(dlSubChannels);
 }
 

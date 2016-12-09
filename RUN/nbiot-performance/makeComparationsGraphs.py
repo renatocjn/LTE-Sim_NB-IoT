@@ -67,25 +67,25 @@ if __name__ == "__main__":
 	for sch in schedulers:
 		#print "cdfs:", cdfs[sch].keys()
 		#print "plots:", plots[sch].keys()
-		if "queueDelay" not in figure:
-			f = pl.figure()
-			ax = f.add_axes(rect)
-			ax.margins(0.05, 0.05)
-			ax.set_xlabel(xlabel)
-			ax.set_ylabel("Segundos")
-			figure["queueDelay"] = {'figure': f, 'axes': ax}
-		ax = figure["queueDelay"]['axes']
-		ax.errorbar(X, plots[sch]["queueDelay"]["y"], plots[sch]["queueDelay"]["ci"], label=sch_labels[sch], marker=markers[sch])
+		#if "queueDelay" not in figure:
+			#f = pl.figure()
+			#ax = f.add_axes(rect)
+			#ax.margins(0.05, 0.05)
+			#ax.set_xlabel(xlabel)
+			#ax.set_ylabel("Segundos")
+			#figure["queueDelay"] = {'figure': f, 'axes': ax}
+		#ax = figure["queueDelay"]['axes']
+		#ax.errorbar(X, plots[sch]["queueDelay"]["y"], plots[sch]["queueDelay"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
-		if "droppedDelay" not in figure:
-			f = pl.figure()
-			ax = f.add_axes(rect)
-			ax.margins(0.05, 0.05)
-			ax.set_xlabel(xlabel)
-			ax.set_ylabel("Millisegundos")
-			figure["droppedDelay"] = {'figure': f, 'axes': ax}
-		ax = figure["droppedDelay"]['axes']
-		ax.errorbar(X, plots[sch]["droppedDelay"]["y"], plots[sch]["droppedDelay"]["ci"], label=sch_labels[sch], marker=markers[sch])
+		#if "droppedDelay" not in figure:
+			#f = pl.figure()
+			#ax = f.add_axes(rect)
+			#ax.margins(0.05, 0.05)
+			#ax.set_xlabel(xlabel)
+			#ax.set_ylabel("Millisegundos")
+			#figure["droppedDelay"] = {'figure': f, 'axes': ax}
+		#ax = figure["droppedDelay"]['axes']
+		#ax.errorbar(X, plots[sch]["droppedDelay"]["y"], plots[sch]["droppedDelay"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 
 		if "rxDelay" not in figure:
@@ -180,15 +180,15 @@ if __name__ == "__main__":
 		ax = figure["transmittedPkgs"]['axes']
 		ax.errorbar(X, plots[sch]["transmittedPkgs"]["y"], plots[sch]["transmittedPkgs"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
-		if "lostPkgs" not in figure:
-			f = pl.figure()
-			ax = f.add_axes(rect)
-			ax.margins(0.05, 0.05)
-			ax.set_xlabel(xlabel)
-			#ax.set_title("Nb lost packages")
-			figure["lostPkgs"] = {'figure': f, 'axes': ax}
-		ax = figure["lostPkgs"]['axes']
-		ax.errorbar(X, plots[sch]["lostPkgs"]["y"], plots[sch]["lostPkgs"]["ci"], label=sch_labels[sch], marker=markers[sch])
+		#if "lostPkgs" not in figure:
+			#f = pl.figure()
+			#ax = f.add_axes(rect)
+			#ax.margins(0.05, 0.05)
+			#ax.set_xlabel(xlabel)
+			##ax.set_title("Nb lost packages")
+			#figure["lostPkgs"] = {'figure': f, 'axes': ax}
+		#ax = figure["lostPkgs"]['axes']
+		#ax.errorbar(X, plots[sch]["lostPkgs"]["y"], plots[sch]["lostPkgs"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 
 		if "droppedPkgs" not in figure:

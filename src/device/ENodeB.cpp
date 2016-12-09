@@ -37,6 +37,8 @@
 #include "../protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/ul-pf-packet-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/ul-rr-packet-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.h"
 #include "../protocolStack/packet/packet-burst.h"
 
 ENodeB::ENodeB ()
@@ -358,6 +360,8 @@ ENodeB::GetDLScheduler (void) const
   return mac->GetDownlinkPacketScheduler ();
 }
 
+
+
 void
 ENodeB::SetULScheduler (ULSchedulerType type)
 {
@@ -394,6 +398,8 @@ ENodeB::SetULScheduler (ULSchedulerType type)
 	}
 }
 
+
+
 PacketScheduler*
 ENodeB::GetULScheduler (void) const
 {
@@ -401,11 +407,15 @@ ENodeB::GetULScheduler (void) const
   return mac->GetUplinkPacketScheduler ();
 }
 
+
+
 void
 ENodeB::ResourceBlocksAllocation (void)
 {
   DownlinkResourceBlokAllocation ();
   UplinkResourceBlockAllocation ();
+  NBIotDlResourceBlokAllocation ();
+  NBIotUlResourceBlokAllocation ();
 }
 
 void
@@ -450,5 +460,53 @@ ENodeB::Print (void)
   	  record = *iter;
 	  std::cout << "\t\t idUE = " << record->GetUE ()->
 			  GetIDNetworkNode () << std::endl;
+    }
+}
+
+void
+ENodeB::SetNbIotDLScheduler (NbIotDlScheduler *scheduler)
+{
+  m_nbiotDlScheduler = scheduler;
+  m_nbiotDlScheduler->SetMacEntity(GetProtocolStack()->GetMacEntity());
+}
+
+void
+ENodeB::SetNbIotULScheduler(NbIotUlScheduler *scheduler)
+{
+  m_nbiotUlScheduler = scheduler;
+  m_nbiotUlScheduler->SetMacEntity(GetProtocolStack()->GetMacEntity());
+}
+
+NbIotDlScheduler*
+ENodeB::GetNbIotDLScheduler() {
+	return m_nbiotDlScheduler;
+}
+
+NbIotUlScheduler*
+ENodeB::GetNbIotUlScheduler() {
+	return m_nbiotUlScheduler;
+}
+
+void
+ENodeB::NBIotUlResourceBlokAllocation (void)
+{
+  if (GetNbIotUlScheduler () != NULL && GetNbOfUserEquipmentRecords () > 0)
+   {
+	  GetNbIotUlScheduler ()->Schedule();
+   }
+}
+
+void
+ENodeB::NBIotDlResourceBlokAllocation (void)
+{
+  if (GetNbIotDLScheduler () != NULL && GetNbOfUserEquipmentRecords () > 0)
+   {
+	  GetNbIotDLScheduler ()->Schedule();
+   }
+  else
+    {
+	  //send only reference symbols
+	  //PacketBurst *pb = new PacketBurst ();
+	  //SendPacketBurst (pb);
     }
 }

@@ -60,9 +60,9 @@
 static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, char* scheduler, int seed) {
 
 	// define simulation times
-	double duration = 6;
-	double flow_duration = 5;
-	double nbiotTxBwConfiguration = 15;
+	double duration = 15;
+	double flow_duration = duration - 1;
+	double nbiotTxBwConfiguration = 15; //15KHz
 
 	//int cluster = 4;
 	double bandwidth = 1.4;
@@ -210,6 +210,8 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 		MacroCellUrbanAreaChannelRealization* c_ul = new MacroCellUrbanAreaChannelRealization(ue, enb);
 		enb->GetPhy()->GetUlChannel()->GetPropagationLossModel()->AddChannelRealization(c_ul);
 
+		ue->GetPhy ()->GetDlChannel ()->AddDevice (ue);
+
 		// CREATE UPLINK APPLICATION FOR THIS UE
 		double start_time = 0.1 + GetRandomVariable(0.4);
 		double duration_time = start_time + flow_duration;
@@ -219,7 +221,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 			if (nbED > 0) {
 				M2MEventDriven* edApplication = new M2MEventDriven();
 				edApplication->SetSource(ue);
-				edApplication->SetDestination(gw);
+				edApplication->SetDestination(enb);
 				edApplication->SetApplicationID(applicationID);
 				edApplication->SetStartTime(start_time);
 				edApplication->SetStopTime(duration_time);
@@ -230,7 +232,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 				edApplication->SetQoSParameters(qosParameters);
 
 				//create classifier parameters
-				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0, destinationPort,
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 				edApplication->SetClassifierParameters(cp);
 
@@ -240,7 +242,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 			} else {
 				M2MTimeDriven* tdApplication = new M2MTimeDriven();
 				tdApplication->SetSource(ue);
-				tdApplication->SetDestination(gw);
+				tdApplication->SetDestination(enb);
 				tdApplication->SetApplicationID(applicationID);
 				tdApplication->SetStartTime(start_time);
 				tdApplication->SetStopTime(duration_time);
@@ -251,7 +253,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 				tdApplication->SetQoSParameters(qosParameters);
 
 				//create classifier parameters
-				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0, destinationPort,
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 				tdApplication->SetClassifierParameters(cp);
 
@@ -262,7 +264,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 		} else if (strcmp(trafficType, "voip") == 0) {
 			VoIP* voIPApplication = new VoIP();
 			voIPApplication->SetSource(ue);
-			voIPApplication->SetDestination(gw);
+			voIPApplication->SetDestination(enb);
 			voIPApplication->SetApplicationID(applicationID);
 			voIPApplication->SetStartTime(start_time);
 			voIPApplication->SetStopTime(duration_time);
@@ -272,7 +274,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 			voIPApplication->SetQoSParameters(qos);
 
 			//create classifier parameters
-			ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0, destinationPort,
+			ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 					TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 			voIPApplication->SetClassifierParameters(cp);
 
@@ -283,7 +285,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 		} else if (strcmp(trafficType, "video") == 0) {
 			TraceBased* videoApplication = new TraceBased();
 			videoApplication->SetSource(ue);
-			videoApplication->SetDestination(gw);
+			videoApplication->SetDestination(enb);
 			videoApplication->SetApplicationID(applicationID);
 			videoApplication->SetStartTime(start_time);
 			videoApplication->SetStopTime(duration_time);
@@ -301,7 +303,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 			videoApplication->SetQoSParameters(qos);
 
 			//create classifier parameters
-			ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0, destinationPort,
+			ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 					TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 			videoApplication->SetClassifierParameters(cp);
 
@@ -312,7 +314,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 		} else if (strcmp(trafficType, "cbr") == 0) {
 			CBR* cbrApplication = new CBR();
 			cbrApplication->SetSource(ue);
-			cbrApplication->SetDestination(gw);
+			cbrApplication->SetDestination(enb);
 			cbrApplication->SetApplicationID(applicationID);
 			cbrApplication->SetStartTime(start_time);
 			cbrApplication->SetStopTime(duration_time);
@@ -326,7 +328,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 			cbrApplication->SetQoSParameters(qosParameters);
 
 			//create classifier parameters
-			ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0, destinationPort,
+			ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 					TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 			cbrApplication->SetClassifierParameters(cp);
 
@@ -339,7 +341,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 			if (nbCBR > 0) {
 				CBR* cbrApplication = new CBR();
 				cbrApplication->SetSource(ue);
-				cbrApplication->SetDestination(gw);
+				cbrApplication->SetDestination(enb);
 				cbrApplication->SetApplicationID(applicationID);
 				cbrApplication->SetStartTime(start_time);
 				cbrApplication->SetStopTime(duration_time);
@@ -353,7 +355,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 				cbrApplication->SetQoSParameters(qosParameters);
 
 				//create classifier parameters
-				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0, destinationPort,
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 				cbrApplication->SetClassifierParameters(cp);
 
@@ -364,7 +366,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 			} else if (nbVideo > 0) {
 				TraceBased* videoApplication = new TraceBased();
 				videoApplication->SetSource(ue);
-				videoApplication->SetDestination(gw);
+				videoApplication->SetDestination(enb);
 				videoApplication->SetApplicationID(applicationID);
 				videoApplication->SetStartTime(start_time);
 				videoApplication->SetStopTime(duration_time);
@@ -382,7 +384,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 				videoApplication->SetQoSParameters(qos);
 
 				//create classifier parameters
-				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0, destinationPort,
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 				videoApplication->SetClassifierParameters(cp);
 
@@ -393,7 +395,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 			} else {
 				VoIP* voIPApplication = new VoIP();
 				voIPApplication->SetSource(ue);
-				voIPApplication->SetDestination(gw);
+				voIPApplication->SetDestination(enb);
 				voIPApplication->SetApplicationID(applicationID);
 				voIPApplication->SetStartTime(start_time);
 				voIPApplication->SetStopTime(duration_time);
@@ -403,7 +405,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 				voIPApplication->SetQoSParameters(qos);
 
 				//create classifier parameters
-				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), gw->GetIDNetworkNode(), 0, destinationPort,
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
 						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
 				voIPApplication->SetClassifierParameters(cp);
 

@@ -8,6 +8,8 @@
 #ifndef SRC_PROTOCOLSTACK_MAC_UL_NBIOT_AMCMODULE_H_
 #define SRC_PROTOCOLSTACK_MAC_UL_NBIOT_AMCMODULE_H_
 
+#include "AMCModule.h"
+
 class UlNbIotAMCModule: public AMCModule {
 public:
 	UlNbIotAMCModule();

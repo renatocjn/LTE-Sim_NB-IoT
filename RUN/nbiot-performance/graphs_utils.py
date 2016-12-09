@@ -10,6 +10,7 @@ import itertools as it
 from natsort import natsorted
 
 def readDataFromFile(filePath):
+	print filePath
 	inputfile = open(filePath)
 	lines = inputfile.readlines()
 	inputfile.close()
@@ -63,14 +64,14 @@ def getMetricsForFile(filePath):
 	dataReceived = 0
 
 	rxDelayList = list()
-	queueDelayList = list()
+	#queueDelayList = list()
 	droppedDelayList = list()
 	users = dict()
 	userAppType = dict()
 	appTypes = set()
 
 	for p in pkgs:
-		transmittedData += p["txSize"]
+		transmittedData += 8.0*p["txSize"]/1000.0
 		if p["user"] not in users: users[p["user"]] = 0.0
 		userAppType[p["user"]] = p["appType"]
 		appTypes.add(p["appType"])
@@ -81,15 +82,15 @@ def getMetricsForFile(filePath):
 			lostPkgs += 1
 			if p["dropped"] == True:
 				droppedDelayList.append((p["droppedTime"] - p["txTime"]) * 1000.0)
-			else:
-				queueDelayList.append(5.0-p["txTime"])
+			#else:
+				#queueDelayList.append(5.0-p["txTime"])
 		else:
 			if p["txTime"] + p["delay"] > lastRx:
 				lastRx = p["txTime"] + p["delay"]
 
 			rxDelayList.append(p["delay"] * 1000.0)
-			dataReceived += p["rxSize"]
-			users[p["user"]] += 8*p["rxSize"]/1000.0
+			dataReceived += 8.0*p["rxSize"]/1000.0
+			users[p["user"]] += 8.0*p["rxSize"]/1000.0
 
 	transmittedPkgs = len(pkgs)
 	droppedPkgs = len(droppedDelayList)
@@ -112,17 +113,17 @@ def getMetricsForFile(filePath):
 	stats = {#"rxDelayMean": mean(rxDelayList),
 			"rxDelay": rxDelayList,
 			#"queueDelayMean": mean(queueDelayList),
-			"queueDelay": queueDelayList,
+			#"queueDelay": queueDelayList,
 			#"droppedDelayMean": mean(droppedDelayList),
-			"droppedDelay": droppedDelayList,
+			#"droppedDelay": droppedDelayList,
 			#"userThroughputMean": mean(users_throughput),
 			"userThroughput": users_throughput.values(),
-			"RxThroughput": 8.0*dataReceived/d,
-			"TxThroughput": 8.0*transmittedData/d,
+			"RxThroughput": dataReceived/d,
+			"TxThroughput": transmittedData/d,
 			"deliveryRate": 100.0*(transmittedPkgs-lostPkgs)/transmittedPkgs,
 			"transmittedPkgs": transmittedPkgs,
 			"justiceRatio": justiceRatio,
-			"lostPkgs": lostPkgs,
+			#"lostPkgs": lostPkgs,
 			"droppedPkgs": droppedPkgs
 			}
 			#"SINRs": sinr}
