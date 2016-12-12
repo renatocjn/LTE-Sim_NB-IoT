@@ -38,9 +38,11 @@
 #include "../../../flows/radio-bearer.h"
 #include "../../../device/NetworkNode.h"
 
+
 UplinkPacketScheduler::UplinkPacketScheduler() {
 	setNodeTypeToSchedule(NetworkNode::TYPE_UE);
 }
+
 
 UplinkPacketScheduler::~UplinkPacketScheduler() {
 	Destroy();
@@ -48,10 +50,10 @@ UplinkPacketScheduler::~UplinkPacketScheduler() {
 }
 
 
-
 void UplinkPacketScheduler::CreateUsersToSchedule(void) {
 	m_usersToSchedule = new UsersToSchedule();
 }
+
 
 void UplinkPacketScheduler::DeleteUsersToSchedule(void) {
 	if (m_usersToSchedule != NULL) {
@@ -60,6 +62,7 @@ void UplinkPacketScheduler::DeleteUsersToSchedule(void) {
 		delete m_usersToSchedule;
 	}
 }
+
 
 void UplinkPacketScheduler::ClearUsersToSchedule() {
 	UsersToSchedule* records = GetUsersToSchedule();
@@ -72,10 +75,12 @@ void UplinkPacketScheduler::ClearUsersToSchedule() {
 	GetUsersToSchedule()->clear();
 }
 
+
 UplinkPacketScheduler::UsersToSchedule*
 UplinkPacketScheduler::GetUsersToSchedule(void) {
 	return m_usersToSchedule;
 }
+
 
 void UplinkPacketScheduler::SelectUsersToSchedule() {
 	CreateUsersToSchedule();
@@ -117,6 +122,7 @@ void UplinkPacketScheduler::SelectUsersToSchedule() {
 #endif
 }
 
+
 void UplinkPacketScheduler::DoSchedule(void) {
 #ifdef SCHEDULER_DEBUG
 	std::cout << "Start UPLINK packet scheduler for node " << GetMacEntity()->GetDevice()->GetIDNetworkNode() << std::endl;
@@ -139,13 +145,14 @@ void UplinkPacketScheduler::DoSchedule(void) {
 		(*it2)->m_userToSchedule->GetProtocolStack()->GetRrcEntity()->GetRadioBearerContainer()->at(0)->UpdateAverageTransmissionRate();
 	}
 
-	if (GetUsersToSchedule()->size() > 0) {
+	if (GetUsersToSchedule()->size() != 0) {
 		RBsAllocation();
 		DoStopSchedule();
 	}
 
 	DeleteUsersToSchedule();
 }
+
 
 void UplinkPacketScheduler::RBsAllocation() {
 #ifdef SCHEDULER_DEBUG
@@ -251,6 +258,7 @@ void UplinkPacketScheduler::RBsAllocation() {
 	}
 }
 
+
 void UplinkPacketScheduler::DoStopSchedule(void) {
 //Finalize the allocation
 	PdcchMapIdealControlMessage *pdcchMsg = new PdcchMapIdealControlMessage();
@@ -275,15 +283,6 @@ void UplinkPacketScheduler::DoStopSchedule(void) {
 			}
 			record->UpdateSchedulingGrants(user->m_dataToTransmit);
 			user->m_userToSchedule->GetProtocolStack()->GetRrcEntity()->GetRadioBearerContainer()->at(0)->UpdateTransmittedBytes(user->m_transmittedData / 8.0);
-		}
-
-		// Update Transmission Rate
-		RrcEntity *rrc = GetMacEntity ()->GetDevice ()->GetProtocolStack ()->GetRrcEntity ();
-		RrcEntity::RadioBearersContainer* bearers = rrc->GetRadioBearerContainer ();
-		for (std::vector<RadioBearer* >::iterator it = bearers->begin (); it != bearers->end (); it++)
-		{
-			RadioBearer *bearer = (*it);
-			bearer->UpdateAverageTransmissionRate ();
 		}
 	}
 

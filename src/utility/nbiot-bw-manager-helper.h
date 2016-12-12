@@ -49,7 +49,7 @@ NbIotBandwidthManager* createNbIotBwManager(BandwidthManager* bwManager, double 
 	bwManager->SetDlSubChannels(dlSubChannels);
 	bwManager->SetDlBandwidth(dlSubChannels.size());
 
-	return new NbIotBandwidthManager(ulRb, dlRb, txBwConf, txBwConf);
+	return new NbIotBandwidthManager(ulRb, dlRb, txBwConf);
 }
 
 

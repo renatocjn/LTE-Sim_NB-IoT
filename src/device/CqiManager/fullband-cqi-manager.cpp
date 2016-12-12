@@ -30,6 +30,7 @@
 #include "../../core/spectrum/bandwidth-manager.h"
 #include "../../load-parameters.h"
 
+//TODO Fazer o cqi manager para nbiot
 
 FullbandCqiManager::FullbandCqiManager()
 {}

@@ -76,6 +76,7 @@ void DownlinkPacketScheduler::SelectFlowsToSchedule ()
 			}
 
 		  //compute spectral efficiency
+		  //TODO resolve different spectral efficiency between ul and dl
 		  ENodeB *enb = (ENodeB*) GetMacEntity ()->GetDevice ();
 		  ENodeB::UserEquipmentRecord *ueRecord = enb->GetUserEquipmentRecord (bearer->GetDestination ()->GetIDNetworkNode ());
 		  std::vector<double> spectralEfficiency;
@@ -83,7 +84,7 @@ void DownlinkPacketScheduler::SelectFlowsToSchedule ()
 		  int numberOfCqi = cqiFeedbacks.size ();
 		  for (int i = 0; i < numberOfCqi; i++)
 			{
-			  double sEff = GetMacEntity ()->GetAmcModule ()->GetEfficiencyFromCQI (cqiFeedbacks.at (i));
+			  double sEff = ueRecord->m_UE->GetProtocolStack()->GetMacEntity ()->GetAmcModule ()->GetEfficiencyFromCQI (cqiFeedbacks.at (i));
 			  spectralEfficiency.push_back (sEff);
 			}
 
@@ -106,9 +107,7 @@ DownlinkPacketScheduler::DoSchedule (void)
   UpdateAverageTransmissionRate ();
   SelectFlowsToSchedule ();
 
-  if (GetFlowsToSchedule ()->size() == 0)
-	{}
-  else
+  if (GetFlowsToSchedule ()->size() != 0)
 	{
 	  RBsAllocation ();
 	}
@@ -480,10 +479,10 @@ DownlinkPacketScheduler::UpdateAverageTransmissionRate (void)
 {
   RrcEntity *rrc = GetMacEntity ()->GetDevice ()->GetProtocolStack ()->GetRrcEntity ();
   RrcEntity::RadioBearersContainer* bearers = rrc->GetRadioBearerContainer ();
-
   for (std::vector<RadioBearer* >::iterator it = bearers->begin (); it != bearers->end (); it++)
     {
       RadioBearer *bearer = (*it);
+      if (bearer->GetDestination()->GetNodeType() != getNodeTypeToSchedule()) continue;
       bearer->UpdateAverageTransmissionRate ();
     }
 }
