@@ -176,12 +176,10 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 		double posY = (double) rand() / RAND_MAX;
 		posY = 0.95 * (((2 * radius * 1000) * posY) - (radius * 1000));
 
-		double speedDirection = GetRandomVariable(360.) * ((2. * 3.14) / 360.);
-
 		//UserEquipment* ue = new UserEquipment(idUE, posX, posY, c, enb, NetworkNode::TYPE_NBIOT_UE, 0); //handover false!
 		UserEquipment* ue = new UserEquipment(idUE, posX, posY, c, enb, 0, Mobility::CONSTANT_POSITION);
 
-		std::cout << "Created UE - id " << idUE << " position " << posX << " " << posY << " direction " << speedDirection << std::endl;
+		std::cout << "Created UE - id " << idUE << " position " << posX << " " << posY << std::endl;
 
 		//ue->GetPhy()->SetBandwidthManager(nbiotSpectrum);
 		ue->GetPhy()->SetBandwidthManager(spectrum);
