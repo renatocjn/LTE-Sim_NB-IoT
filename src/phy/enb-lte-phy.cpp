@@ -156,7 +156,6 @@ EnbLtePhy::StartRx (PacketBurst* p, TransmittedSignal* txSignal)
     }
     */
 
-  //TODO talvez registrar SINR uplink aqui
   if (!phyError && p->GetNPackets() > 0)
     {
 	  //FORWARD RECEIVED PACKETS TO THE DEVICE

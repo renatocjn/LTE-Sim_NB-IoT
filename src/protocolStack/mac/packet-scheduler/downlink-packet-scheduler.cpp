@@ -30,6 +30,7 @@
 #include "../../../protocolStack/rrc/rrc-entity.h"
 #include "../../../flows/application/Application.h"
 #include "../../../device/ENodeB.h"
+#include "../../../device/UserEquipment.h"
 #include "../../../protocolStack/mac/AMCModule.h"
 #include "../../../phy/lte-phy.h"
 #include "../../../core/spectrum/bandwidth-manager.h"
@@ -76,7 +77,6 @@ void DownlinkPacketScheduler::SelectFlowsToSchedule ()
 			}
 
 		  //compute spectral efficiency
-		  //TODO resolve different spectral efficiency between ul and dl
 		  ENodeB *enb = (ENodeB*) GetMacEntity ()->GetDevice ();
 		  ENodeB::UserEquipmentRecord *ueRecord = enb->GetUserEquipmentRecord (bearer->GetDestination ()->GetIDNetworkNode ());
 		  std::vector<double> spectralEfficiency;

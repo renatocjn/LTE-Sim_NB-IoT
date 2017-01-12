@@ -111,7 +111,7 @@ void UplinkPacketScheduler::SelectUsersToSchedule() {
 			user->m_listOfAllocatedRBs.clear();
 			user->m_selectedMCS = 0;
 			user->m_transmittedData = 0;
-			user->m_channelContition = record->GetCQI();
+			user->m_channelContition = record->GetUplinkChannelStatusIndicator();
 			user->m_averageSchedulingGrant = record->GetSchedulingGrants();
 
 			GetUsersToSchedule()->push_back(user);

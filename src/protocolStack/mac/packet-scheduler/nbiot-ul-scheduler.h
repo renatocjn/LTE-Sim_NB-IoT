@@ -11,8 +11,11 @@
 #include "enhanced-uplink-packet-scheduler.h"
 
 class NbIotUlScheduler: public EnhancedUplinkPacketScheduler {
+private:
+	int currUser, scGroupSize;
+
 public:
-	NbIotUlScheduler();
+	NbIotUlScheduler(int scGroupSize);
 	virtual ~NbIotUlScheduler();
 
 	virtual void RBsAllocation();
