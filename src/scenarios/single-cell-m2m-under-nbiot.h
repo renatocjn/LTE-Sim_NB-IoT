@@ -58,15 +58,14 @@
 #define NBIOT_DEBUG
 
 //static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* trafficType, char* scheduler, int seed) {
-static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* scheduler, int seed) {
+static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* scheduler, int nbIotScSpacing, int nbIotClusterSize, int seed) {
 
 	// define simulation times
 	double duration = 6;
 	double flow_duration = 5;
-	double nbiotTxBwConfiguration = 15;
 
 	//int cluster = 4;
-	double bandwidth = 1.4;
+	double bandwidth = 3;
 
 	// CREATE COMPONENT MANAGER
 	Simulator *simulator = Simulator::Init();
@@ -95,7 +94,7 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* scheduler, in
 			<< c->GetCellCenterPosition()->GetCoordinateY() << std::endl;
 
 	BandwidthManager* h2hspectrum = new BandwidthManager(bandwidth, bandwidth, 0, 0);
-	NbIotBandwidthManager* nbiotSpectrum = createNbIotBwManager(h2hspectrum, nbiotTxBwConfiguration);
+	NbIotBandwidthManager* nbiotSpectrum = createNbIotBwManager(h2hspectrum, nbIotScSpacing);
 
 	std::vector<LteChannel*> *dlChannels = new std::vector<LteChannel*>;
 	std::vector<LteChannel*> *ulChannels = new std::vector<LteChannel*>;
@@ -143,6 +142,8 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* scheduler, in
 	nbiotSpectrum->Print();
 
 	ulChannels->at(0)->AddDevice((NetworkNode*) enb);
+
+	//TODO Finish setup the scenario
 
 	nm->GetENodeBContainer()->push_back(enb);
 	eNBs->push_back(enb);

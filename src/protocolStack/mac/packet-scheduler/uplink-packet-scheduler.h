@@ -42,7 +42,7 @@ public:
 
 	    std::vector<int> m_listOfAllocatedRBs;
 	    int m_selectedMCS;
-	    std::vector<int> m_channelContition; //similar to the CQI for the DL
+	    std::vector<double> m_channelContition; //similar to the CQI for the DL
 	  };
 	typedef std::vector<UserToSchedule*> UsersToSchedule;
 	void CreateUsersToSchedule (void);

@@ -122,7 +122,7 @@ EnhancedUplinkPacketScheduler::RBsAllocation ()
 #endif
 
 		std::vector<double> sinrs;
-		for (std::vector<int>::iterator c = scheduledUser->m_channelContition.begin ();
+		for (std::vector<double>::iterator c = scheduledUser->m_channelContition.begin ();
 				c != scheduledUser->m_channelContition.end (); c++)
 		{
 			//cout << *c <<" ";

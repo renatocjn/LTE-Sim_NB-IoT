@@ -15,10 +15,9 @@ public:
 	UlNbIotAMCModule();
 	virtual ~UlNbIotAMCModule();
 
-	int
-	GetTBSizeFromMCS (int mcs);
-	int
-	GetTBSizeFromMCS (int mcs, int nbRBs);
+	int GetTBSizeFromMCS (int mcs, int nbRBs);
+
+	int GetMaxNumberOfRuForMCS(int amc);
 };
 
 #endif /* SRC_PROTOCOLSTACK_MAC_UL_NBIOT_AMCMODULE_H_ */

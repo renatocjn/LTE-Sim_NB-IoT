@@ -5,10 +5,9 @@
  *      Author: great
  */
 
-#include "ul-nbiot-AMCModule.h"
-//TODO Finish Ul Nb-Iot AMC Module
-const unsigned short iRuToNRu[8] = {1, 2, 3, 4, 5, 6, 8, 10};
+#include "ul-nbiot-AMCModule.h";
 
+// Represents table 16.5.1.2-2 from 3GPP TS 36.213
 const unsigned short tbsTable[13][8] = {
 		{  16,   32,   56,   88,   120,  152,  208,  256 },
 		{  24,   56,   88,  144,   176,  208,  256,  344 },
@@ -25,12 +24,30 @@ const unsigned short tbsTable[13][8] = {
 		{ 208,  440,  680, 1000                          },
 };
 
+const unsigned short tbsTableSizes[13] = // size of vectors in tbsTable
+		{7, 7, 7, 7, 7, 7, 7, 6, 5, 5, 5, 4, 3};
+
 UlNbIotAMCModule::UlNbIotAMCModule() {}
 
 UlNbIotAMCModule::~UlNbIotAMCModule() {}
 
-int UlNbIotAMCModule::GetTBSizeFromMCS(int mcs) {
+int UlNbIotAMCModule::GetTBSizeFromMCS(int mcs, int nbRUs) {
+	if (nbRUs==7 || nbRUs==9) return 0;
+
+	if (mcs > 12) {
+		mcs = 12;
+	}
+
+	// Represents table 16.5.1.1-2 from 3GPP TS 36.213
+	int iRU;
+	if (nbRUs < 7) iRU = nbRUs-1;
+	else if (nbRUs == 8) iRU = 6;
+	else if (nbRUs == 10) iRU = 7;
+
+	return tbsTable[mcs][iRU];
 }
 
-int UlNbIotAMCModule::GetTBSizeFromMCS(int mcs, int nbRBs) {
+int
+UlNbIotAMCModule::GetMaxNumberOfRuForMCS(int amc) {
+	return tbsTableSizes[amc];
 }

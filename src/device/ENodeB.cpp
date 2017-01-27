@@ -19,7 +19,7 @@
  * Author: Giuseppe Piro <g.piro@poliba.it>
  */
 
-
+#include "../core/eventScheduler/simulator.h"
 #include "NetworkNode.h"
 #include "UserEquipment.h"
 #include "ENodeB.h"
@@ -41,440 +41,363 @@
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.h"
 #include "../protocolStack/packet/packet-burst.h"
 
-ENodeB::ENodeB ()
-{}
-
-ENodeB::ENodeB (int idElement,
-			    Cell *cell)
-{
-  SetIDNetworkNode (idElement);
-  SetNodeType(NetworkNode::TYPE_ENODEB);
-  SetCell (cell);
-
-  CartesianCoordinates *position = new CartesianCoordinates(cell->GetCellCenterPosition ()->GetCoordinateX (),
-		                                                    cell->GetCellCenterPosition ()->GetCoordinateY ());
-  Mobility* m = new ConstantPosition ();
-  m->SetAbsolutePosition (position);
-  SetMobilityModel (m);
-  delete position;
-
-  m_userEquipmentRecords = new UserEquipmentRecords;
-
-  EnbLtePhy *phy = new EnbLtePhy ();
-  phy->SetDevice (this);
-  SetPhy (phy);
-
-  ProtocolStack *stack = new ProtocolStack (this);
-  SetProtocolStack (stack);
-
-  Classifier *classifier = new Classifier ();
-  classifier->SetDevice (this);
-  SetClassifier (classifier);
+ENodeB::ENodeB() {
 }
 
-ENodeB::ENodeB (int idElement,
-				Cell *cell,
-				double posx,
-				double posy)
-{
-  SetIDNetworkNode (idElement);
-  SetNodeType(NetworkNode::TYPE_ENODEB);
-  SetCell (cell);
+ENodeB::ENodeB(int idElement, Cell *cell) {
+	SetIDNetworkNode(idElement);
+	SetNodeType(NetworkNode::TYPE_ENODEB);
+	SetCell(cell);
 
-  CartesianCoordinates *position = new CartesianCoordinates(posx, posy);
-  Mobility* m = new ConstantPosition ();
-  m->SetAbsolutePosition (position);
-  SetMobilityModel (m);
+	CartesianCoordinates *position = new CartesianCoordinates(cell->GetCellCenterPosition()->GetCoordinateX(),
+			cell->GetCellCenterPosition()->GetCoordinateY());
+	Mobility* m = new ConstantPosition();
+	m->SetAbsolutePosition(position);
+	SetMobilityModel(m);
+	delete position;
 
+	m_userEquipmentRecords = new UserEquipmentRecords;
 
-  m_userEquipmentRecords = new UserEquipmentRecords;
+	EnbLtePhy *phy = new EnbLtePhy();
+	phy->SetDevice(this);
+	SetPhy(phy);
 
-  EnbLtePhy *phy = new EnbLtePhy ();
-  phy->SetDevice(this);
-  SetPhy (phy);
+	ProtocolStack *stack = new ProtocolStack(this);
+	SetProtocolStack(stack);
 
-  ProtocolStack *stack = new ProtocolStack (this);
-  SetProtocolStack (stack);
-
-  Classifier *classifier = new Classifier ();
-  classifier->SetDevice (this);
-  SetClassifier (classifier);
+	Classifier *classifier = new Classifier();
+	classifier->SetDevice(this);
+	SetClassifier(classifier);
 }
 
-ENodeB::~ENodeB()
-{
-  Destroy ();
-  m_userEquipmentRecords->clear();
-  delete m_userEquipmentRecords;
+ENodeB::ENodeB(int idElement, Cell *cell, double posx, double posy) {
+	SetIDNetworkNode(idElement);
+	SetNodeType(NetworkNode::TYPE_ENODEB);
+	SetCell(cell);
+
+	CartesianCoordinates *position = new CartesianCoordinates(posx, posy);
+	Mobility* m = new ConstantPosition();
+	m->SetAbsolutePosition(position);
+	SetMobilityModel(m);
+
+	m_userEquipmentRecords = new UserEquipmentRecords;
+
+	EnbLtePhy *phy = new EnbLtePhy();
+	phy->SetDevice(this);
+	SetPhy(phy);
+
+	ProtocolStack *stack = new ProtocolStack(this);
+	SetProtocolStack(stack);
+
+	Classifier *classifier = new Classifier();
+	classifier->SetDevice(this);
+	SetClassifier(classifier);
 }
 
-void
-ENodeB::RegisterUserEquipment (UserEquipment *UE)
-{
-  UserEquipmentRecord *record = new UserEquipmentRecord (UE);
-  GetUserEquipmentRecords ()->push_back(record);
+ENodeB::~ENodeB() {
+	Destroy();
+	m_userEquipmentRecords->clear();
+	delete m_userEquipmentRecords;
 }
 
-void
-ENodeB::DeleteUserEquipment (UserEquipment *UE)
-{
-  UserEquipmentRecords *records = GetUserEquipmentRecords ();
-  UserEquipmentRecord *record;
-  UserEquipmentRecords::iterator iter;
-
-  UserEquipmentRecords *new_records = new UserEquipmentRecords ();
-
-  for (iter = records->begin (); iter != records->end (); iter++)
-    {
-	  record = *iter;
-	  if (record->GetUE ()->GetIDNetworkNode () != UE->GetIDNetworkNode ())
-	    {
-          //records->erase(iter);
-          //break;
-		  new_records->push_back (record);
-	    }
-	  else
-	    {
-		  delete record;
-	    }
-    }
-
-  m_userEquipmentRecords->clear ();
-  delete m_userEquipmentRecords;
-  m_userEquipmentRecords = new_records;
+void ENodeB::RegisterUserEquipment(UserEquipment *UE) {
+	UserEquipmentRecord *record = new UserEquipmentRecord(UE);
+	GetUserEquipmentRecords()->push_back(record);
 }
 
-int
-ENodeB::GetNbOfUserEquipmentRecords (void)
-{
-  return GetUserEquipmentRecords ()->size();
+void ENodeB::DeleteUserEquipment(UserEquipment *UE) {
+	UserEquipmentRecords *records = GetUserEquipmentRecords();
+	UserEquipmentRecord *record;
+	UserEquipmentRecords::iterator iter;
+
+	UserEquipmentRecords *new_records = new UserEquipmentRecords();
+
+	for (iter = records->begin(); iter != records->end(); iter++) {
+		record = *iter;
+		if (record->GetUE()->GetIDNetworkNode() != UE->GetIDNetworkNode()) {
+			//records->erase(iter);
+			//break;
+			new_records->push_back(record);
+		} else {
+			delete record;
+		}
+	}
+
+	m_userEquipmentRecords->clear();
+	delete m_userEquipmentRecords;
+	m_userEquipmentRecords = new_records;
 }
 
-void
-ENodeB::CreateUserEquipmentRecords (void)
-{
-  m_userEquipmentRecords = new UserEquipmentRecords ();
+int ENodeB::GetNbOfUserEquipmentRecords(void) {
+	return GetUserEquipmentRecords()->size();
 }
 
-void
-ENodeB::DeleteUserEquipmentRecords (void)
-{
-  m_userEquipmentRecords->clear ();
-  delete m_userEquipmentRecords;
+void ENodeB::CreateUserEquipmentRecords(void) {
+	m_userEquipmentRecords = new UserEquipmentRecords();
+}
+
+void ENodeB::DeleteUserEquipmentRecords(void) {
+	m_userEquipmentRecords->clear();
+	delete m_userEquipmentRecords;
 }
 
 ENodeB::UserEquipmentRecords*
-ENodeB::GetUserEquipmentRecords (void)
-{
-  return m_userEquipmentRecords;
+ENodeB::GetUserEquipmentRecords(void) {
+	return m_userEquipmentRecords;
 }
 
 ENodeB::UserEquipmentRecord*
-ENodeB::GetUserEquipmentRecord (int idUE)
-{
-  UserEquipmentRecords *records = GetUserEquipmentRecords ();
-  UserEquipmentRecord *record;
-  UserEquipmentRecords::iterator iter;
+ENodeB::GetUserEquipmentRecord(int idUE) {
+	UserEquipmentRecords *records = GetUserEquipmentRecords();
+	UserEquipmentRecord *record;
+	UserEquipmentRecords::iterator iter;
 
-  for (iter = records->begin (); iter != records->end (); iter++)
-	{
-	  record = *iter;
-	  if (record->GetUE ()->
-			  GetIDNetworkNode () == idUE)
-		{
-		  return record;
+	for (iter = records->begin(); iter != records->end(); iter++) {
+		record = *iter;
+		if (record->GetUE()->GetIDNetworkNode() == idUE) {
+			return record;
 		}
 	}
-  return false;
+	return false;
 }
 
-
-ENodeB::UserEquipmentRecord::UserEquipmentRecord ()
-{
-  m_UE = NULL;
-  //Create initial CQI values:
-  m_cqiFeedback.clear ();
-  m_uplinkChannelStatusIndicator.clear ();
-  m_schedulingRequest = 0;
-  m_averageSchedulingGrants = 1;
+ENodeB::UserEquipmentRecord::UserEquipmentRecord() {
+	m_UE = NULL;
+	//Create initial CQI values:
+	m_cqiFeedback.clear();
+	m_uplinkChannelStatusIndicator.clear();
+	m_schedulingRequest = 0;
+	m_averageSchedulingGrants = 1;
 }
 
-ENodeB::UserEquipmentRecord::~UserEquipmentRecord ()
-{
-  m_cqiFeedback.clear ();
-  m_uplinkChannelStatusIndicator.clear();
+ENodeB::UserEquipmentRecord::~UserEquipmentRecord() {
+	m_cqiFeedback.clear();
+	m_uplinkChannelStatusIndicator.clear();
 }
 
-ENodeB::UserEquipmentRecord::UserEquipmentRecord (UserEquipment *UE)
-{
-  m_UE = UE;
-  BandwidthManager *s = m_UE->GetPhy ()->GetBandwidthManager ();
+ENodeB::UserEquipmentRecord::UserEquipmentRecord(UserEquipment *UE) {
+	m_UE = UE;
+	BandwidthManager *s = m_UE->GetPhy()->GetBandwidthManager();
 
-  int nbRbs = s->GetDlSubChannels ().size ();
-  m_cqiFeedback.clear ();
-  for (int i = 0; i < nbRbs; i++ )
-    {
-	  m_cqiFeedback.push_back (10);
-    }
+	int nbRbs = s->GetDlSubChannels().size();
+	m_cqiFeedback.clear();
+	for (int i = 0; i < nbRbs; i++) {
+		m_cqiFeedback.push_back(10);
+	}
 
-  nbRbs = s->GetUlSubChannels ().size ();
-  m_uplinkChannelStatusIndicator.clear ();
-  for (int i = 0; i < nbRbs; i++ )
-    {
-	  m_uplinkChannelStatusIndicator.push_back (10.);
-    }
+	nbRbs = s->GetUlSubChannels().size();
+	m_uplinkChannelStatusIndicator.clear();
+	for (int i = 0; i < nbRbs; i++) {
+		m_uplinkChannelStatusIndicator.push_back(10.);
+	}
 
-  m_schedulingRequest = 0;
-  m_averageSchedulingGrants = 1;
+	m_schedulingRequest = 0;
+	m_averageSchedulingGrants = 1;
 }
 
-void
-ENodeB::UserEquipmentRecord::SetUE (UserEquipment *UE)
-{
-  m_UE = UE;
+void ENodeB::UserEquipmentRecord::SetUE(UserEquipment *UE) {
+	m_UE = UE;
 }
 
 UserEquipment*
-ENodeB::UserEquipmentRecord::GetUE (void) const
-{
-  return m_UE;
+ENodeB::UserEquipmentRecord::GetUE(void) const {
+	return m_UE;
 }
 
-void
-ENodeB::UserEquipmentRecord::SetCQI (std::vector<int> cqi)
-{
-  m_cqiFeedback = cqi;
+void ENodeB::UserEquipmentRecord::SetCQI(std::vector<int> cqi) {
+	m_cqiFeedback = cqi;
 }
 
-std::vector<int>
-ENodeB::UserEquipmentRecord::GetCQI (void) const
-{
- return m_cqiFeedback;
+std::vector<int> ENodeB::UserEquipmentRecord::GetCQI(void) const {
+	return m_cqiFeedback;
 }
 
-int
-ENodeB::UserEquipmentRecord::GetSchedulingRequest (void)
-{
-  return m_schedulingRequest;
+int ENodeB::UserEquipmentRecord::GetSchedulingRequest(void) {
+	return m_schedulingRequest;
 }
 
-void
-ENodeB::UserEquipmentRecord::SetSchedulingRequest (int r)
-{
-  m_schedulingRequest = r;
+void ENodeB::UserEquipmentRecord::SetSchedulingRequest(int r) {
+	m_schedulingRequest = r;
 }
 
-void
-ENodeB::UserEquipmentRecord::UpdateSchedulingGrants (int b)
-{
-  double alpha = 0.01;
-  m_averageSchedulingGrants = ((1.0-alpha) * m_averageSchedulingGrants)	+ (alpha * b);
+void ENodeB::UserEquipmentRecord::UpdateSchedulingGrants(int b) {
+	double alpha = 0.01;
+	m_averageSchedulingGrants = ((1.0 - alpha) * m_averageSchedulingGrants) + (alpha * b);
 }
 
-int
-ENodeB::UserEquipmentRecord::GetSchedulingGrants (void)
-{
-  return m_averageSchedulingGrants;
+int ENodeB::UserEquipmentRecord::GetSchedulingGrants(void) {
+	return m_averageSchedulingGrants;
 }
 
-void
-ENodeB::UserEquipmentRecord::SetUlMcs (int mcs)
-{
-  m_ulMcs = mcs;
+void ENodeB::UserEquipmentRecord::SetUlMcs(int mcs) {
+	m_ulMcs = mcs;
 }
 
-int
-ENodeB::UserEquipmentRecord::GetUlMcs (void)
-{
-  return m_ulMcs;
+int ENodeB::UserEquipmentRecord::GetUlMcs(void) {
+	return m_ulMcs;
 }
 
-void
-ENodeB::UserEquipmentRecord::SetUplinkChannelStatusIndicator (std::vector<double> vet)
-{
-  m_uplinkChannelStatusIndicator = vet;
+void ENodeB::UserEquipmentRecord::SetUplinkChannelStatusIndicator(std::vector<double> vet) {
+	m_uplinkChannelStatusIndicator = vet;
 }
 
-std::vector<double>
-ENodeB::UserEquipmentRecord::GetUplinkChannelStatusIndicator (void) const
-{
- return m_uplinkChannelStatusIndicator;
+std::vector<double> ENodeB::UserEquipmentRecord::GetUplinkChannelStatusIndicator(void) const {
+	return m_uplinkChannelStatusIndicator;
 }
 
-void
-ENodeB::SetDLScheduler (ENodeB::DLSchedulerType type)
-{
-  EnbMacEntity *mac = (EnbMacEntity*) GetProtocolStack ()->GetMacEntity ();
-  PacketScheduler *scheduler;
-  switch (type)
-    {
-      case ENodeB::DLScheduler_TYPE_PROPORTIONAL_FAIR:
-    	scheduler = new  DL_PF_PacketScheduler ();
-    	scheduler->SetMacEntity (mac);
-    	mac->SetDownlinkPacketScheduler (scheduler);
-	    break;
-
-      case ENodeB::DLScheduler_TYPE_FLS:
-      	scheduler = new  DL_FLS_PacketScheduler ();
-      	scheduler->SetMacEntity (mac);
-      	mac->SetDownlinkPacketScheduler (scheduler);
-        break;
-
-      case ENodeB::DLScheduler_TYPE_EXP:
-      	scheduler = new  DL_EXP_PacketScheduler ();
-      	scheduler->SetMacEntity (mac);
-      	mac->SetDownlinkPacketScheduler (scheduler);
-		  break;
-
-      case ENodeB::DLScheduler_TYPE_MLWDF:
-      	scheduler = new  DL_MLWDF_PacketScheduler ();
-      	scheduler->SetMacEntity (mac);
-      	mac->SetDownlinkPacketScheduler (scheduler);
-		  break;
-
-      case ENodeB::DLScheduler_EXP_RULE:
-      	scheduler = new  ExpRuleDownlinkPacketScheduler ();
-      	scheduler->SetMacEntity (mac);
-      	mac->SetDownlinkPacketScheduler (scheduler);
-		  break;
-
-      case ENodeB::DLScheduler_LOG_RULE:
-      	scheduler = new  LogRuleDownlinkPacketScheduler ();
-      	scheduler->SetMacEntity (mac);
-      	mac->SetDownlinkPacketScheduler (scheduler);
-		  break;
-
-	  default:
-	    std::cout << "ERROR: invalid scheduler type" << std::endl;
-    	scheduler = new  DL_PF_PacketScheduler ();
-    	scheduler->SetMacEntity (mac);
-    	mac->SetDownlinkPacketScheduler (scheduler);
-	    break;
-    }
-}
-
-PacketScheduler*
-ENodeB::GetDLScheduler (void) const
-{
-  EnbMacEntity *mac = (EnbMacEntity*) GetProtocolStack ()->GetMacEntity ();
-  return mac->GetDownlinkPacketScheduler ();
-}
-
-
-
-void
-ENodeB::SetULScheduler (ULSchedulerType type)
-{
-  EnbMacEntity *mac = (EnbMacEntity*) GetProtocolStack ()->GetMacEntity ();
-  PacketScheduler *scheduler;
-  switch (type)
-	{
-	  case ENodeB::ULScheduler_TYPE_MAXIMUM_THROUGHPUT:
-		scheduler = new MaximumThroughputUplinkPacketScheduler ();
-		scheduler->SetMacEntity (mac);
-		mac->SetUplinkPacketScheduler (scheduler);
+void ENodeB::SetDLScheduler(ENodeB::DLSchedulerType type) {
+	EnbMacEntity *mac = (EnbMacEntity*) GetProtocolStack()->GetMacEntity();
+	PacketScheduler *scheduler;
+	switch (type) {
+	case ENodeB::DLScheduler_TYPE_PROPORTIONAL_FAIR:
+		scheduler = new DL_PF_PacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetDownlinkPacketScheduler(scheduler);
 		break;
-	  case ENodeB::ULScheduler_TYPE_FME:
-	    scheduler = new EnhancedUplinkPacketScheduler();
-	    scheduler->SetMacEntity (mac);
-	    mac->SetUplinkPacketScheduler (scheduler);
-	    break;
-	  case ENodeB::ULScheduler_TYPE_ROUNDROBIN:
-	    scheduler = new RoundRobinUplinkPacketScheduler ();
-	    scheduler->SetMacEntity (mac);
-	    mac->SetUplinkPacketScheduler (scheduler);
-	    break;
-	  case ENodeB::ULScheduler_TYPE_PF:
-		scheduler = new ProportionallyFairUplinkPacketScheduler ();
-		scheduler->SetMacEntity (mac);
-		mac->SetUplinkPacketScheduler (scheduler);
+
+	case ENodeB::DLScheduler_TYPE_FLS:
+		scheduler = new DL_FLS_PacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetDownlinkPacketScheduler(scheduler);
 		break;
-	  default:
+
+	case ENodeB::DLScheduler_TYPE_EXP:
+		scheduler = new DL_EXP_PacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetDownlinkPacketScheduler(scheduler);
+		break;
+
+	case ENodeB::DLScheduler_TYPE_MLWDF:
+		scheduler = new DL_MLWDF_PacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetDownlinkPacketScheduler(scheduler);
+		break;
+
+	case ENodeB::DLScheduler_EXP_RULE:
+		scheduler = new ExpRuleDownlinkPacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetDownlinkPacketScheduler(scheduler);
+		break;
+
+	case ENodeB::DLScheduler_LOG_RULE:
+		scheduler = new LogRuleDownlinkPacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetDownlinkPacketScheduler(scheduler);
+		break;
+
+	default:
 		std::cout << "ERROR: invalid scheduler type" << std::endl;
-		scheduler = new  MaximumThroughputUplinkPacketScheduler ();
-		scheduler->SetMacEntity (mac);
-		mac->SetUplinkPacketScheduler (scheduler);
+		scheduler = new DL_PF_PacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetDownlinkPacketScheduler(scheduler);
 		break;
 	}
 }
 
+PacketScheduler*
+ENodeB::GetDLScheduler(void) const {
+	EnbMacEntity *mac = (EnbMacEntity*) GetProtocolStack()->GetMacEntity();
+	return mac->GetDownlinkPacketScheduler();
+}
 
+void ENodeB::SetULScheduler(ULSchedulerType type) {
+	EnbMacEntity *mac = (EnbMacEntity*) GetProtocolStack()->GetMacEntity();
+	PacketScheduler *scheduler;
+	switch (type) {
+	case ENodeB::ULScheduler_TYPE_MAXIMUM_THROUGHPUT:
+		scheduler = new MaximumThroughputUplinkPacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetUplinkPacketScheduler(scheduler);
+		break;
+	case ENodeB::ULScheduler_TYPE_FME:
+		scheduler = new EnhancedUplinkPacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetUplinkPacketScheduler(scheduler);
+		break;
+	case ENodeB::ULScheduler_TYPE_ROUNDROBIN:
+		scheduler = new RoundRobinUplinkPacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetUplinkPacketScheduler(scheduler);
+		break;
+	case ENodeB::ULScheduler_TYPE_PF:
+		scheduler = new ProportionallyFairUplinkPacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetUplinkPacketScheduler(scheduler);
+		break;
+	default:
+		std::cout << "ERROR: invalid scheduler type" << std::endl;
+		scheduler = new MaximumThroughputUplinkPacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetUplinkPacketScheduler(scheduler);
+		break;
+	}
+}
 
 PacketScheduler*
-ENodeB::GetULScheduler (void) const
-{
-  EnbMacEntity *mac = (EnbMacEntity*) GetProtocolStack ()->GetMacEntity ();
-  return mac->GetUplinkPacketScheduler ();
+ENodeB::GetULScheduler(void) const {
+	EnbMacEntity *mac = (EnbMacEntity*) GetProtocolStack()->GetMacEntity();
+	return mac->GetUplinkPacketScheduler();
 }
 
-
-
-void
-ENodeB::ResourceBlocksAllocation (void)
-{
-  DownlinkResourceBlokAllocation ();
-  UplinkResourceBlockAllocation ();
-  NBIotDlResourceBlokAllocation ();
-  NBIotUlResourceBlokAllocation ();
+void ENodeB::ResourceBlocksAllocation(void) {
+	DownlinkResourceBlokAllocation();
+	UplinkResourceBlockAllocation();
+	NBIotDlResourceBlokAllocation();
+	NBIotUlResourceBlokAllocation();
 }
 
-void
-ENodeB::UplinkResourceBlockAllocation (void)
-{
-  if (GetULScheduler () != NULL && GetNbOfUserEquipmentRecords () > 0)
-   {
-	  GetULScheduler ()->Schedule();
-   }
+void ENodeB::UplinkResourceBlockAllocation(void) {
+	if (GetULScheduler() != NULL && GetNbOfUserEquipmentRecords() > 0) {
+		GetULScheduler()->Schedule();
+	}
 }
 
-void
-ENodeB::DownlinkResourceBlokAllocation (void)
-{
-  if (GetDLScheduler () != NULL && GetNbOfUserEquipmentRecords () > 0)
-   {
-	  GetDLScheduler ()->Schedule();
-   }
-  else
-    {
-	  //send only reference symbols
-	  //PacketBurst *pb = new PacketBurst ();
-	  //SendPacketBurst (pb);
-    }
+void ENodeB::DownlinkResourceBlokAllocation(void) {
+	if (GetDLScheduler() != NULL && GetNbOfUserEquipmentRecords() > 0) {
+		GetDLScheduler()->Schedule();
+	} else {
+		//send only reference symbols
+		//PacketBurst *pb = new PacketBurst ();
+		//SendPacketBurst (pb);
+	}
 }
 
 //Debug
-void
-ENodeB::Print (void)
-{
-  std::cout << " ENodeB object:"
-      "\n\t m_idNetworkNode = " << GetIDNetworkNode () <<
-	  "\n\t m_idCell = " << GetCell ()->GetIdCell () <<
-	  "\n\t Served Users: " <<
-  std::endl;
+void ENodeB::Print(void) {
+	std::cout << " ENodeB object:"
+			"\n\t m_idNetworkNode = " << GetIDNetworkNode() << "\n\t m_idCell = " << GetCell()->GetIdCell() << "\n\t Served Users: " << std::endl;
 
-  vector<UserEquipmentRecord*>* records = GetUserEquipmentRecords ();
-  UserEquipmentRecord *record;
-  vector<UserEquipmentRecord*>::iterator iter;
-  for (iter = records->begin (); iter != records->end (); iter++)
-    {
-  	  record = *iter;
-	  std::cout << "\t\t idUE = " << record->GetUE ()->
-			  GetIDNetworkNode () << std::endl;
-    }
+	vector<UserEquipmentRecord*>* records = GetUserEquipmentRecords();
+	UserEquipmentRecord *record;
+	vector<UserEquipmentRecord*>::iterator iter;
+	for (iter = records->begin(); iter != records->end(); iter++) {
+		record = *iter;
+		std::cout << "\t\t idUE = " << record->GetUE()->GetIDNetworkNode() << std::endl;
+	}
 }
 
-void
-ENodeB::SetNbIotDLScheduler (NbIotDlScheduler *scheduler)
-{
-  m_nbiotDlScheduler = scheduler;
-  m_nbiotDlScheduler->SetMacEntity(GetProtocolStack()->GetMacEntity());
+void ENodeB::SetNbIotDLScheduler(NbIotDlScheduler *scheduler) {
+	m_nextNbIotDl = 0.0;
+	m_nbiotDlScheduler = scheduler;
+	m_nbiotDlScheduler->SetMacEntity(GetProtocolStack()->GetMacEntity());
 }
 
-void
-ENodeB::SetNbIotULScheduler(NbIotUlScheduler *scheduler)
-{
-  m_nbiotUlScheduler = scheduler;
-  m_nbiotUlScheduler->SetMacEntity(GetProtocolStack()->GetMacEntity());
+void ENodeB::SetNbIotULScheduler(NbIotUlScheduler *scheduler, int scClusterSize, int scSpacing) {
+	if (scSpacing == 15) {
+		if (scClusterSize == 1)
+			inBetweenUlNbIotScheduling = 0.008;
+		if (scClusterSize == 3)
+			inBetweenUlNbIotScheduling = 0.004;
+		if (scClusterSize == 6)
+			inBetweenUlNbIotScheduling = 0.002;
+		if (scClusterSize == 12)
+			inBetweenUlNbIotScheduling = 0.001;
+	} else {
+		inBetweenUlNbIotScheduling = 0.032;
+	}
+	m_nextNbIotUl = 0.0;
+	m_nbiotUlScheduler = scheduler;
+	m_nbiotUlScheduler->SetMacEntity(GetProtocolStack()->GetMacEntity());
 }
 
 NbIotDlScheduler*
@@ -487,26 +410,20 @@ ENodeB::GetNbIotUlScheduler() {
 	return m_nbiotUlScheduler;
 }
 
-void
-ENodeB::NBIotUlResourceBlokAllocation (void)
-{
-  if (GetNbIotUlScheduler () != NULL && GetNbOfUserEquipmentRecords () > 0)
-   {
-	  GetNbIotUlScheduler ()->Schedule();
-   }
+void ENodeB::NBIotUlResourceBlokAllocation(void) {
+	if (m_nbiotUlScheduler != NULL &&
+			GetNbOfUserEquipmentRecords() > 0 &&
+			Simulator::Init()->Now() > m_nextNbIotUl) {
+		m_nbiotUlScheduler->Schedule();
+		m_nextNbIotUl = Simulator::Init()->Now() + inBetweenUlNbIotScheduling;
+	}
 }
 
-void
-ENodeB::NBIotDlResourceBlokAllocation (void)
-{
-  if (GetNbIotDLScheduler () != NULL && GetNbOfUserEquipmentRecords () > 0)
-   {
-	  GetNbIotDLScheduler ()->Schedule();
-   }
-  else
-    {
-	  //send only reference symbols
-	  //PacketBurst *pb = new PacketBurst ();
-	  //SendPacketBurst (pb);
-    }
+void ENodeB::NBIotDlResourceBlokAllocation(void) {
+	if (m_nbiotDlScheduler != NULL &&
+			GetNbOfUserEquipmentRecords() > 0 &&
+			Simulator::Init()->Now() > m_nextNbIotDl) {
+		m_nbiotDlScheduler->Schedule();
+		m_nextNbIotDl = Simulator::Init()->Now() + (0.001*GetNbIotDLScheduler()->GetDurationOfLastSchedule());
+	}
 }

@@ -229,7 +229,7 @@ void UplinkPacketScheduler::RBsAllocation() {
 			int dataToTransmit = scheduledUser->m_dataToTransmit;
 			int availableRBs = nbOfRBs - s;
 			std::vector<double> sinrs;
-			for (std::vector<int>::iterator c = scheduledUser->m_channelContition.begin(); c != scheduledUser->m_channelContition.end(); c++) {
+			for (std::vector<double>::iterator c = scheduledUser->m_channelContition.begin(); c != scheduledUser->m_channelContition.end(); c++) {
 				sinrs.push_back(GetMacEntity()->GetAmcModule()->GetSinrFromCQI(*c));
 			}
 			double effectiveSinr = GetEesmEffectiveSinr(sinrs);

@@ -15,10 +15,9 @@ public:
 	DlNbIotAMCModule();
 	virtual ~DlNbIotAMCModule();
 
-	int
-	GetTBSizeFromMCS (int mcs);
-	int
-	GetTBSizeFromMCS (int mcs, int nbRBs);
+	int GetTBSizeFromMCS(int mcs, int nbSFs);
+
+	int GetMaxNumberOfSfForMCS(int mcs);
 };
 
 #endif /* SRC_PROTOCOLSTACK_MAC_DL_NBIOT_AMCMODULE_H_ */

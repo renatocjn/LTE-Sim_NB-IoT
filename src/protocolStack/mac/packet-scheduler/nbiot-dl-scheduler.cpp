@@ -44,7 +44,14 @@ void NbIotDlScheduler::RBsAllocation() {
 	}
 
 	int mcs = amcModule.GetMCSFromCQI(bestFlow->m_cqiFeedbacks.at(0));
-	int transportBlockSize = amcModule.GetTBSizeFromMCS(mcs, 1);
+	int nSF = 1;
+	while ( (amcModule.GetTBSizeFromMCS(mcs, nSF)/8) < bestFlow->GetDataToTransmit()
+			&& nSF < amcModule.GetMaxNumberOfSfForMCS(mcs)){
+		nSF++;
+		if (nSF == 7 || nSF == 9) nSF++; //skip these since it does not show on AMC table;
+	}
+	lastScheduleDuration = nSF;
+	int transportBlockSize = amcModule.GetTBSizeFromMCS(mcs, nSF);
 
 //	bestFlow->m_transmittedData = transportBlockSize;
 	bestFlow->UpdateAllocatedBits(transportBlockSize);
@@ -59,6 +66,12 @@ void NbIotDlScheduler::RBsAllocation() {
 	delete pdcchMsg;
 }
 
-double NbIotDlScheduler::ComputeSchedulingMetric(RadioBearer* bearer, double spectralEfficiency, int subChannel) {
+double
+NbIotDlScheduler::ComputeSchedulingMetric(RadioBearer* bearer, double spectralEfficiency, int subChannel) {
 	return spectralEfficiency / bearer->GetAverageTransmissionRate();
+}
+
+int
+NbIotDlScheduler::GetDurationOfLastSchedule() {
+	return lastScheduleDuration;
 }

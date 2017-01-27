@@ -24,32 +24,12 @@ NbIotUlScheduler::~NbIotUlScheduler() {
 }
 
 void NbIotUlScheduler::RBsAllocation() {
-	//TODO implementar alocação UL do NBIoT
+	//RoundRobin
 
 	UlNbIotAMCModule amcModule;
 
 	UsersToSchedule *users = this->GetUsersToSchedule();
 	UsersToSchedule::iterator it;
-
-//	TODO Fazer metrica de escolha dinamica tamanho grupo de sc
-//	double sum = 0;
-//	for(it=users->begin(); it!=users->end(); it++) {
-//		sum += (*it)->m_dataToTransmit;
-//	}
-//	double meanDataToTransmit = sum/users->size();
-//
-//	double ScSizeMetric = meanDataToTransmit / users->size();
-//	int scGroupSize;
-//
-//	if (ScSizeMetric > ___ ) {
-//		scGroupSize = 12;
-//	} else if (ScSizeMetric > ___ ) {
-//		scGroupSize = 6;
-//	} else if (ScSizeMetric > ___ ) {
-//		scGroupSize = 3;
-//	} else {
-//		scGroupSize = 1;
-//	}
 
 	NbIotBandwidthManager *bwManager = (NbIotBandwidthManager*) users->at(0)->m_userToSchedule->GetPhy()->GetBandwidthManager();
 	int scToSchedule = bwManager->GetUlBandwidth();
@@ -76,8 +56,9 @@ void NbIotUlScheduler::RBsAllocation() {
 }
 
 double NbIotUlScheduler::ComputeSchedulingMetric(RadioBearer* bearer, double spectralEfficiency, int subChannel) {
+	return 0.0;
 }
 
 double NbIotUlScheduler::ComputeSchedulingMetric(UserToSchedule* user, int subchannel) {
-//TODO implementar métrica de alocação UL do NB-IoT?
+	return 0.0
 }
