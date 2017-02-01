@@ -39,6 +39,7 @@
 
 DownlinkPacketScheduler::DownlinkPacketScheduler(){
 	setNodeTypeToSchedule(NetworkNode::TYPE_UE);
+	CreateFlowsToSchedule();
 }
 
 DownlinkPacketScheduler::~DownlinkPacketScheduler()

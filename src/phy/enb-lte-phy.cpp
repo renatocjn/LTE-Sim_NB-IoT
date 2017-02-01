@@ -72,6 +72,7 @@ void
 EnbLtePhy::DoSetBandwidthManager (void)
 {
   BandwidthManager* s = GetBandwidthManager ();
+
   std::vector<double> channels = s->GetDlSubChannels ();
 
   TransmittedSignal* txSignal = new TransmittedSignal ();

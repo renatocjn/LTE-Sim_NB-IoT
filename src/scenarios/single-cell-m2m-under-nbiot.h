@@ -19,6 +19,8 @@
  * Author: Giuseppe Piro <g.piro@poliba.it>
  */
 
+#include "../protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.h"
 #include "../channel/LteChannel.h"
 #include "../phy/enb-lte-phy.h"
 #include "../phy/ue-lte-phy.h"
@@ -58,7 +60,7 @@
 #define NBIOT_DEBUG
 
 //static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* trafficType, char* scheduler, int seed) {
-static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* scheduler, int nbIotScSpacing, int nbIotClusterSize, int seed) {
+static void SingleCellM2mUnderNbIot(double radius, int nbUE, int nbIotScSpacing, int nbIotClusterSize, int seed) {
 
 	// define simulation times
 	double duration = 6;
@@ -115,21 +117,24 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* scheduler, in
 	enb->GetPhy()->SetUlChannel(ulChannels->at(0));
 
 	enb->SetDLScheduler(ENodeB::DLScheduler_TYPE_PROPORTIONAL_FAIR);
+	enb->SetULScheduler(ENodeB::ULScheduler_TYPE_PF);
+//	if (strcmp(scheduler, "roundrobin") == 0 || strcmp(scheduler, "rr") == 0)
+//		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_ROUNDROBIN);
+//
+//	else if (strcmp(scheduler, "maximumthroughput") == 0 || strcmp(scheduler, "mt") == 0)
+//		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_MAXIMUM_THROUGHPUT);
+//
+//	else if (strcmp(scheduler, "proportionallyfair") == 0 || strcmp(scheduler, "pf") == 0)
+//		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_PF);
+//
+//	else {
+//		std::cout << "\tThe Scheduler \"" << scheduler
+//				<< "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n" << std::endl;
+//		return;
+//	}
 
-	if (strcmp(scheduler, "roundrobin") == 0 || strcmp(scheduler, "rr") == 0)
-		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_ROUNDROBIN);
-
-	else if (strcmp(scheduler, "maximumthroughput") == 0 || strcmp(scheduler, "mt") == 0)
-		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_MAXIMUM_THROUGHPUT);
-
-	else if (strcmp(scheduler, "proportionallyfair") == 0 || strcmp(scheduler, "pf") == 0)
-		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_PF);
-
-	else {
-		std::cout << "\tThe Scheduler \"" << scheduler
-				<< "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n" << std::endl;
-		return;
-	}
+	enb->SetNbIotDLScheduler(new NbIotDlScheduler());
+	enb->SetNbIotULScheduler(new NbIotUlScheduler(nbIotClusterSize), nbIotClusterSize, nbIotScSpacing);
 
 	enb->GetPhy()->SetBandwidthManager(h2hspectrum);
 
@@ -142,8 +147,6 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* scheduler, in
 	nbiotSpectrum->Print();
 
 	ulChannels->at(0)->AddDevice((NetworkNode*) enb);
-
-	//TODO Finish setup the scenario
 
 	nm->GetENodeBContainer()->push_back(enb);
 	eNBs->push_back(enb);
@@ -183,21 +186,18 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* scheduler, in
 		double posY = (double) rand() / RAND_MAX;
 		posY = 0.95 * (((2 * radius * 1000) * posY) - (radius * 1000));
 
-		double speedDirection = GetRandomVariable(360.) * ((2. * 3.14) / 360.);
-
-		//UserEquipment* ue = new UserEquipment(idUE, posX, posY, c, enb, NetworkNode::TYPE_NBIOT_UE, 0); //handover false!
 		UserEquipment* ue = new UserEquipment(idUE, posX, posY, c, enb, 0, Mobility::CONSTANT_POSITION);
 
-		std::cout << "Created UE - id " << idUE << " position " << posX << " " << posY << " direction " << speedDirection << std::endl;
+		std::cout << "Created UE - id " << idUE << " position " << posX << " " << posY << std::endl;
 		//ue->GetMobilityModel()->GetAbsolutePosition()->Print();
 		ue->GetPhy()->SetDlChannel(enb->GetPhy()->GetDlChannel());
 		ue->GetPhy()->SetUlChannel(enb->GetPhy()->GetUlChannel());
 
-		FullbandCqiManager *cqiManager = new FullbandCqiManager();
-		cqiManager->SetCqiReportingMode(CqiManager::PERIODIC);
-		cqiManager->SetReportingInterval(1);
-		cqiManager->SetDevice(ue);
-		ue->SetCqiManager(cqiManager);
+//		FullbandCqiManager *cqiManager = new FullbandCqiManager();
+//		cqiManager->SetCqiReportingMode(CqiManager::PERIODIC);
+//		cqiManager->SetReportingInterval(1);
+//		cqiManager->SetDevice(ue);
+//		ue->SetCqiManager(cqiManager);
 
 		WidebandCqiEesmErrorModel *errorModel = new WidebandCqiEesmErrorModel();
 		ue->GetPhy()->SetErrorModel(errorModel);

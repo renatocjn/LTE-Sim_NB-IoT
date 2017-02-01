@@ -209,7 +209,7 @@ UeLtePhy::StartRx (PacketBurst* p, TransmittedSignal* txSignal)
     }
 
   //CQI report
-  CreateCqiFeedbacks (m_measuredSinr);
+  //CreateCqiFeedbacks (m_measuredSinr);
 
   m_channelsForRx.clear ();
   m_channelsForTx.clear ();

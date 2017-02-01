@@ -36,7 +36,7 @@ void NbIotUlScheduler::RBsAllocation() {
 	int nUsersToSchedule = scToSchedule/scGroupSize;
 	int sc = 0;
 	for(int i=0; i<nUsersToSchedule; i++) {
-		if (currUser > users->size())
+		if (currUser >= users->size())
 			currUser = 0;
 
 		UserToSchedule *selectedUser = users->at(currUser);
@@ -46,7 +46,7 @@ void NbIotUlScheduler::RBsAllocation() {
 		int tbs = ((amcModule.GetTBSizeFromMCS (mcs, scGroupSize)) / 8);
 
 		for (int j=0; j<scGroupSize; j++)
-			selectedUser->m_listOfAllocatedRBs.at(sc+j);
+			selectedUser->m_listOfAllocatedRBs.push_back(sc+j);
 		selectedUser->m_transmittedData = tbs;
 		selectedUser->m_selectedMCS = mcs;
 
@@ -60,5 +60,5 @@ double NbIotUlScheduler::ComputeSchedulingMetric(RadioBearer* bearer, double spe
 }
 
 double NbIotUlScheduler::ComputeSchedulingMetric(UserToSchedule* user, int subchannel) {
-	return 0.0
+	return 0.0;
 }
