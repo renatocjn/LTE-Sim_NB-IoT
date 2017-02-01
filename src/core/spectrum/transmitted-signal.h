@@ -32,12 +32,16 @@ public:
 	virtual ~TransmittedSignal();
 
 	void SetValues (std::vector<double> values);
-	std::vector<double> Getvalues (void);
+	std::vector<double> Getvalues ();
+
+	void SetNbiotValues (std::vector<double> values);
+	std::vector<double> GetNbiotValues ();
 
 	TransmittedSignal* Copy (void);
 
 private:
 	std::vector<double> m_values; //transmitted power for each sub-carrier
+	std::vector<double> m_nbiotvalues; //transmitted power for each sub-carrier
 };
 
 #endif /* TRANSMITTEDSIGNAL_H_ */

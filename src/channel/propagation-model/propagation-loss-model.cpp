@@ -87,7 +87,13 @@ PropagationLossModel::AddLossModel(NetworkNode* src, NetworkNode* dst, Transmitt
 	 */
 
 	ChannelRealization* c = GetChannelRealization(src, dst);
-	std::vector<double> rxSignalValues = rxSignal->Getvalues();
+	std::vector<double> rxSignalValues;
+	if(src->GetNodeType() == NetworkNode::TYPE_ENODEB &&
+		dst->GetNodeType() == NetworkNode::TYPE_NBIOT_UE) {
+		rxSignalValues= rxSignal->GetNbiotValues();
+	} else {
+		rxSignalValues = rxSignal->Getvalues();
+	}
 	std::vector<double> loss = c->GetLoss();
 
 #ifdef TEST_PROPAGATION_LOSS_MODEL

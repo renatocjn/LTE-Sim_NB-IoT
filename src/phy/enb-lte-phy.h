@@ -26,20 +26,23 @@
 #include "lte-phy.h"
 #include <map>
 #include "../device/NetworkNode.h"
+#include "../core/spectrum/nbiot-bandwidth-manager.h"
 
 class IdealControlMessage;
 class EnbLtePhy :public LtePhy {
 	//#ifdef TEST_UL_SINR
 private:
 	std::map<NetworkNode*, int> counters;
+	BandwidthManager* m_nbiotbwmgr;
 	//#endif
 public:
 	EnbLtePhy();
 	virtual ~EnbLtePhy();
 
 //	BandwidthManager* GetBandwidthManager (void);
-//	void SetBandwidthManager (BandwidthManager* bandwidthManager);
+	void SetBandwidthManager (BandwidthManager* bandwidthManager, BandwidthManager* nbIotBandwidthManager);
 	virtual void DoSetBandwidthManager (void);
+	BandwidthManager* getNbIotBandwidthManager();
 
 	virtual void StartTx (PacketBurst* p);
 	virtual void StartRx (PacketBurst* p, TransmittedSignal* txSignal);

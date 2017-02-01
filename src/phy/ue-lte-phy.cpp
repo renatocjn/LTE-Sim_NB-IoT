@@ -128,7 +128,11 @@ UeLtePhy::StartRx (PacketBurst* p, TransmittedSignal* txSignal)
   std::vector<double> rxSignalValues;
   std::vector<double>::iterator it;
 
-  rxSignalValues = txSignal->Getvalues();
+  if (GetDevice()->GetNodeType() == NetworkNode::TYPE_NBIOT_UE) {
+	  rxSignalValues = txSignal->GetNbiotValues();
+  } else {
+	  rxSignalValues = txSignal->Getvalues();
+  }
 
   //compute noise + interference
   double interference;

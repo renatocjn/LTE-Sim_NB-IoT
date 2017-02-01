@@ -42,6 +42,14 @@ TransmittedSignal::Getvalues (void)
   return m_values;
 }
 
+void TransmittedSignal::SetNbiotValues(std::vector<double> values) {
+	m_nbiotvalues = values;
+}
+
+std::vector<double> TransmittedSignal::GetNbiotValues() {
+	return m_nbiotvalues;
+}
+
 TransmittedSignal*
 TransmittedSignal::Copy (void)
 {

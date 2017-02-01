@@ -136,7 +136,8 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, int nbIotScSpacing,
 	enb->SetNbIotDLScheduler(new NbIotDlScheduler());
 	enb->SetNbIotULScheduler(new NbIotUlScheduler(nbIotClusterSize), nbIotClusterSize, nbIotScSpacing);
 
-	enb->GetPhy()->SetBandwidthManager(h2hspectrum);
+	EnbLtePhy *p = (EnbLtePhy*) enb->GetPhy();
+	p->SetBandwidthManager(h2hspectrum, nbiotSpectrum);
 
 	std::cout << "Created enb, id " << enb->GetIDNetworkNode() << ", cell id " << enb->GetCell()->GetIdCell() << ", position: "
 			<< enb->GetMobilityModel()->GetAbsolutePosition()->GetCoordinateX() << " "
