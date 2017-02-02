@@ -172,13 +172,24 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, int nbIotScSpacing,
 	// nbUE  = 30% H2H + 70% M2M (Ericsson Mobility Report, 2016)
 	// nbM2M = 30%  ED + 70%  TD (Maia et al, 2016)
 	// nbH2H = 35% CBR + 45% Video + 20% VoIP (Self-Defined)
-	int nbH2H = ceil(0.3 * nbUE);
+
+	int nbH2H = floor(0.3 * nbUE);
 	int nbM2M = nbUE - nbH2H;
-	int nbED = ceil(0.3 * nbM2M);
-	int nbTD = nbUE - nbED;
-	int nbCBR = ceil(nbH2H * 0.35);
-	int nbVideo = ceil(nbH2H * 0.45);
+
+	int nbED = floor(0.3 * nbM2M);
+	int nbTD = nbM2M - nbED;
+
+	int nbCBR = floor(nbH2H * 0.35);
+	int nbVideo = floor(nbH2H * 0.45);
 	int nbVoIP = nbH2H - nbCBR - nbVideo;
+
+//	std::cout << "Nb of H2H   Devices: " << nbH2H << std::endl;
+//	std::cout << "Nb of CBR   Devices: " << nbCBR << std::endl;
+//	std::cout << "Nb of Video Devices: " << nbVideo << std::endl;
+//	std::cout << "Nb of VoIP  Devices: " << nbVoIP << std::endl;
+//	std::cout << "Nb of M2M   Devices: " << nbM2M << std::endl;
+//	std::cout << "Nb of ED    Devices: " << nbED << std::endl;
+//	std::cout << "Nb of TD    Devices: " << nbTD << std::endl;
 
 	for (int i = 0; i < nbUE; i++) {
 		//ue's random position

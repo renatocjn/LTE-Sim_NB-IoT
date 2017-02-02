@@ -141,8 +141,6 @@ void ChannelRealization::UpdateFastFading(void) {
 		numbOfSubChannels = GetDestinationNode()->GetPhy()->GetBandwidthManager()->GetDlSubChannels().size();
 	}
 
-	std::cout << "numbOfSubChannels " << numbOfSubChannels << std::endl;
-
 	if (GetSourceNode()->GetNodeType() == NetworkNode::TYPE_UE) {
 		UserEquipment* ue = (UserEquipment*) GetSourceNode();
 		speed = ue->GetMobilityModel()->GetSpeed();

@@ -108,8 +108,10 @@ def getMetricsForFile(filePath):
 	#print filePath
 	#pp(users_throughput)
 	#pp(maxThroughput)
+	#print "appTypeThroughput"
+	#pp(appTypeThroughput)
 	#print
-
+	
 	stats = {#"rxDelayMean": mean(rxDelayList),
 			"rxDelay": rxDelayList,
 			#"queueDelayMean": mean(queueDelayList),

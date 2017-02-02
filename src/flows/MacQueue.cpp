@@ -197,7 +197,7 @@ MacQueue::GetPacketToTramsit (int availableBytes)
 	  std::cout << "QUEUE_SIZE " << GetNbDataPackets() << std::endl;
 #endif
 
-  std::cout << "QUEUE_SIZE " << GetNbDataPackets() << std::endl;
+//  std::cout << "QUEUE_SIZE " << GetNbDataPackets() << std::endl;
   packet->AddRLCHeader(rlcHeader);
   return packet;
 }

@@ -160,14 +160,18 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 	//Create UEs
 	int idUE = 1;
 
-	//NbIoT traffic
-	int nbED = ceil(0.3 * nbUE);
-	int nbTD = nbUE - nbED;
+	int nbH2H = ceil(0.3 * nbUE);
+	int nbM2M = nbUE - nbH2H;
+	if(strcmp(trafficType, "m2m") == 0) nbM2M = nbUE;
+
+	//M2M traffic
+	int nbED = ceil(0.3 * nbM2M);
+	int nbTD = nbUE - nbM2M;
 
 	//Mixed traffic;
-	int nbCBR = ceil(nbUE * 0.35);
-	int nbVideo = ceil(nbUE * 0.45);
-	int nbVoIP = nbUE - nbCBR - nbVideo;
+	int nbCBR = ceil(nbH2H * 0.35);
+	int nbVideo = ceil(nbH2H * 0.45);
+	int nbVoIP = nbH2H - nbCBR - nbVideo;
 
 	for (int i = 0; i < nbUE; i++) {
 		//ue's random position
@@ -208,14 +212,13 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 		MacroCellUrbanAreaChannelRealization* c_ul = new MacroCellUrbanAreaChannelRealization(ue, enb);
 		enb->GetPhy()->GetUlChannel()->GetPropagationLossModel()->AddChannelRealization(c_ul);
 
-		ue->GetPhy ()->GetDlChannel ()->AddDevice (ue);
+		ue->GetPhy()->GetDlChannel()->AddDevice(ue);
 
 		// CREATE UPLINK APPLICATION FOR THIS UE
 		double start_time = 0.1 + GetRandomVariable(0.4);
 		double duration_time = start_time + flow_duration;
 
 		if (strcmp(trafficType, "m2m") == 0) {
-
 			if (nbED > 0) {
 				M2MEventDriven* edApplication = new M2MEventDriven();
 				edApplication->SetSource(ue);
@@ -335,8 +338,50 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 			cbrContainner->push_back(cbrApplication);
 
 		} else if (strcmp(trafficType, "mixed") == 0) {
+			if (nbTD > 0) {
+				nbTD--;
+				M2MTimeDriven* tdApplication = new M2MTimeDriven();
+				tdApplication->SetSource(ue);
+				tdApplication->SetDestination(enb);
+				tdApplication->SetApplicationID(applicationID);
+				tdApplication->SetStartTime(start_time);
+				tdApplication->SetStopTime(duration_time);
 
-			if (nbCBR > 0) {
+				// create qos parameters
+				QoSParameters *qosParameters = new QoSParameters();
+				qosParameters->SetMaxDelay(tdApplication->GetInterval());
+				tdApplication->SetQoSParameters(qosParameters);
+
+				//create classifier parameters
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
+						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
+				tdApplication->SetClassifierParameters(cp);
+
+				tdContainner->push_back(tdApplication);
+				std::cout << "CREATED M2M_TD APPLICATION, ID " << applicationID << ", Interval: " << tdApplication->GetInterval() << std::endl;
+			} else if (nbED > 0) {
+				nbED--;
+
+				M2MEventDriven* edApplication = new M2MEventDriven();
+				edApplication->SetSource(ue);
+				edApplication->SetDestination(enb);
+				edApplication->SetApplicationID(applicationID);
+				edApplication->SetStartTime(start_time);
+				edApplication->SetStopTime(duration_time);
+
+				// create qos parameters
+				QoSParameters *qosParameters = new QoSParameters();
+				qosParameters->SetMaxDelay(0.050); //50ms
+				edApplication->SetQoSParameters(qosParameters);
+
+				//create classifier parameters
+				ClassifierParameters *cp = new ClassifierParameters(ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0, destinationPort,
+						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
+				edApplication->SetClassifierParameters(cp);
+
+				edContainner->push_back(edApplication);
+				std::cout << "CREATED M2M_ED APPLICATION, ID " << applicationID << std::endl;
+			} else if (nbCBR > 0) {
 				CBR* cbrApplication = new CBR();
 				cbrApplication->SetSource(ue);
 				cbrApplication->SetDestination(enb);
@@ -390,7 +435,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 
 				videoContainner->push_back(videoApplication);
 				nbVideo--;
-			} else {
+			} else if (nbVoIP > 0) {
 				VoIP* voIPApplication = new VoIP();
 				voIPApplication->SetSource(ue);
 				voIPApplication->SetDestination(enb);
@@ -410,6 +455,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 				std::cout << "CREATED VOIP APPLICATION, ID " << applicationID << std::endl;
 
 				voipContainner->push_back(voIPApplication);
+				nbVoIP--;
 			}
 		} else {
 			std::cout << "\tThe traffic \"" << trafficType << "\" is not implemented!\n\t options are:\n \tm2m\n\tvoip\n\tvideo\n\tcbr\n\tmixed\n"
