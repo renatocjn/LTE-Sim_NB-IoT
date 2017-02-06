@@ -34,7 +34,7 @@ wait
 nChilds=0
 ./RUN/nbiot-performance/makeScenarioGraphs.py "Executions/$outFolder/lteOnly/traffic=$traffic/scheduler=$scheduler/"
 done
-./RUN/nbiot-performance/makeComparationsGraphs.py "Executions/$outFolder/lteOnly/traffic=$traffic"
+./RUN/nbiot-performance/makeLteComparationsGraphs.py "Executions/$outFolder/lteOnly/traffic=$traffic"
 done
 
 
@@ -51,8 +51,8 @@ for r in $(seq $nRuns); do
  		nChilds=0
  	fi
 
-	outDir="Executions/$outFolder/withNbIot/15spacingClusterSize=$scClusterSize/nUe=$nUe/$r/"
- 	mkdir -p "$outDir"
+	outDir="Executions/$outFolder/withNbIot/scClusterSize=$scClusterSize/nUe=$nUe/$r/"
+	mkdir -p "$outDir"
 
 	seed=$((RANDOM * RANDOM))
  	(time bin/LTE-Sim_NBIot SingleCellM2mUnderNbIot $cellRadius $nUe $scSpacing $scClusterSize $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
@@ -60,7 +60,7 @@ done
 done
 wait
 nChilds=0
-./RUN/nbiot-performance/makeScenarioGraphs.py "Executions/$outFolder/withNbIot/15spacingClusterSize=$scClusterSize" "SC Group Size"
+./RUN/nbiot-performance/makeScenarioGraphs.py "Executions/$outFolder/withNbIot/scClusterSize=$scClusterSize"
 done
-./RUN/nbiot-performance/makeComparationsGraphs.py "Executions/$outFolder/withNbIot/" "SC Group Size"
+./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/withNbIot/"
 done

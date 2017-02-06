@@ -111,7 +111,7 @@ def getMetricsForFile(filePath):
 	#print "appTypeThroughput"
 	#pp(appTypeThroughput)
 	#print
-	
+
 	stats = {#"rxDelayMean": mean(rxDelayList),
 			"rxDelay": rxDelayList,
 			#"queueDelayMean": mean(queueDelayList),
@@ -132,7 +132,8 @@ def getMetricsForFile(filePath):
 
 	#pp(appTypeThroughput)
 	for appType, throughputList in appTypeThroughput.iteritems():
-		stats[appType+"_justiceRatio"] = min(throughputList)/max(max(throughputList),1)
+		stats["justiceRatio_"+appType] = min(throughputList)/max(max(throughputList),1)
+		stats["throughput_"+appType] = throughputList
 
 	del maxThroughput
 	#del appTypeThroughput

@@ -82,19 +82,21 @@ void EnbLtePhy::DoSetBandwidthManager(void) {
 
 	txSignal->SetValues(values);
 
-	s = getNbIotBandwidthManager();
-	channels = s->GetDlSubChannels();
+	if (getNbIotBandwidthManager()) {
+		s = getNbIotBandwidthManager();
+		channels = s->GetDlSubChannels();
 
-	values = std::vector<double>();
+		values = std::vector<double>();
 
-	powerTx = pow(10., (GetTxPower() - 30) / 10); // in natural unit
-	txPower = 10 * log10(powerTx / channels.size()); //in dB
+		powerTx = pow(10., (GetTxPower() - 30) / 10); // in natural unit
+		txPower = 10 * log10(powerTx / channels.size()); //in dB
 
-	for (it = channels.begin(); it != channels.end(); it++) {
-		values.push_back(txPower);
+		for (it = channels.begin(); it != channels.end(); it++) {
+			values.push_back(txPower);
+		}
+
+		txSignal->SetNbiotValues(values);
 	}
-
-	txSignal->SetNbiotValues(values);
 
 	//txSignal->SetBandwidthManager (s->Copy());
 	SetTxSignal(txSignal);

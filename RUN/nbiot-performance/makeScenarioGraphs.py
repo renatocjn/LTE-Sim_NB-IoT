@@ -69,42 +69,42 @@ if __name__ == "__main__":
 
 	#i+=1
 	#pl.subplot(j,k,i)
-	pl.clf()
-	pl.margins(0.05, 0.05)
-	pl.xlabel(xlabel)
-	pl.ylabel("Segundos")
-	pl.errorbar(X, plots["queueDelay"]["y"], plots["queueDelay"]["ci"])
-	pl.savefig("queueDelay.png")
+	#pl.clf()
+	#pl.margins(0.05, 0.05)
+	#pl.xlabel(xlabel)
+	#pl.ylabel("Segundos")
+	#pl.errorbar(X, plots["queueDelay"]["y"], plots["queueDelay"]["ci"])
+	#pl.savefig("queueDelay.png")
 
 	#i+=1
 	#pl.subplot(j,k,i)
-	pl.clf()
-	pl.margins(0.05, 0.05)
-	pl.xlabel("Segundos")
-	for scenario in natsorted(cdfs["queueDelay"].keys()):
-		plotCDF(cdfs["queueDelay"][scenario], scenario)
-	pl.legend(loc="best")
-	pl.savefig("queueDelayCDF.png")
+	#pl.clf()
+	#pl.margins(0.05, 0.05)
+	#pl.xlabel("Segundos")
+	#for scenario in natsorted(cdfs["queueDelay"].keys()):
+	#	plotCDF(cdfs["queueDelay"][scenario], scenario)
+	#pl.legend(loc="best")
+	#pl.savefig("queueDelayCDF.png")
 
 
 	#i+=1
 	#pl.subplot(j,k,i)
-	pl.clf()
-	pl.margins(0.05, 0.05)
-	pl.xlabel(xlabel)
-	pl.ylabel("Millisegundos")
-	pl.errorbar(X, plots["droppedDelay"]["y"], plots["droppedDelay"]["ci"])
-	pl.savefig("droppedDelay.png")
+	#pl.clf()
+	#pl.margins(0.05, 0.05)
+	#pl.xlabel(xlabel)
+	#pl.ylabel("Millisegundos")
+	#pl.errorbar(X, plots["droppedDelay"]["y"], plots["droppedDelay"]["ci"])
+	#pl.savefig("droppedDelay.png")
 
 	#i+=1
 	#pl.subplot(j,k,i)
-	pl.clf()
-	pl.margins(0.05, 0.05)
-	pl.xlabel("Millisegundos")
-	for scenario in natsorted(cdfs["droppedDelay"].keys()):
-		plotCDF(cdfs["droppedDelay"][scenario], scenario)
-	pl.legend(loc="best")
-	pl.savefig("droppedDelayCDF.png")
+	#pl.clf()
+	#pl.margins(0.05, 0.05)
+	#pl.xlabel("Millisegundos")
+	#for scenario in natsorted(cdfs["droppedDelay"].keys()):
+	#	plotCDF(cdfs["droppedDelay"][scenario], scenario)
+	#pl.legend(loc="best")
+	#pl.savefig("droppedDelayCDF.png")
 
 
 	#i+=1
@@ -192,12 +192,12 @@ if __name__ == "__main__":
 
 	#i+=1
 	#pl.subplot(j,k,i)
-	pl.clf()
-	pl.margins(0.05, 0.05)
-	pl.xlabel(xlabel)
-	#pl.title("Nb lost packages")
-	pl.errorbar(X, plots["lostPkgs"]["y"], plots["lostPkgs"]["ci"])
-	pl.savefig("lostPkgs.png")
+	#pl.clf()
+	#pl.margins(0.05, 0.05)
+	#pl.xlabel(xlabel)
+	##pl.title("Nb lost packages")
+	#pl.errorbar(X, plots["lostPkgs"]["y"], plots["lostPkgs"]["ci"])
+	#pl.savefig("lostPkgs.png")
 
 	#i+=1
 	#pl.subplot(j,k,i)
@@ -219,6 +219,16 @@ if __name__ == "__main__":
 	#pl.savefig("SINRs_CDF.png")
 
 	#pl.subplots_adjust(.05, .1, .975, .9, .2, .45)
+
+	for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
+		app = 'throughput_'+app
+		if plots[app]:
+			pl.clf()
+			pl.margins(0.05, 0.05)
+			pl.xlabel(xlabel)
+			pl.ylabel("Kbit/s")
+			pl.errorbar(X, plots[app]["y"], plots[app]["ci"])
+			pl.savefig(app+".png")
 
 	del cdfs, plots
 
