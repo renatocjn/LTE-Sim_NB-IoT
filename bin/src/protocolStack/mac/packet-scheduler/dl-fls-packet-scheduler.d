@@ -1,4 +1,5 @@
-src/protocolStack/mac/packet-scheduler/dl-fls-packet-scheduler.d: \
+src/protocolStack/mac/packet-scheduler/dl-fls-packet-scheduler.d \
+ src/protocolStack/mac/packet-scheduler/dl-fls-packet-scheduler.o: \
  ../src/protocolStack/mac/packet-scheduler/dl-fls-packet-scheduler.cpp \
  ../src/protocolStack/mac/packet-scheduler/dl-fls-packet-scheduler.h \
  ../src/protocolStack/mac/packet-scheduler/downlink-packet-scheduler.h \

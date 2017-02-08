@@ -1,4 +1,4 @@
-src/protocolStack/nas/nas-entity.d: \
+src/protocolStack/nas/nas-entity.d src/protocolStack/nas/nas-entity.o: \
  ../src/protocolStack/nas/nas-entity.cpp \
  ../src/protocolStack/nas/nas-entity.h \
  ../src/protocolStack/nas/../../device/NetworkNode.h \

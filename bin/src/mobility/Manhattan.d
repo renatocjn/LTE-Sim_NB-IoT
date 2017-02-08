@@ -1,5 +1,6 @@
-src/mobility/Manhattan.d: ../src/mobility/Manhattan.cpp \
- ../src/mobility/Manhattan.h ../src/mobility/Mobility.h \
+src/mobility/Manhattan.d src/mobility/Manhattan.o: \
+ ../src/mobility/Manhattan.cpp ../src/mobility/Manhattan.h \
+ ../src/mobility/Mobility.h \
  ../src/mobility/../core/cartesianCoodrdinates/CartesianCoordinates.h \
  ../src/mobility/../componentManagers/NetworkManager.h \
  ../src/mobility/../componentManagers/../networkTopology/Cell.h \

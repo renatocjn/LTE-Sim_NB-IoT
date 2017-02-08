@@ -1,4 +1,4 @@
-src/protocolStack/mac/mac-entity.d: \
+src/protocolStack/mac/mac-entity.d src/protocolStack/mac/mac-entity.o: \
  ../src/protocolStack/mac/mac-entity.cc \
  ../src/protocolStack/mac/mac-entity.h \
  ../src/protocolStack/mac/../packet/Packet.h \

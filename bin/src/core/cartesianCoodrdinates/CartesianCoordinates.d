@@ -1,4 +1,5 @@
-src/core/cartesianCoodrdinates/CartesianCoordinates.d: \
+src/core/cartesianCoodrdinates/CartesianCoordinates.d \
+ src/core/cartesianCoodrdinates/CartesianCoordinates.o: \
  ../src/core/cartesianCoodrdinates/CartesianCoordinates.cpp \
  ../src/core/cartesianCoodrdinates/CartesianCoordinates.h
 

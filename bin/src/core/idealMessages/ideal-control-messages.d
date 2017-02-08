@@ -1,4 +1,5 @@
-src/core/idealMessages/ideal-control-messages.d: \
+src/core/idealMessages/ideal-control-messages.d \
+ src/core/idealMessages/ideal-control-messages.o: \
  ../src/core/idealMessages/ideal-control-messages.cc \
  ../src/core/idealMessages/ideal-control-messages.h \
  ../src/core/idealMessages/../../device/NetworkNode.h \

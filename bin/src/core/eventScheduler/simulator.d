@@ -1,4 +1,4 @@
-src/core/eventScheduler/simulator.d: \
+src/core/eventScheduler/simulator.d src/core/eventScheduler/simulator.o: \
  ../src/core/eventScheduler/simulator.cc \
  ../src/core/eventScheduler/simulator.h \
  ../src/core/eventScheduler/event.h ../src/core/eventScheduler/calendar.h \

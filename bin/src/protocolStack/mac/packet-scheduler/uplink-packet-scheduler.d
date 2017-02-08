@@ -1,4 +1,5 @@
-src/protocolStack/mac/packet-scheduler/uplink-packet-scheduler.d: \
+src/protocolStack/mac/packet-scheduler/uplink-packet-scheduler.d \
+ src/protocolStack/mac/packet-scheduler/uplink-packet-scheduler.o: \
  ../src/protocolStack/mac/packet-scheduler/uplink-packet-scheduler.cpp \
  ../src/protocolStack/mac/packet-scheduler/../../../device/ENodeB.h \
  ../src/protocolStack/mac/packet-scheduler/../../../device/NetworkNode.h \

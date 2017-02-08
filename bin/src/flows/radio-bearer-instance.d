@@ -1,4 +1,5 @@
-src/flows/radio-bearer-instance.d: ../src/flows/radio-bearer-instance.cpp \
+src/flows/radio-bearer-instance.d src/flows/radio-bearer-instance.o: \
+ ../src/flows/radio-bearer-instance.cpp \
  ../src/flows/radio-bearer-instance.h \
  ../src/flows/../device/NetworkNode.h \
  ../src/flows/../device/../networkTopology/Cell.h \
