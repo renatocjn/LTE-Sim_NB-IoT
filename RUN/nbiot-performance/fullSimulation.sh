@@ -4,7 +4,7 @@ cd ~/Programas/LTE-Sim_NBIot
 
 nChilds=0
 maxChilds=$(nproc)
-nRuns=3
+nRuns=30
 
 cellRadius=2 #2km
 outFolder="testNBIoT"
@@ -12,8 +12,8 @@ outFolder="testNBIoT"
 
 for traffic in mixed; do
 for scheduler in mt pf rr; do
-#for nUe in 10 25 50 75 100 125 150 125 200 225 250 275 300; do
-for nUe in 25 75 100; do
+for nUe in 10 25 50 75 100 125 150 125 200 225 250 275 300; do
+#for nUe in 25 75 100; do
 for r in $(seq $nRuns); do
 
  	if [ $nChilds -lt $maxChilds ]; then
@@ -40,8 +40,8 @@ done
 
 for scSpacing in 15; do
 for scClusterSize in 1 3 6 12; do
-#for nUe in 10 25 50 75 100 125 150 125 200 225 250 275 300; do
-for nUe in 25 75 100; do
+for nUe in 10 25 50 75 100 125 150 125 200 225 250 275 300; do
+#for nUe in 25 75 100; do
 for r in $(seq $nRuns); do
 
  	if [ $nChilds -lt $maxChilds ]; then

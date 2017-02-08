@@ -132,7 +132,7 @@ def getMetricsForFile(filePath):
 
 	#pp(appTypeThroughput)
 	for appType, throughputList in appTypeThroughput.iteritems():
-		stats["justiceRatio_"+appType] = min(throughputList)/max(max(throughputList),1)
+		stats["justiceRatio_"+appType] = sum(throughputList)/(sum(square(throughputList)) * len(throughputList))
 		stats["throughput_"+appType] = throughputList
 
 	del maxThroughput

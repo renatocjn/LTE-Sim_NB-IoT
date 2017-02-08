@@ -36,4 +36,5 @@
 *.rar
 /linuxDebug/
 /testDebug/
+#/bin/
 /bin/

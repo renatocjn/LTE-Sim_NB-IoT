@@ -230,6 +230,16 @@ if __name__ == "__main__":
 			pl.errorbar(X, plots[app]["y"], plots[app]["ci"])
 			pl.savefig(app+".png")
 
+	for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
+		app = 'throughput_'+app
+		if plots[app]:
+			pl.clf()
+			pl.margins(0.05, 0.05)
+			pl.xlabel(xlabel)
+			pl.ylabel("Kbit/s")
+			pl.errorbar(X, plots[app]["y"], plots[app]["ci"])
+			pl.savefig(app+".png")
+
 	del cdfs, plots
 
 	#pl.savefig("graphs.png")

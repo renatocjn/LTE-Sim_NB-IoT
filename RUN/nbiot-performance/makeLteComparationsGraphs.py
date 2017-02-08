@@ -215,6 +215,20 @@ if __name__ == "__main__":
 				ax = figure[app]['axes']
 				ax.errorbar(X, plots[sch][app]["y"], plots[sch][app]["ci"], label=sch_labels[sch], marker=markers[sch])
 
+		for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
+			app = 'justiceRatio_'+app
+			if plots[sch][app]:
+				if app not in figure:
+					f = pl.figure()
+					ax = f.add_axes(rect)
+					ax.margins(0.05, 0.05)
+					ax.set_xlabel(xlabel)
+					ax.set_ylabel("Kbit/s")
+					#ax.set_title("Nb dropped PKGs in L2")
+					figure[app] = {'figure': f, 'axes': ax}
+				ax = figure[app]['axes']
+				ax.errorbar(X, plots[sch][app]["y"], plots[sch][app]["ci"], label=sch_labels[sch], marker=markers[sch])
+
 
 	del plots
 
