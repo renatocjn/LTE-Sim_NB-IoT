@@ -12,8 +12,9 @@
 
 class NbIotUlScheduler: public EnhancedUplinkPacketScheduler {
 private:
-	int currUser, scGroupSize;
-
+	int currUser;
+protected:
+	int scGroupSize;
 public:
 	NbIotUlScheduler(int scGroupSize);
 	virtual ~NbIotUlScheduler();

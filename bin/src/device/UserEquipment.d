@@ -1,6 +1,6 @@
-src/device/UserEquipment.d src/device/UserEquipment.o: \
- ../src/device/UserEquipment.cpp ../src/device/UserEquipment.h \
- ../src/device/NetworkNode.h ../src/device/../networkTopology/Cell.h \
+src/device/UserEquipment.d: ../src/device/UserEquipment.cpp \
+ ../src/device/UserEquipment.h ../src/device/NetworkNode.h \
+ ../src/device/../networkTopology/Cell.h \
  ../src/device/../networkTopology/../core/cartesianCoodrdinates/CartesianCoordinates.h \
  ../src/device/../networkTopology/Femtocell.h \
  ../src/device/../networkTopology/Cell.h \

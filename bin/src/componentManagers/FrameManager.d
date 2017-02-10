@@ -1,4 +1,4 @@
-src/componentManagers/FrameManager.d src/componentManagers/FrameManager.o: \
+src/componentManagers/FrameManager.d: \
  ../src/componentManagers/FrameManager.cpp \
  ../src/componentManagers/FrameManager.h \
  ../src/componentManagers/NetworkManager.h \

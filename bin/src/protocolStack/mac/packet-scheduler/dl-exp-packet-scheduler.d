@@ -1,5 +1,4 @@
-src/protocolStack/mac/packet-scheduler/dl-exp-packet-scheduler.d \
- src/protocolStack/mac/packet-scheduler/dl-exp-packet-scheduler.o: \
+src/protocolStack/mac/packet-scheduler/dl-exp-packet-scheduler.d: \
  ../src/protocolStack/mac/packet-scheduler/dl-exp-packet-scheduler.cpp \
  ../src/protocolStack/mac/packet-scheduler/dl-exp-packet-scheduler.h \
  ../src/protocolStack/mac/packet-scheduler/downlink-packet-scheduler.h \

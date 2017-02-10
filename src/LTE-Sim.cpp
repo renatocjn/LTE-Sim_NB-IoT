@@ -137,14 +137,14 @@ int main(int argc, char *argv[]) {
 		if (strcmp(argv[1], "SingleCellM2mUnderNbIot") == 0) {
 			double radius = atof(argv[2]);
 			int nbUE = atoi(argv[3]);
-			int nbIotScSpacing = atoi(argv[4]);
+			char* ulScheduler = argv[4];
 			int nbIotClusterSize = atoi(argv[5]);
 			int seed;
 			if (argc == 7)
 				seed = atoi(argv[6]);
 			else
 				seed = -1;
-			SingleCellM2mUnderNbIot(radius, nbUE, nbIotScSpacing, nbIotClusterSize, seed);
+			SingleCellM2mUnderNbIot(radius, nbUE, ulScheduler, nbIotClusterSize, seed);
 		}
 		if (strcmp(argv[1], "MultiCell") == 0) {
 			int nbCells = atoi(argv[2]);

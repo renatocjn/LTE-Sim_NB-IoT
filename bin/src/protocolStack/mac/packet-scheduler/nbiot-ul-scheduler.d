@@ -1,5 +1,4 @@
-src/protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.d \
- src/protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.o: \
+src/protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.d: \
  ../src/protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.cpp \
  ../src/protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.h \
  ../src/protocolStack/mac/packet-scheduler/enhanced-uplink-packet-scheduler.h \

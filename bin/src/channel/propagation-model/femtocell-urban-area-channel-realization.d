@@ -1,5 +1,4 @@
-src/channel/propagation-model/femtocell-urban-area-channel-realization.d \
- src/channel/propagation-model/femtocell-urban-area-channel-realization.o: \
+src/channel/propagation-model/femtocell-urban-area-channel-realization.d: \
  ../src/channel/propagation-model/femtocell-urban-area-channel-realization.cpp \
  ../src/channel/propagation-model/femtocell-urban-area-channel-realization.h \
  ../src/channel/propagation-model/channel-realization.h \

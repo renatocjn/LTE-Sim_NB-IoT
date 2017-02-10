@@ -15,6 +15,8 @@ CPP_SRCS += \
 ../src/protocolStack/mac/packet-scheduler/log-rule-downlink-packet-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/mw-rule-downlink-packet-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.cpp \
+../src/protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler.cpp \
+../src/protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/packet-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.cpp \
@@ -34,6 +36,8 @@ OBJS += \
 ./src/protocolStack/mac/packet-scheduler/log-rule-downlink-packet-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/mw-rule-downlink-packet-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.o \
+./src/protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler.o \
+./src/protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/packet-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.o \
@@ -53,6 +57,8 @@ CPP_DEPS += \
 ./src/protocolStack/mac/packet-scheduler/log-rule-downlink-packet-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/mw-rule-downlink-packet-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.d \
+./src/protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler.d \
+./src/protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/packet-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.d \
@@ -65,7 +71,7 @@ CPP_DEPS += \
 src/protocolStack/mac/packet-scheduler/%.o: ../src/protocolStack/mac/packet-scheduler/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -O0 -static -g3 -w -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -O0 -g3 -w -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

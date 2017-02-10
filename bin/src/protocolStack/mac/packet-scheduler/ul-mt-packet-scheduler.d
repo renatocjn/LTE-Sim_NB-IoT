@@ -1,5 +1,4 @@
-src/protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.d \
- src/protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.o: \
+src/protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.d: \
  ../src/protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.cpp \
  ../src/protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.h \
  ../src/protocolStack/mac/packet-scheduler/enhanced-uplink-packet-scheduler.h \

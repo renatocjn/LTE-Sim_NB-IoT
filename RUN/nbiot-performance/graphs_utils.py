@@ -1,7 +1,7 @@
 
 
 from sys import argv, exit
-from numpy import mean, array, sqrt, cumsum, sort, arange, square
+from numpy import mean, array, sqrt, cumsum, sort, arange, square, isnan, sum
 from pprint import pprint as pp
 from glob import glob
 import os
@@ -104,6 +104,7 @@ def getMetricsForFile(filePath):
 
 	justiceRatios = [ t/maxThroughput[userAppType[uid]] for uid,t in users_throughput.iteritems() ]
 	justiceRatio = square(sum(justiceRatios))/(sum(square(justiceRatios))*len(users))
+	if isnan(justiceRatio): justiceRatio=0.0
 
 	#print filePath
 	#pp(users_throughput)
@@ -130,9 +131,12 @@ def getMetricsForFile(filePath):
 			}
 			#"SINRs": sinr}
 
+	if isnan(stats['deliveryRate']): stats['deliveryRate'] = 0
+
 	#pp(appTypeThroughput)
 	for appType, throughputList in appTypeThroughput.iteritems():
-		stats["justiceRatio_"+appType] = sum(throughputList)/(sum(square(throughputList)) * len(throughputList))
+		stats["justiceRatio_"+appType] = square(sum(throughputList))/(sum(square(throughputList)) * len(throughputList))
+		if isnan(stats["justiceRatio_"+appType]): stats["justiceRatio_"+appType]=0.0
 		stats["throughput_"+appType] = throughputList
 
 	del maxThroughput

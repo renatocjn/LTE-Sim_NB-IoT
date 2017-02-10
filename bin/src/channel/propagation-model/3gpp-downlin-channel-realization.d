@@ -1,5 +1,4 @@
-src/channel/propagation-model/3gpp-downlin-channel-realization.d \
- src/channel/propagation-model/3gpp-downlin-channel-realization.o: \
+src/channel/propagation-model/3gpp-downlin-channel-realization.d: \
  ../src/channel/propagation-model/3gpp-downlin-channel-realization.cpp \
  ../src/channel/propagation-model/3gpp-downlin-channel-realization.h \
  ../src/channel/propagation-model/channel-realization.h \

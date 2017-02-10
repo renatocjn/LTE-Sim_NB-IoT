@@ -21,6 +21,8 @@
 
 #include "../protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler.h"
 #include "../channel/LteChannel.h"
 #include "../phy/enb-lte-phy.h"
 #include "../phy/ue-lte-phy.h"
@@ -58,9 +60,10 @@
 #include <cstring>
 
 #define NBIOT_DEBUG
+#define _15KHz 15
 
 //static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* trafficType, char* scheduler, int seed) {
-static void SingleCellM2mUnderNbIot(double radius, int nbUE, int nbIotScSpacing, int nbIotClusterSize, int seed) {
+static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, int nbIotClusterSize, int seed) {
 
 	// define simulation times
 	double duration = 6;
@@ -96,7 +99,7 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, int nbIotScSpacing,
 			<< c->GetCellCenterPosition()->GetCoordinateY() << std::endl;
 
 	BandwidthManager* h2hspectrum = new BandwidthManager(bandwidth, bandwidth, 0, 0);
-	NbIotBandwidthManager* nbiotSpectrum = createNbIotBwManager(h2hspectrum, nbIotScSpacing);
+	NbIotBandwidthManager* nbiotSpectrum = createNbIotBwManager(h2hspectrum, _15KHz);
 
 	std::vector<LteChannel*> *dlChannels = new std::vector<LteChannel*>;
 	std::vector<LteChannel*> *ulChannels = new std::vector<LteChannel*>;
@@ -118,23 +121,22 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, int nbIotScSpacing,
 
 	enb->SetDLScheduler(ENodeB::DLScheduler_TYPE_PROPORTIONAL_FAIR);
 	enb->SetULScheduler(ENodeB::ULScheduler_TYPE_PF);
-//	if (strcmp(scheduler, "roundrobin") == 0 || strcmp(scheduler, "rr") == 0)
-//		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_ROUNDROBIN);
-//
-//	else if (strcmp(scheduler, "maximumthroughput") == 0 || strcmp(scheduler, "mt") == 0)
-//		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_MAXIMUM_THROUGHPUT);
-//
-//	else if (strcmp(scheduler, "proportionallyfair") == 0 || strcmp(scheduler, "pf") == 0)
-//		enb->SetULScheduler(ENodeB::ULScheduler_TYPE_PF);
-//
-//	else {
-//		std::cout << "\tThe Scheduler \"" << scheduler
-//				<< "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n" << std::endl;
-//		return;
-//	}
 
 	enb->SetNbIotDLScheduler(new NbIotDlScheduler());
-	enb->SetNbIotULScheduler(new NbIotUlScheduler(nbIotClusterSize), nbIotClusterSize, nbIotScSpacing);
+	if (strcmp(ulScheduler, "roundrobin") == 0 || strcmp(ulScheduler, "rr") == 0)
+		enb->SetNbIotULScheduler(new NbIotUlScheduler(nbIotClusterSize), nbIotClusterSize, _15KHz);
+
+	else if (strcmp(ulScheduler, "maximumthroughput") == 0 || strcmp(ulScheduler, "mt") == 0)
+		enb->SetNbIotULScheduler(new NbIotUlMtScheduler(nbIotClusterSize), nbIotClusterSize, _15KHz);
+
+	else if (strcmp(ulScheduler, "proportionallyfair") == 0 || strcmp(ulScheduler, "pf") == 0)
+		enb->SetNbIotULScheduler(new NbIotUlPfScheduler(nbIotClusterSize), nbIotClusterSize, _15KHz);
+
+	else {
+		std::cout << "\tThe Scheduler \"" << ulScheduler
+				<< "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n" << std::endl;
+		return;
+	}
 
 	EnbLtePhy *p = (EnbLtePhy*) enb->GetPhy();
 	p->SetBandwidthManager(h2hspectrum, nbiotSpectrum);

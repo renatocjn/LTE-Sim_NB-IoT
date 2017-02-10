@@ -98,14 +98,14 @@ if __name__ == "__main__":
 		ax = figure["rxDelay"]['axes']
 		ax.errorbar(X, plots[sch]["rxDelay"]["y"], plots[sch]["rxDelay"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
-		if "rxDelayCDF" not in figure:
-			f = pl.figure()
-			ax = f.add_axes(rect)
-			ax.margins(0.05, 0.05)
-			ax.set_xlabel("Millisegundos")
-			figure["rxDelayCDF"] = {'figure': f, 'axes': ax}
-		ax = figure["rxDelayCDF"]['axes']
-		plotCDF(cdfs[sch]["rxDelay"], sch_labels[sch], target=ax, mark=markers[sch])
+		#if "rxDelayCDF" not in figure:
+			#f = pl.figure()
+			#ax = f.add_axes(rect)
+			#ax.margins(0.05, 0.05)
+			#ax.set_xlabel("Millisegundos")
+			#figure["rxDelayCDF"] = {'figure': f, 'axes': ax}
+		#ax = figure["rxDelayCDF"]['axes']
+		#plotCDF(cdfs[sch]["rxDelay"], sch_labels[sch], target=ax, mark=markers[sch])
 
 
 		if "userThroughput" not in figure:
@@ -118,14 +118,14 @@ if __name__ == "__main__":
 		ax = figure["userThroughput"]['axes']
 		ax.errorbar(X, plots[sch]["userThroughput"]["y"], plots[sch]["userThroughput"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
-		if "userThroughputCDF" not in figure:
-			f = pl.figure()
-			ax = f.add_axes(rect)
-			ax.margins(0.05, 0.05)
-			ax.set_xlabel("Kbit/s")
-			figure["userThroughputCDF"] = {'figure': f, 'axes': ax}
-		ax = figure["userThroughputCDF"]['axes']
-		plotCDF(cdfs[sch]["userThroughput"], sch_labels[sch], target=ax, mark=markers[sch])
+		#if "userThroughputCDF" not in figure:
+			#f = pl.figure()
+			#ax = f.add_axes(rect)
+			#ax.margins(0.05, 0.05)
+			#ax.set_xlabel("Kbit/s")
+			#figure["userThroughputCDF"] = {'figure': f, 'axes': ax}
+		#ax = figure["userThroughputCDF"]['axes']
+		#plotCDF(cdfs[sch]["userThroughput"], sch_labels[sch], target=ax, mark=markers[sch])
 
 		if "RxThroughput" not in figure:
 			f = pl.figure()
@@ -203,7 +203,7 @@ if __name__ == "__main__":
 
 		for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
 			app = 'throughput_'+app
-			if plots[sch][app]:
+			if app in plots[sch]:
 				if app not in figure:
 					f = pl.figure()
 					ax = f.add_axes(rect)
@@ -217,13 +217,13 @@ if __name__ == "__main__":
 
 		for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
 			app = 'justiceRatio_'+app
-			if plots[sch][app]:
+			if app in plots[sch]:
 				if app not in figure:
 					f = pl.figure()
 					ax = f.add_axes(rect)
 					ax.margins(0.05, 0.05)
 					ax.set_xlabel(xlabel)
-					ax.set_ylabel("Kbit/s")
+					ax.set_ylabel("Jain Justice Ratio")
 					#ax.set_title("Nb dropped PKGs in L2")
 					figure[app] = {'figure': f, 'axes': ax}
 				ax = figure[app]['axes']

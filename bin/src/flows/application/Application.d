@@ -1,4 +1,4 @@
-src/flows/application/Application.d src/flows/application/Application.o: \
+src/flows/application/Application.d: \
  ../src/flows/application/Application.cpp \
  ../src/flows/application/Application.h \
  ../src/flows/application/../../core/eventScheduler/simulator.h \

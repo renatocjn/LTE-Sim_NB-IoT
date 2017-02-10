@@ -1,5 +1,4 @@
-src/channel/propagation-model/winner-downlink-channel-realization.d \
- src/channel/propagation-model/winner-downlink-channel-realization.o: \
+src/channel/propagation-model/winner-downlink-channel-realization.d: \
  ../src/channel/propagation-model/winner-downlink-channel-realization.cpp \
  ../src/channel/propagation-model/winner-downlink-channel-realization.h \
  ../src/channel/propagation-model/channel-realization.h \

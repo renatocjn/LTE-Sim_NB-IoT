@@ -1,5 +1,5 @@
-src/phy/interference.d src/phy/interference.o: \
- ../src/phy/interference.cpp ../src/phy/interference.h \
+src/phy/interference.d: ../src/phy/interference.cpp \
+ ../src/phy/interference.h \
  ../src/phy/../componentManagers/NetworkManager.h \
  ../src/phy/../componentManagers/../networkTopology/Cell.h \
  ../src/phy/../componentManagers/../networkTopology/../core/cartesianCoodrdinates/CartesianCoordinates.h \
