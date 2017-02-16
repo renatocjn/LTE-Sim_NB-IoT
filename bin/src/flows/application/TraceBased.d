@@ -1,4 +1,4 @@
-src/flows/application/TraceBased.d src/flows/application/TraceBased.o: \
+src/flows/application/TraceBased.d: \
  ../src/flows/application/TraceBased.cpp \
  ../src/flows/application/TraceBased.h \
  ../src/flows/application/Application.h \

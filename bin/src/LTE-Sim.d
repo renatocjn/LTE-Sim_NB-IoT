@@ -1,4 +1,4 @@
-src/LTE-Sim.d src/LTE-Sim.o: ../src/LTE-Sim.cpp ../src/TEST/test.h \
+src/LTE-Sim.d: ../src/LTE-Sim.cpp ../src/TEST/test.h \
  ../src/TEST/test-attach-to-the-channel.h \
  ../src/TEST/../channel/LteChannel.h ../src/TEST/../phy/enb-lte-phy.h \
  ../src/TEST/../phy/lte-phy.h ../src/TEST/../phy/../device/NetworkNode.h \

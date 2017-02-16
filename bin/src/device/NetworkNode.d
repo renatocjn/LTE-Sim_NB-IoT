@@ -1,6 +1,5 @@
-src/device/NetworkNode.d src/device/NetworkNode.o: \
- ../src/device/NetworkNode.cpp ../src/device/NetworkNode.h \
- ../src/device/../networkTopology/Cell.h \
+src/device/NetworkNode.d: ../src/device/NetworkNode.cpp \
+ ../src/device/NetworkNode.h ../src/device/../networkTopology/Cell.h \
  ../src/device/../networkTopology/../core/cartesianCoodrdinates/CartesianCoordinates.h \
  ../src/device/../networkTopology/Femtocell.h \
  ../src/device/../networkTopology/Cell.h \

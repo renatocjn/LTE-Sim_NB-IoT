@@ -1,4 +1,4 @@
-src/protocolStack/rlc/rlc-entity.d src/protocolStack/rlc/rlc-entity.o: \
+src/protocolStack/rlc/rlc-entity.d: \
  ../src/protocolStack/rlc/rlc-entity.cc \
  ../src/protocolStack/rlc/rlc-entity.h \
  ../src/protocolStack/rlc/../../load-parameters.h \

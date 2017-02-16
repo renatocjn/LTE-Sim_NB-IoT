@@ -56,9 +56,10 @@ EnbLtePhy::EnbLtePhy() {
 	SetErrorModel(NULL);
 	SetInterference(NULL);
 	SetTxPower(43); //dBm
-//  counters = new std::map<NetworkNode*, int>();
-			//#ifdef TEST_UL_SINR
-			//#endif
+
+	#ifdef TEST_UL_SINR
+    counters = new std::map<NetworkNode*, int>();
+	#endif
 }
 
 EnbLtePhy::~EnbLtePhy() {
@@ -198,10 +199,10 @@ void EnbLtePhy::ReceiveIdealControlMessage(IdealControlMessage *msg) {
 }
 
 void EnbLtePhy::ReceiveReferenceSymbols(NetworkNode* n, TransmittedSignal* s) {
-//#ifdef TEST_UL_SINR
+#ifdef TEST_UL_SINR
 	if (counters.find(n) == counters.end())
 		counters[n] = 0;
-//#endif
+#endif
 
 	ENodeB::UserEquipmentRecord* user = ((ENodeB*) GetDevice())->GetUserEquipmentRecord(n->GetIDNetworkNode());
 	TransmittedSignal* rxSignal;
@@ -224,7 +225,7 @@ void EnbLtePhy::ReceiveReferenceSymbols(NetworkNode* n, TransmittedSignal* s) {
 		ulQuality.push_back(power - noise_interference - UL_INTERFERENCE);
 	}
 
-//#ifdef TEST_UL_SINR
+#ifdef TEST_UL_SINR
 	if (counters[n] >= 100) {
 		counters[n] = 0;
 		double effectiveSinr = GetEesmEffectiveSinr(ulQuality);
@@ -235,7 +236,7 @@ void EnbLtePhy::ReceiveReferenceSymbols(NetworkNode* n, TransmittedSignal* s) {
 				<< n->GetMobilityModel()->GetAbsolutePosition()->GetCoordinateY() << " " << effectiveSinr << " " << mcs << std::endl;
 	}
 	counters[n]++;
-//#endif
+#endif
 
 	user->SetUplinkChannelStatusIndicator(ulQuality);
 }

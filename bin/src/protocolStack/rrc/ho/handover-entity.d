@@ -1,5 +1,4 @@
-src/protocolStack/rrc/ho/handover-entity.d \
- src/protocolStack/rrc/ho/handover-entity.o: \
+src/protocolStack/rrc/ho/handover-entity.d: \
  ../src/protocolStack/rrc/ho/handover-entity.cpp \
  ../src/protocolStack/rrc/ho/handover-entity.h \
  ../src/protocolStack/rrc/ho/../../../device/NetworkNode.h \

@@ -1,5 +1,4 @@
-src/channel/propagation-model/propagation-loss-model.d \
- src/channel/propagation-model/propagation-loss-model.o: \
+src/channel/propagation-model/propagation-loss-model.d: \
  ../src/channel/propagation-model/propagation-loss-model.cpp \
  ../src/channel/propagation-model/propagation-loss-model.h \
  ../src/channel/propagation-model/channel-realization.h \

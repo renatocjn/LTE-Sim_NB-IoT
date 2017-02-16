@@ -1,5 +1,4 @@
-src/flows/application/M2MTimeDriven.d \
- src/flows/application/M2MTimeDriven.o: \
+src/flows/application/M2MTimeDriven.d: \
  ../src/flows/application/M2MTimeDriven.cpp \
  ../src/flows/application/M2MTimeDriven.h ../src/flows/application/CBR.h \
  ../src/flows/application/Application.h \

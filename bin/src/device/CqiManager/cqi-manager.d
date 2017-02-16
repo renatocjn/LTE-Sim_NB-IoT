@@ -1,4 +1,4 @@
-src/device/CqiManager/cqi-manager.d src/device/CqiManager/cqi-manager.o: \
+src/device/CqiManager/cqi-manager.d: \
  ../src/device/CqiManager/cqi-manager.cpp \
  ../src/device/CqiManager/cqi-manager.h \
  ../src/device/CqiManager/../../core/eventScheduler/simulator.h \

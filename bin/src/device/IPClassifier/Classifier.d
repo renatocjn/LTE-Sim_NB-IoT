@@ -1,4 +1,4 @@
-src/device/IPClassifier/Classifier.d src/device/IPClassifier/Classifier.o: \
+src/device/IPClassifier/Classifier.d: \
  ../src/device/IPClassifier/Classifier.cpp \
  ../src/device/IPClassifier/Classifier.h \
  ../src/device/IPClassifier/../../protocolStack/packet/Packet.h \

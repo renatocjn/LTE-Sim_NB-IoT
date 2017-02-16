@@ -1,5 +1,4 @@
-src/protocolStack/rlc/am-rlc-entity.d \
- src/protocolStack/rlc/am-rlc-entity.o: \
+src/protocolStack/rlc/am-rlc-entity.d: \
  ../src/protocolStack/rlc/am-rlc-entity.cpp \
  ../src/protocolStack/rlc/am-rlc-entity.h \
  ../src/protocolStack/rlc/rlc-entity.h \

@@ -1,4 +1,4 @@
-src/phy/error-model.d src/phy/error-model.o: ../src/phy/error-model.cpp \
+src/phy/error-model.d: ../src/phy/error-model.cpp \
  ../src/phy/error-model.h ../src/phy/BLERTrace/BLERvsSINR_15CQI_AWGN.h \
  ../src/phy/BLERTrace/../../protocolStack/mac/AMCModule.h \
  ../src/phy/BLERTrace/../../load-parameters.h \

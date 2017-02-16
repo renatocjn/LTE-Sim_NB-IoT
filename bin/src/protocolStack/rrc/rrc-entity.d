@@ -1,4 +1,4 @@
-src/protocolStack/rrc/rrc-entity.d src/protocolStack/rrc/rrc-entity.o: \
+src/protocolStack/rrc/rrc-entity.d: \
  ../src/protocolStack/rrc/rrc-entity.cc \
  ../src/protocolStack/rrc/rrc-entity.h \
  ../src/protocolStack/rrc/../packet/Packet.h \

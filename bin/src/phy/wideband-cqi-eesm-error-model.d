@@ -1,5 +1,4 @@
-src/phy/wideband-cqi-eesm-error-model.d \
- src/phy/wideband-cqi-eesm-error-model.o: \
+src/phy/wideband-cqi-eesm-error-model.d: \
  ../src/phy/wideband-cqi-eesm-error-model.cpp \
  ../src/phy/wideband-cqi-eesm-error-model.h ../src/phy/error-model.h \
  ../src/phy/BLERTrace/BLERvsSINR_15CQI_AWGN.h \

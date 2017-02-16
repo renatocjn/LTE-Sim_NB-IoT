@@ -1,4 +1,4 @@
-src/protocolStack/protocol-stack.d src/protocolStack/protocol-stack.o: \
+src/protocolStack/protocol-stack.d: \
  ../src/protocolStack/protocol-stack.cpp \
  ../src/protocolStack/protocol-stack.h \
  ../src/protocolStack/packet/Packet.h \

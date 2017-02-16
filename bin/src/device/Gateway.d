@@ -1,6 +1,5 @@
-src/device/Gateway.d src/device/Gateway.o: ../src/device/Gateway.cpp \
- ../src/device/Gateway.h ../src/device/NetworkNode.h \
- ../src/device/../networkTopology/Cell.h \
+src/device/Gateway.d: ../src/device/Gateway.cpp ../src/device/Gateway.h \
+ ../src/device/NetworkNode.h ../src/device/../networkTopology/Cell.h \
  ../src/device/../networkTopology/../core/cartesianCoodrdinates/CartesianCoordinates.h \
  ../src/device/../networkTopology/Femtocell.h \
  ../src/device/../networkTopology/Cell.h \

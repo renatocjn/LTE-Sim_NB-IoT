@@ -1,5 +1,5 @@
-src/phy/lte-phy.d src/phy/lte-phy.o: ../src/phy/lte-phy.cpp \
- ../src/phy/lte-phy.h ../src/phy/../device/NetworkNode.h \
+src/phy/lte-phy.d: ../src/phy/lte-phy.cpp ../src/phy/lte-phy.h \
+ ../src/phy/../device/NetworkNode.h \
  ../src/phy/../device/../networkTopology/Cell.h \
  ../src/phy/../device/../networkTopology/../core/cartesianCoodrdinates/CartesianCoordinates.h \
  ../src/phy/../device/../networkTopology/Femtocell.h \

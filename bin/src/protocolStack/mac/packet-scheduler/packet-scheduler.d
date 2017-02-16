@@ -1,5 +1,4 @@
-src/protocolStack/mac/packet-scheduler/packet-scheduler.d \
- src/protocolStack/mac/packet-scheduler/packet-scheduler.o: \
+src/protocolStack/mac/packet-scheduler/packet-scheduler.d: \
  ../src/protocolStack/mac/packet-scheduler/packet-scheduler.cpp \
  ../src/protocolStack/mac/packet-scheduler/packet-scheduler.h \
  ../src/protocolStack/mac/packet-scheduler/../../../core/idealMessages/ideal-control-messages.h \

@@ -1,5 +1,4 @@
-src/flows/application/application-sink.d \
- src/flows/application/application-sink.o: \
+src/flows/application/application-sink.d: \
  ../src/flows/application/application-sink.cpp \
  ../src/flows/application/application-sink.h \
  ../src/flows/application/Application.h \

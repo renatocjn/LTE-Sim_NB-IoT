@@ -1,5 +1,4 @@
-src/flows/application/InfiniteBuffer.d \
- src/flows/application/InfiniteBuffer.o: \
+src/flows/application/InfiniteBuffer.d: \
  ../src/flows/application/InfiniteBuffer.cpp \
  ../src/flows/application/InfiniteBuffer.h \
  ../src/flows/application/Application.h \
