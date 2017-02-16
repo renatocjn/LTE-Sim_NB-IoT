@@ -198,6 +198,48 @@ if __name__ == "__main__":
 		ax = figure["droppedPkgs"]['axes']
 		ax.errorbar(X, plots[c]["droppedPkgs"]["y"], plots[c]["droppedPkgs"]["ci"], label=c, marker=markers.next())
 
+		if "h2hDeliveryRate" not in figure:
+			f = pl.figure()
+			ax = f.add_axes(rect)
+			ax.set_ylim(-5,105)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			ax.set_ylabel("%")
+			figure["h2hDeliveryRate"] = {'figure': f, 'axes': ax}
+		ax = figure["h2hDeliveryRate"]['axes']
+		ax.errorbar(X, plots[c]["h2hDeliveryRate"]["y"], plots[c]["h2hDeliveryRate"]["ci"], label=c, marker=markers.next())
+
+		if "h2hThroughput" not in figure:
+			f = pl.figure()
+			ax = f.add_axes(rect)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			ax.set_ylabel("Kbit/s")
+			figure["h2hThroughput"] = {'figure': f, 'axes': ax}
+		ax = figure["h2hThroughput"]['axes']
+		ax.errorbar(X, plots[c]["h2hThroughput"]["y"], plots[c]["h2hThroughput"]["ci"], label=c, marker=markers.next())
+
+		if "m2mDeliveryRate" not in figure:
+			f = pl.figure()
+			ax = f.add_axes(rect)
+			ax.set_ylim(-5,105)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			ax.set_ylabel("%")
+			figure["m2mDeliveryRate"] = {'figure': f, 'axes': ax}
+		ax = figure["m2mDeliveryRate"]['axes']
+		ax.errorbar(X, plots[c]["m2mDeliveryRate"]["y"], plots[c]["m2mDeliveryRate"]["ci"], label=c, marker=markers.next())
+
+		if "m2mThroughput" not in figure:
+			f = pl.figure()
+			ax = f.add_axes(rect)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			ax.set_ylabel("Kbit/s")
+			figure["m2mThroughput"] = {'figure': f, 'axes': ax}
+		ax = figure["m2mThroughput"]['axes']
+		ax.errorbar(X, plots[c]["m2mThroughput"]["y"], plots[c]["m2mThroughput"]["ci"], label=c, marker=markers.next())
+
 		for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
 			app = 'throughput_'+app
 			if plots[c][app]:

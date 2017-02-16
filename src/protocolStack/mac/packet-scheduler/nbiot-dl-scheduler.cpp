@@ -31,7 +31,7 @@ void NbIotDlScheduler::RBsAllocation() {
 	NbIotBandwidthManager *bwManager = (NbIotBandwidthManager*) flows->at(0)->GetBearer()->GetDestination()->GetPhy()->GetBandwidthManager();
 
 	double dlRb = bwManager->GetDlSubChannels().at(0);
-	double maxMetric = std::numeric_limits<double>::min();
+	double maxMetric = -std::numeric_limits<double>::max();
 	FlowToSchedule *bestFlow;
 
 	for (int i = 0; i < flows->size(); i++) {

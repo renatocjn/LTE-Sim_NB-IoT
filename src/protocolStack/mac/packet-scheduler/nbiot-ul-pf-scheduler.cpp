@@ -53,7 +53,7 @@ NbIotUlPfScheduler::RBsAllocation() {
 		userAllocated[i] = false;
 
 	for (int i = 0; i < nRU; i++) {
-		double maxMetric = std::numeric_limits<double>::min();
+		double maxMetric = -std::numeric_limits<double>::max();
 		int selectedUserI;
 		for (int j = 0; j < users->size(); j++) {
 			if (metrics[j][i] > maxMetric && !userAllocated[j]) {

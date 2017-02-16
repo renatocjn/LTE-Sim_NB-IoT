@@ -24,14 +24,14 @@ def readDataFromFile(filePath):
 
 		if l[0] == "TX":
 			stats = dict()
-			stats["txSize"] = int(l[7])
-			stats["src"] = int(l[9])
-			stats["dst"] = int(l[11])
-			stats["txTime"] = float(l[13])
-			stats["rxSize"] = None
-			stats["delay"] = None
+			stats["txSize"]  = int(l[7])
+			stats["src"]     = int(l[9])
+			stats["dst"]     = int(l[11])
+			stats["txTime"]  = float(l[13])
+			stats["rxSize"]  = None
+			stats["delay"]   = None
 			stats["dropped"] = False
-			stats["user"] = int(l[5])
+			stats["user"]    = int(l[5])
 			stats["appType"] = l[1]
 			pkgs[l[3]] = stats
 
@@ -69,6 +69,9 @@ def getMetricsForFile(filePath):
 	users = dict()
 	userAppType = dict()
 	appTypes = set()
+	m2mThroughput, h2hThroughput = 0.0, 0.0
+	m2mLostPkgs  , h2hLostPkgs   = 0.0, 0.0
+	m2mRxPkgs    , h2hRxPkgs     = 0.0, 0.0
 
 	for p in pkgs:
 		transmittedData += 8.0*p["txSize"]/1000.0
@@ -82,9 +85,19 @@ def getMetricsForFile(filePath):
 			lostPkgs += 1
 			if p["dropped"] == True:
 				droppedDelayList.append((p["droppedTime"] - p["txTime"]) * 1000.0)
-			#else:
-				#queueDelayList.append(5.0-p["txTime"])
+
+			if p["appType"].startswith("M2M"):
+				m2mLostPkgs += 1
+			else:
+				h2hLostPkgs += 1
 		else:
+			if p["appType"].startswith("M2M"):
+				m2mThroughput += 8.0*p["rxSize"]/1000.0
+				m2mRxPkgs += 1
+			else:
+				h2hThroughput += 8.0*p["rxSize"]/1000.0
+				h2hRxPkgs += 1
+
 			if p["txTime"] + p["delay"] > lastRx:
 				lastRx = p["txTime"] + p["delay"]
 
@@ -105,6 +118,11 @@ def getMetricsForFile(filePath):
 	justiceRatios = [ t/maxThroughput[userAppType[uid]] for uid,t in users_throughput.iteritems() ]
 	justiceRatio = square(sum(justiceRatios))/(sum(square(justiceRatios))*len(users))
 	if isnan(justiceRatio): justiceRatio=0.0
+
+	m2mThroughput = m2mThroughput / d
+	h2hThroughput = h2hThroughput / d
+	m2mDeliveryRate = m2mRxPkgs / (m2mRxPkgs+m2mLostPkgs)
+	h2hDeliveryRate = h2hRxPkgs / (h2hRxPkgs+h2hLostPkgs)
 
 	#print filePath
 	#pp(users_throughput)
@@ -127,7 +145,11 @@ def getMetricsForFile(filePath):
 			"transmittedPkgs": transmittedPkgs,
 			"justiceRatio": justiceRatio,
 			#"lostPkgs": lostPkgs,
-			"droppedPkgs": droppedPkgs
+			"droppedPkgs": droppedPkgs,
+			"h2hDeliveryRate": 100.0*h2hDeliveryRate,
+			"m2mDeliveryRate": 100.0*m2mDeliveryRate,
+			"h2hThroughput": h2hThroughput,
+			"m2mThroughput": m2mThroughput
 			}
 			#"SINRs": sinr}
 
