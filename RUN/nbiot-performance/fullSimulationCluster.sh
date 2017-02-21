@@ -12,7 +12,7 @@ nRuns=30
 cellRadius=2 #2km
 outFolder="quickFullNbiot"
 
-nUeList="25 50 75 100 125 150 125 200 225 250 275 300"
+nUeList="25 50 75 100 125 150 175 200 225 250 275 300"
 #nUeList="25 50 75"
 ulSchedulerList="pf mt rr"
 scClusterSizeList="1 3 6 12"

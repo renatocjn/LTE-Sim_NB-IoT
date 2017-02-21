@@ -4,15 +4,15 @@ cd ~/Programas/LTE-Sim_NBIot
 
 nChilds=0
 maxChilds=$(nproc)
-nRuns=3
+nRuns=30
 
 cellRadius=2 #2km
 outFolder="quickFullNbiot"
 
-nUeList="25 50 75 100 125 150 125 200 225 250 275 300"
+nUeList="25 50 75 100 125 150 200 225 250 275 300"
 #nUeList="25 50 75"
 ulSchedulerList="pf mt rr"
-scClusterSizeList="1 3 6 12"
+scClusterSizeList="3 6 12"
 
 # for traffic in mixed; do
 # for scheduler in mt pf rr; do
@@ -42,44 +42,49 @@ scClusterSizeList="1 3 6 12"
 # done
 
 
-for ulScheduler in $ulSchedulerList; do
-echo $ulScheduler
+#for ulScheduler in $ulSchedulerList; do
+#echo $ulScheduler
+#for scClusterSize in $scClusterSizeList; do
+#for nUe in $nUeList; do
+#for r in $(seq $nRuns); do
+
+# 	if [ $nChilds -lt $maxChilds ]; then
+# 		nChilds=$(($nChilds+1))
+# 	else
+# 		wait
+# 		nChilds=0
+# 	fi
+
+#	outDir="Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize/nUe=$nUe/$r/"
+	#mkdir -p "$outDir"
+
+#	seed=$((RANDOM * RANDOM))
+ 	#(time bin/LTE-Sim_NBIot SingleCellM2mUnderNbIot $cellRadius $nUe $ulScheduler $scClusterSize $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
+#done
+#done
+#wait
+#nChilds=0
+#./RUN/nbiot-performance/makeScenarioGraphs.py "Executions/$outFolder/nbIotClusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize"
+#done
+#./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/"
+#echo
+#done
+
 for scClusterSize in $scClusterSizeList; do
+echo "cluster size = $scClusterSize"
+for ulScheduler in $ulSchedulerList; do
 for nUe in $nUeList; do
 for r in $(seq $nRuns); do
 
- 	if [ $nChilds -lt $maxChilds ]; then
- 		nChilds=$(($nChilds+1))
- 	else
- 		wait
- 		nChilds=0
- 	fi
-
-	outDir="Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize/nUe=$nUe/$r/"
-	#mkdir -p "$outDir"
-
-	seed=$((RANDOM * RANDOM))
- 	#(time bin/LTE-Sim_NBIot SingleCellM2mUnderNbIot $cellRadius $nUe $ulScheduler $scClusterSize $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
-done
-done
-wait
-nChilds=0
-#./RUN/nbiot-performance/makeScenarioGraphs.py "Executions/$outFolder/nbIotClusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize"
-done
-./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/"
-echo
-done
-
-
-for scClusterSize in $scClusterSizeList; do
-echo $scClusterSize
-for ulScheduler in $ulSchedulerList; do
+mkdir -p "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize/ulscheduler=$ulScheduler/nUe=$nUe/$r"
+ln --symbolic --relative "Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize/nUe=$nUe/$r/traceLteSim.txt" "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize/ulscheduler=$ulScheduler/nUe=$nUe/$r"
 
 #mkdir -p "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize/ulscheduler=$ulScheduler"
-#cp -r "Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize" "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize/ulscheduler=$ulScheduler"
+#cp -r "Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize/*" "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize/ulscheduler=$ulScheduler"
 
 #./RUN/nbiot-performance/makeScenarioGraphs.py "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize/ulscheduler=$ulScheduler"
 done
+done
+done
 ./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize"
-echo
 done
