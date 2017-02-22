@@ -1,16 +1,20 @@
 #!/bin/bash
 set -e
-cd ~/Programas/LTE-Sim_NBIot
+
+if [ ! -e "Executions" ]; then
+	echo "You are in the wrong folder"
+	exit 1
+fi
 
 nChilds=0
 maxChilds=$(nproc)
-nRuns=3
+nRuns=30
 
 cellRadius=2 #2km
 outFolder="largeDelayM2M"
 
-#nUeList="25 50 75 100 125 150 175 200 225 250 275 300"
-nUeList="25 50 75"
+nUeList="25 50 75 100 125 150 175 200 225 250 275 300"
+#nUeList="25 50 75"
 ulSchedulerList="pf mt rr"
 scClusterSizeList="1 3 6 12"
 
@@ -66,7 +70,7 @@ wait
 nChilds=0
 #./RUN/nbiot-performance/makeScenarioGraphs.py "Executions/$outFolder/nbIotClusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize"
 done
-./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/"
+#./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/"
 echo
 done
 
@@ -86,5 +90,8 @@ ln --symbolic --relative "Executions/$outFolder/clusterSizeComparation/ulSchedul
 done
 done
 done
-./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize"
+#./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize"
 done
+
+cd "Executions/"
+tar cfz "$outFolder.tar.gz" "$outFolder"
