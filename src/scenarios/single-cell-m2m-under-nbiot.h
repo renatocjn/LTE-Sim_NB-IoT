@@ -66,8 +66,8 @@
 static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, int nbIotClusterSize, int seed) {
 
 	// define simulation times
-	double duration = 6;
-	double flow_duration = 5;
+	double duration = 35;
+	double flow_duration = 20;
 
 	//int cluster = 4;
 	double bandwidth = 3;
@@ -247,7 +247,8 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, 
 
 				// create qos parameters
 				QoSParameters *qosParameters = new QoSParameters();
-				qosParameters->SetMaxDelay(0.050); //50ms
+//				qosParameters->SetMaxDelay(0.050); //50ms
+				qosParameters->SetMaxDelay(10); //50ms
 				edApplication->SetQoSParameters(qosParameters);
 
 				//create classifier parameters
@@ -268,7 +269,8 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, 
 
 				// create qos parameters
 				QoSParameters *qosParameters = new QoSParameters();
-				qosParameters->SetMaxDelay(tdApplication->GetInterval());
+//				qosParameters->SetMaxDelay(tdApplication->GetInterval());
+				qosParameters->SetMaxDelay(10);
 				tdApplication->SetQoSParameters(qosParameters);
 
 				//create classifier parameters
