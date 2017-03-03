@@ -11,7 +11,7 @@ maxChilds=$(nproc)
 nRuns=30
 
 cellRadius=2 #2km
-outFolder="largeDelayM2M"
+outFolder="longDelayM2M"
 
 nUeList="25 50 75 100 125 150 175 200 225 250 275 300"
 #nUeList="25 50 75"
@@ -42,35 +42,35 @@ scClusterSizeList="1 3 6 12"
 # nChilds=0
 # ./RUN/nbiot-performance/makeScenarioGraphs.py "Executions/$outFolder/lteOnly/traffic=$traffic/scheduler=$scheduler/"
 # done
-# ./RUN/nbiot-performance/makeLteComparationsGraphs.py "Executions/$outFolder/lteOnly/traffic=$traffic"
-# done
+#./RUN/nbiot-performance/makeLteComparationsGraphs.py "Executions/$outFolder/lteOnly/traffic=$traffic"
+#done
 
 
 for ulScheduler in $ulSchedulerList; do
 echo $ulScheduler
-for scClusterSize in $scClusterSizeList; do
-for nUe in $nUeList; do
-for r in $(seq $nRuns); do
+#for scClusterSize in $scClusterSizeList; do
+#for nUe in $nUeList; do
+#for r in $(seq $nRuns); do
 
-	if [ $nChilds -lt $maxChilds ]; then
-		nChilds=$(($nChilds+1))
-	else
-		wait
-		nChilds=0
-	fi
+#	if [ $nChilds -lt $maxChilds ]; then
+#		nChilds=$(($nChilds+1))
+#	else
+#		wait
+#		nChilds=0
+#	fi
 
-	outDir="Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize/nUe=$nUe/$r/"
-	mkdir -p "$outDir"
+#	outDir="Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize/nUe=$nUe/$r/"
+#	mkdir -p "$outDir"
 
-	seed=$((RANDOM * RANDOM))
- 	(time bin/LTE-Sim_NBIot SingleCellM2mUnderNbIot $cellRadius $nUe $ulScheduler $scClusterSize $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
-done
-done
-wait
-nChilds=0
+#	seed=$((RANDOM * RANDOM))
+# 	(time bin/LTE-Sim_NBIot SingleCellM2mUnderNbIot $cellRadius $nUe $ulScheduler $scClusterSize $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
+#done
+#done
+#wait
+#nChilds=0
 #./RUN/nbiot-performance/makeScenarioGraphs.py "Executions/$outFolder/nbIotClusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize"
-done
-#./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/"
+#done
+./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/"
 echo
 done
 
@@ -90,8 +90,8 @@ ln --symbolic --relative "Executions/$outFolder/clusterSizeComparation/ulSchedul
 done
 done
 done
-#./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize"
+./RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize"
 done
 
-cd "Executions/"
-tar cfz "$outFolder.tar.gz" "$outFolder"
+#cd "Executions/"
+#tar cfz "$outFolder.tar.gz" "$outFolder"
