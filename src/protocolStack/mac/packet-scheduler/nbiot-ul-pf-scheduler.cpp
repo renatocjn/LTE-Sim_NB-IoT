@@ -15,12 +15,13 @@
 #include "../../../core/spectrum/nbiot-bandwidth-manager.h"
 
 NbIotUlPfScheduler::NbIotUlPfScheduler(int scGroupSize) :
-		NbIotUlScheduler(scGroupSize) {}
+		NbIotUlScheduler(scGroupSize) {
+}
 
-NbIotUlPfScheduler::~NbIotUlPfScheduler() {}
+NbIotUlPfScheduler::~NbIotUlPfScheduler() {
+}
 
-void
-NbIotUlPfScheduler::RBsAllocation() {
+void NbIotUlPfScheduler::RBsAllocation() {
 	//proportionally fair
 
 	UlNbIotAMCModule amcModule;
@@ -31,22 +32,49 @@ NbIotUlPfScheduler::RBsAllocation() {
 	int scToSchedule = bwManager->GetUlBandwidth();
 	int nRU = scToSchedule / scGroupSize;
 	int sc = 0;
-
+#ifdef NBIOT_DEBUG
+	std::cout << "[NBIOT_DEBUG] scToSchedule " << scToSchedule << std::endl;
+	std::cout << "[NBIOT_DEBUG] nRU " << nRU << std::endl;
+#endif
 	vector<double> tempSinrVector;
 	double metrics[users->size()][nRU];
 	double effSinr[users->size()][nRU];
 
+//	std::cout << "[NBIOT_DEBUG] Channel Conditions" << std::endl;
 	for (int i = 0; i < users->size(); i++) {
+//		std::cout << "[NBIOT_DEBUG] User " << users->at(i)->m_userToSchedule->GetIDNetworkNode() << " | ";
 		for (int j = 0; j < nRU; j++) {
 			int ruBegin = j * scGroupSize;
 			int ruEnd = j * scGroupSize + scGroupSize;
 			for (int k = ruBegin; k < ruEnd; k++) {
 				tempSinrVector.push_back(users->at(i)->m_channelContition.at(k));
+//				std::cout << users->at(i)->m_channelContition.at(k) << " ";
 			}
 			effSinr[i][j] = GetEesmEffectiveSinr(tempSinrVector);
 			metrics[i][j] = ComputeSchedulingMetric(users->at(i), j, effSinr[i][j]);
 		}
+//		std::cout << std::endl;
 	}
+
+#ifdef NBIOT_DEBUG
+	std::cout << "[NBIOT_DEBUG] Metrics" << std::endl;
+	for (int i = 0; i < users->size(); i++) {
+		std::cout << "[NBIOT_DEBUG] user " << users->at(i)->m_userToSchedule->GetIDNetworkNode() << " | ";
+		for (int j = 0; j < nRU; j++) {
+			std::cout << metrics[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+
+	std::cout << "[NBIOT_DEBUG] Effective SINR" << std::endl;
+		for (int i = 0; i < users->size(); i++) {
+			std::cout << "[NBIOT_DEBUG] user " << users->at(i)->m_userToSchedule->GetIDNetworkNode() << " | ";
+			for (int j = 0; j < nRU; j++) {
+				std::cout << effSinr[i][j] << " ";
+			}
+			std::cout << std::endl;
+		}
+#endif
 
 	bool userAllocated[users->size()];
 	for (int i = 0; i < users->size(); i++)
@@ -57,18 +85,14 @@ NbIotUlPfScheduler::RBsAllocation() {
 		int selectedUserI;
 		for (int j = 0; j < users->size(); j++) {
 			if (metrics[j][i] > maxMetric && !userAllocated[j]) {
-				userAllocated[j] = true;
 				selectedUserI = j;
 				maxMetric = metrics[j][i];
 			}
 		}
+		userAllocated[selectedUserI] = true;
 		UserToSchedule *selectedUser = users->at(selectedUserI);
 
-		int mcs = amcModule.GetMCSFromCQI(
-				amcModule.GetCQIFromSinr(
-						effSinr[selectedUserI][i]
-											   )
-				);
+		int mcs = amcModule.GetMCSFromCQI(amcModule.GetCQIFromSinr(effSinr[selectedUserI][i]));
 		int tbs = ((amcModule.GetTBSizeFromMCS(mcs, scGroupSize)) / 8);
 
 		for (int j = 0; j < scGroupSize; j++) {
@@ -78,6 +102,11 @@ NbIotUlPfScheduler::RBsAllocation() {
 		selectedUser->m_selectedMCS = mcs;
 
 		sc += scGroupSize;
+#ifdef NBIOT_DEBUG
+		std::cout << "[NBIOT_DEBUG] Selected user " << selectedUser->m_userToSchedule->GetIDNetworkNode() << " for RU " << i <<std::endl;
+		std::cout << "[NBIOT_DEBUG] \t Selected MCS " << mcs << std::endl;
+		std::cout << "[NBIOT_DEBUG] \t Selected TBS " << tbs << std::endl;
+#endif
 	}
 }
 

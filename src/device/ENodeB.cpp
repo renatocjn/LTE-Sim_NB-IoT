@@ -413,16 +413,22 @@ ENodeB::GetNbIotUlScheduler() {
 void ENodeB::NBIotUlResourceBlokAllocation(void) {
 	if (m_nbiotUlScheduler != NULL &&
 			GetNbOfUserEquipmentRecords() > 0 &&
-			Simulator::Init()->Now() > m_nextNbIotUl) {
+			Simulator::Init()->Now() >= m_nextNbIotUl) {
+#ifdef NBIOT_DEBUG
+		std::cout << "[NBIOT_DEBUG] Starting NB-IoT UL scheduling at " << Simulator::Init()->Now() << std::endl;
+#endif
 		m_nbiotUlScheduler->Schedule();
 		m_nextNbIotUl = Simulator::Init()->Now() + inBetweenUlNbIotScheduling;
+#ifdef NBIOT_DEBUG
+		std::cout << "[NBIOT_DEBUG] Next UL schedule at " << m_nextNbIotUl << std::endl;
+#endif
 	}
 }
 
 void ENodeB::NBIotDlResourceBlokAllocation(void) {
 	if (m_nbiotDlScheduler != NULL &&
 			GetNbOfUserEquipmentRecords() > 0 &&
-			Simulator::Init()->Now() > m_nextNbIotDl) {
+			Simulator::Init()->Now() >= m_nextNbIotDl) {
 		m_nbiotDlScheduler->Schedule();
 		m_nextNbIotDl = Simulator::Init()->Now() + (0.001*GetNbIotDLScheduler()->GetDurationOfLastSchedule());
 	}
