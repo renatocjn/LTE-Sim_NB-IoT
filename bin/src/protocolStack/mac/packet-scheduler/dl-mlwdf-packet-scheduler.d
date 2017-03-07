@@ -1,4 +1,5 @@
-src/protocolStack/mac/packet-scheduler/dl-mlwdf-packet-scheduler.d: \
+src/protocolStack/mac/packet-scheduler/dl-mlwdf-packet-scheduler.d \
+ src/protocolStack/mac/packet-scheduler/dl-mlwdf-packet-scheduler.o: \
  ../src/protocolStack/mac/packet-scheduler/dl-mlwdf-packet-scheduler.cpp \
  ../src/protocolStack/mac/packet-scheduler/dl-mlwdf-packet-scheduler.h \
  ../src/protocolStack/mac/packet-scheduler/downlink-packet-scheduler.h \

@@ -66,14 +66,14 @@ void NbIotUlPfScheduler::RBsAllocation() {
 		std::cout << std::endl;
 	}
 
-	std::cout << "[NBIOT_DEBUG] Effective SINR" << std::endl;
-		for (int i = 0; i < users->size(); i++) {
-			std::cout << "[NBIOT_DEBUG] user " << users->at(i)->m_userToSchedule->GetIDNetworkNode() << " | ";
-			for (int j = 0; j < nRU; j++) {
-				std::cout << effSinr[i][j] << " ";
-			}
-			std::cout << std::endl;
-		}
+//	std::cout << "[NBIOT_DEBUG] Effective SINR" << std::endl;
+//		for (int i = 0; i < users->size(); i++) {
+//			std::cout << "[NBIOT_DEBUG] user " << users->at(i)->m_userToSchedule->GetIDNetworkNode() << " | ";
+//			for (int j = 0; j < nRU; j++) {
+//				std::cout << effSinr[i][j] << " ";
+//			}
+//			std::cout << std::endl;
+//		}
 #endif
 
 	bool userAllocated[users->size()];
@@ -93,7 +93,7 @@ void NbIotUlPfScheduler::RBsAllocation() {
 		UserToSchedule *selectedUser = users->at(selectedUserI);
 
 		int mcs = amcModule.GetMCSFromCQI(amcModule.GetCQIFromSinr(effSinr[selectedUserI][i]));
-		int tbs = ((amcModule.GetTBSizeFromMCS(mcs, scGroupSize)) / 8);
+		int tbs = ((amcModule.GetTBSizeFromMCS(mcs, 1)) / 8);
 
 		for (int j = 0; j < scGroupSize; j++) {
 			selectedUser->m_listOfAllocatedRBs.push_back(i * scGroupSize + j);

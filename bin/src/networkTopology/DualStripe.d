@@ -1,4 +1,5 @@
-src/networkTopology/DualStripe.d: ../src/networkTopology/DualStripe.cpp \
+src/networkTopology/DualStripe.d src/networkTopology/DualStripe.o: \
+ ../src/networkTopology/DualStripe.cpp \
  ../src/networkTopology/DualStripe.h ../src/networkTopology/Building.h \
  ../src/networkTopology/Femtocell.h ../src/networkTopology/Cell.h \
  ../src/networkTopology/../core/cartesianCoodrdinates/CartesianCoordinates.h \

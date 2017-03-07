@@ -63,7 +63,7 @@
 #define _15KHz 15
 
 //static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* trafficType, char* scheduler, int seed) {
-static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, int nbIotClusterSize, int seed) {
+static void SingleCellM2mUnderNbIotLongDelay(double radius, int nbUE, char* ulScheduler, int nbIotClusterSize, int seed) {
 
 	// define simulation times
 	double duration = 35;
@@ -124,13 +124,13 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, 
 
 	enb->SetNbIotDLScheduler(new NbIotDlScheduler());
 	if (strcmp(ulScheduler, "roundrobin") == 0 || strcmp(ulScheduler, "rr") == 0)
-		enb->SetNbIotULScheduler(new NbIotUlScheduler(_15KHz, nbIotClusterSize));
+		enb->SetNbIotULScheduler(new NbIotUlScheduler(nbIotClusterSize), nbIotClusterSize, _15KHz);
 
 	else if (strcmp(ulScheduler, "maximumthroughput") == 0 || strcmp(ulScheduler, "mt") == 0)
-		enb->SetNbIotULScheduler(new NbIotUlMtScheduler(_15KHz, nbIotClusterSize));
+		enb->SetNbIotULScheduler(new NbIotUlMtScheduler(nbIotClusterSize), nbIotClusterSize, _15KHz);
 
 	else if (strcmp(ulScheduler, "proportionallyfair") == 0 || strcmp(ulScheduler, "pf") == 0)
-		enb->SetNbIotULScheduler(new NbIotUlPfScheduler(_15KHz, nbIotClusterSize));
+		enb->SetNbIotULScheduler(new NbIotUlPfScheduler(nbIotClusterSize), nbIotClusterSize, _15KHz);
 
 	else {
 		std::cout << "\tThe Scheduler \"" << ulScheduler
@@ -247,8 +247,8 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, 
 
 				// create qos parameters
 				QoSParameters *qosParameters = new QoSParameters();
-				qosParameters->SetMaxDelay(0.050); //50ms
-//				qosParameters->SetMaxDelay(10); //50ms
+//				qosParameters->SetMaxDelay(0.050); //50ms
+				qosParameters->SetMaxDelay(10); //50ms
 				edApplication->SetQoSParameters(qosParameters);
 
 				//create classifier parameters
@@ -269,8 +269,8 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, 
 
 				// create qos parameters
 				QoSParameters *qosParameters = new QoSParameters();
-				qosParameters->SetMaxDelay(tdApplication->GetInterval());
-//				qosParameters->SetMaxDelay(10);
+//				qosParameters->SetMaxDelay(tdApplication->GetInterval());
+				qosParameters->SetMaxDelay(10);
 				tdApplication->SetQoSParameters(qosParameters);
 
 				//create classifier parameters

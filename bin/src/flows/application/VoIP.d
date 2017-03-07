@@ -1,5 +1,6 @@
-src/flows/application/VoIP.d: ../src/flows/application/VoIP.cpp \
- ../src/flows/application/VoIP.h ../src/flows/application/Application.h \
+src/flows/application/VoIP.d src/flows/application/VoIP.o: \
+ ../src/flows/application/VoIP.cpp ../src/flows/application/VoIP.h \
+ ../src/flows/application/Application.h \
  ../src/flows/application/../../core/eventScheduler/simulator.h \
  ../src/flows/application/../../core/eventScheduler/event.h \
  ../src/flows/application/../../core/eventScheduler/calendar.h \

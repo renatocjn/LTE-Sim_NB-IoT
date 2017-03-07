@@ -1,4 +1,5 @@
-src/protocolStack/rrc/ho/power-based-ho-manager.d: \
+src/protocolStack/rrc/ho/power-based-ho-manager.d \
+ src/protocolStack/rrc/ho/power-based-ho-manager.o: \
  ../src/protocolStack/rrc/ho/power-based-ho-manager.cpp \
  ../src/protocolStack/rrc/ho/power-based-ho-manager.h \
  ../src/protocolStack/rrc/ho/ho-manager.h \

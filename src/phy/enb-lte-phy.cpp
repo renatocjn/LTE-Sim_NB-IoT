@@ -58,7 +58,7 @@ EnbLtePhy::EnbLtePhy() {
 	SetTxPower(43); //dBm
 
 	#ifdef TEST_UL_SINR
-    counters = new std::map<NetworkNode*, int>();
+	counters = std::map<NetworkNode*, int>();
 	#endif
 }
 

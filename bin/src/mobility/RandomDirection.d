@@ -1,5 +1,6 @@
-src/mobility/RandomDirection.d: ../src/mobility/RandomDirection.cpp \
- ../src/mobility/RandomDirection.h ../src/mobility/Mobility.h \
+src/mobility/RandomDirection.d src/mobility/RandomDirection.o: \
+ ../src/mobility/RandomDirection.cpp ../src/mobility/RandomDirection.h \
+ ../src/mobility/Mobility.h \
  ../src/mobility/../core/cartesianCoodrdinates/CartesianCoordinates.h \
  ../src/mobility/../componentManagers/NetworkManager.h \
  ../src/mobility/../componentManagers/../networkTopology/Cell.h \

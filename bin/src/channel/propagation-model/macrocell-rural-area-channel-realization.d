@@ -1,4 +1,5 @@
-src/channel/propagation-model/macrocell-rural-area-channel-realization.d: \
+src/channel/propagation-model/macrocell-rural-area-channel-realization.d \
+ src/channel/propagation-model/macrocell-rural-area-channel-realization.o: \
  ../src/channel/propagation-model/macrocell-rural-area-channel-realization.cpp \
  ../src/channel/propagation-model/macrocell-rural-area-channel-realization.h \
  ../src/channel/propagation-model/channel-realization.h \
