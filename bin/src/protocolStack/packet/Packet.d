@@ -1,5 +1,4 @@
-src/protocolStack/packet/Packet.d src/protocolStack/packet/Packet.o: \
- ../src/protocolStack/packet/Packet.cpp \
+src/protocolStack/packet/Packet.d: ../src/protocolStack/packet/Packet.cpp \
  ../src/protocolStack/packet/Packet.h \
  ../src/protocolStack/packet/Header.h \
  ../src/protocolStack/packet/../protocols/TransportProtocol.h \

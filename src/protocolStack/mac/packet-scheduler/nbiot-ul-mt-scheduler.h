@@ -12,7 +12,7 @@
 
 class NbIotUlMtScheduler: public NbIotUlPfScheduler {
 public:
-	NbIotUlMtScheduler(int scGroupSize);
+	NbIotUlMtScheduler(int scSpacing, int scGroupSize);
 	virtual ~NbIotUlMtScheduler();
 
 	virtual double ComputeSchedulingMetric (UserToSchedule* user, int ruIdx, double effectiveSinr);

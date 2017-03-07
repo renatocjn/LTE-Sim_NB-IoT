@@ -1,4 +1,4 @@
-src/protocolStack/rlc/amd-record.d src/protocolStack/rlc/amd-record.o: \
+src/protocolStack/rlc/amd-record.d: \
  ../src/protocolStack/rlc/amd-record.cpp \
  ../src/protocolStack/rlc/amd-record.h \
  ../src/protocolStack/rlc/../packet/Packet.h \

@@ -115,15 +115,14 @@ public:
 
 	void SetNbIotDLScheduler(NbIotDlScheduler* scheduler);
 	NbIotDlScheduler* GetNbIotDLScheduler();
-	void SetNbIotULScheduler(NbIotUlScheduler *scheduler, int scClusterSize, int scSpacing);
+	void SetNbIotULScheduler(NbIotUlScheduler *scheduler);
 	NbIotUlScheduler* GetNbIotUlScheduler();
 
 private:
 	UserEquipmentRecords *m_userEquipmentRecords;
 	NbIotUlScheduler* m_nbiotUlScheduler;
 	NbIotDlScheduler* m_nbiotDlScheduler;
-	double inBetweenUlNbIotScheduling;
-	double m_nextNbIotUl, m_nextNbIotDl;
+	double m_nextNbIotDl;
 };
 
 #endif /* ENODEB_H_ */

@@ -25,7 +25,7 @@ const unsigned short tbsTable[13][8] = {
 };
 
 const unsigned short tbsTableSizes[13] = // size of vectors in tbsTable
-		{7, 7, 7, 7, 7, 7, 7, 6, 5, 5, 5, 4, 3};
+		{10, 10, 10, 10, 10, 10, 10, 8, 6, 6, 6, 5, 4};
 
 UlNbIotAMCModule::UlNbIotAMCModule() {}
 

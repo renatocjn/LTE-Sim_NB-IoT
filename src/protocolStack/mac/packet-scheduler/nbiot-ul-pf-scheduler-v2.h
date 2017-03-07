@@ -5,15 +5,15 @@
  *      Author: great
  */
 
-#ifndef SRC_PROTOCOLSTACK_MAC_PACKET_SCHEDULER_NBIOT_UL_PF_SCHEDULER_H_
-#define SRC_PROTOCOLSTACK_MAC_PACKET_SCHEDULER_NBIOT_UL_PF_SCHEDULER_H_
+#ifndef SRC_PROTOCOLSTACK_MAC_PACKET_SCHEDULER_NBIOT_UL_PF_SCHEDULER_V2_H_
+#define SRC_PROTOCOLSTACK_MAC_PACKET_SCHEDULER_NBIOT_UL_PF_SCHEDULER_V2_H_
 
 #include "nbiot-ul-scheduler.h"
 
-class NbIotUlPfScheduler: public NbIotUlScheduler {
+class NbIotUlPfSchedulerV2: public NbIotUlScheduler {
 public:
-	NbIotUlPfScheduler(int scSpacing, int scGroupSize);
-	virtual ~NbIotUlPfScheduler();
+	NbIotUlPfSchedulerV2(int scSpacing, int scGroupSize);
+	virtual ~NbIotUlPfSchedulerV2();
 
 	virtual void RBsAllocation();
 
