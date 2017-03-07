@@ -1,4 +1,5 @@
-src/protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.d: \
+src/protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.d \
+ src/protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.o: \
  ../src/protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.cpp \
  ../src/protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.h \
  ../src/protocolStack/mac/packet-scheduler/downlink-packet-scheduler.h \

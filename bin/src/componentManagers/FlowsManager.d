@@ -1,4 +1,4 @@
-src/componentManagers/FlowsManager.d: \
+src/componentManagers/FlowsManager.d src/componentManagers/FlowsManager.o: \
  ../src/componentManagers/FlowsManager.cpp \
  ../src/componentManagers/FlowsManager.h \
  ../src/componentManagers/../protocolStack/protocols/TransportProtocol.h \

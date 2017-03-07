@@ -1,4 +1,4 @@
-src/device/ENodeB.d: ../src/device/ENodeB.cpp \
+src/device/ENodeB.d src/device/ENodeB.o: ../src/device/ENodeB.cpp \
  ../src/device/../core/eventScheduler/simulator.h \
  ../src/device/../core/eventScheduler/event.h \
  ../src/device/../core/eventScheduler/calendar.h \

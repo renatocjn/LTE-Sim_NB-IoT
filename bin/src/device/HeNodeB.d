@@ -1,6 +1,6 @@
-src/device/HeNodeB.d: ../src/device/HeNodeB.cpp ../src/device/HeNodeB.h \
- ../src/device/ENodeB.h ../src/device/NetworkNode.h \
- ../src/device/../networkTopology/Cell.h \
+src/device/HeNodeB.d src/device/HeNodeB.o: ../src/device/HeNodeB.cpp \
+ ../src/device/HeNodeB.h ../src/device/ENodeB.h \
+ ../src/device/NetworkNode.h ../src/device/../networkTopology/Cell.h \
  ../src/device/../networkTopology/../core/cartesianCoodrdinates/CartesianCoordinates.h \
  ../src/device/../networkTopology/Femtocell.h \
  ../src/device/../networkTopology/Cell.h \

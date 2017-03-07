@@ -1,4 +1,5 @@
-src/protocolStack/mac/packet-scheduler/ul-rr-packet-scheduler.d: \
+src/protocolStack/mac/packet-scheduler/ul-rr-packet-scheduler.d \
+ src/protocolStack/mac/packet-scheduler/ul-rr-packet-scheduler.o: \
  ../src/protocolStack/mac/packet-scheduler/ul-rr-packet-scheduler.cpp \
  ../src/protocolStack/mac/packet-scheduler/../mac-entity.h \
  ../src/protocolStack/mac/packet-scheduler/../../packet/Packet.h \

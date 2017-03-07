@@ -58,6 +58,7 @@
 #include <string>
 #include "scenarios/single-cell-m2m-under-lte.h"
 #include "scenarios/single-cell-m2m-under-nbiot.h"
+#include "scenarios/single-cell-m2m-under-nbiot-longDelay.h"
 
 int main(int argc, char *argv[]) {
 
@@ -145,7 +146,19 @@ int main(int argc, char *argv[]) {
 			else
 				seed = -1;
 			SingleCellM2mUnderNbIot(radius, nbUE, ulScheduler, nbIotClusterSize, seed);
+		}if (strcmp(argv[1], "SingleCellM2mUnderNbIotLongDelay") == 0) {
+			double radius = atof(argv[2]);
+			int nbUE = atoi(argv[3]);
+			char* ulScheduler = argv[4];
+			int nbIotClusterSize = atoi(argv[5]);
+			int seed;
+			if (argc == 7)
+				seed = atoi(argv[6]);
+			else
+				seed = -1;
+			SingleCellM2mUnderNbIotLongDelay(radius, nbUE, ulScheduler, nbIotClusterSize, seed);
 		}
+
 		if (strcmp(argv[1], "MultiCell") == 0) {
 			int nbCells = atoi(argv[2]);
 			double radius = atof(argv[3]);

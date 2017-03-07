@@ -1,4 +1,5 @@
-src/componentManagers/NetworkManager.d: \
+src/componentManagers/NetworkManager.d \
+ src/componentManagers/NetworkManager.o: \
  ../src/componentManagers/NetworkManager.cpp \
  ../src/componentManagers/NetworkManager.h \
  ../src/componentManagers/../networkTopology/Cell.h \

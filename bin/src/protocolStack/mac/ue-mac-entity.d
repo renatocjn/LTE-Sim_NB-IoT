@@ -1,4 +1,5 @@
-src/protocolStack/mac/ue-mac-entity.d: \
+src/protocolStack/mac/ue-mac-entity.d \
+ src/protocolStack/mac/ue-mac-entity.o: \
  ../src/protocolStack/mac/ue-mac-entity.cc \
  ../src/protocolStack/mac/ue-mac-entity.h \
  ../src/protocolStack/mac/mac-entity.h \

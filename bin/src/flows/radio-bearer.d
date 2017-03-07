@@ -1,5 +1,6 @@
-src/flows/radio-bearer.d: ../src/flows/radio-bearer.cpp \
- ../src/flows/radio-bearer.h ../src/flows/radio-bearer-instance.h \
+src/flows/radio-bearer.d src/flows/radio-bearer.o: \
+ ../src/flows/radio-bearer.cpp ../src/flows/radio-bearer.h \
+ ../src/flows/radio-bearer-instance.h \
  ../src/flows/../device/NetworkNode.h \
  ../src/flows/../device/../networkTopology/Cell.h \
  ../src/flows/../device/../networkTopology/../core/cartesianCoodrdinates/CartesianCoordinates.h \

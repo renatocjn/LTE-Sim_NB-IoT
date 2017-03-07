@@ -1,4 +1,5 @@
-src/device/CqiManager/fullband-cqi-manager.d: \
+src/device/CqiManager/fullband-cqi-manager.d \
+ src/device/CqiManager/fullband-cqi-manager.o: \
  ../src/device/CqiManager/fullband-cqi-manager.cpp \
  ../src/device/CqiManager/fullband-cqi-manager.h \
  ../src/device/CqiManager/cqi-manager.h \
