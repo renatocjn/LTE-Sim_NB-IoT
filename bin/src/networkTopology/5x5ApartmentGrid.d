@@ -1,5 +1,4 @@
-src/networkTopology/5x5ApartmentGrid.d \
- src/networkTopology/5x5ApartmentGrid.o: \
+src/networkTopology/5x5ApartmentGrid.d: \
  ../src/networkTopology/5x5ApartmentGrid.cpp \
  ../src/networkTopology/5x5ApartmentGrid.h \
  ../src/networkTopology/Building.h \

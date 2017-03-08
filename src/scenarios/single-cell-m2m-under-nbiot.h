@@ -72,6 +72,8 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, 
 	//int cluster = 4;
 	double bandwidth = 3;
 
+	std::cout << "Radius: " << radius << std::endl;
+
 	// CREATE COMPONENT MANAGER
 	Simulator *simulator = Simulator::Init();
 	FrameManager *frameManager = FrameManager::Init();
