@@ -13,6 +13,7 @@ CPP_SRCS += \
 ../src/protocolStack/mac/packet-scheduler/enhanced-uplink-packet-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/exp-rule-downlink-packet-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/log-rule-downlink-packet-scheduler.cpp \
+../src/protocolStack/mac/packet-scheduler/mt-uplink-packet-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/mw-rule-downlink-packet-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler-v2.cpp \
@@ -22,6 +23,7 @@ CPP_SRCS += \
 ../src/protocolStack/mac/packet-scheduler/nbiot-ul-rr-scheduler-v2.cpp \
 ../src/protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/packet-scheduler.cpp \
+../src/protocolStack/mac/packet-scheduler/roundrobin-uplink-packet-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/ul-pf-packet-scheduler.cpp \
 ../src/protocolStack/mac/packet-scheduler/ul-rr-packet-scheduler.cpp \
@@ -37,6 +39,7 @@ OBJS += \
 ./src/protocolStack/mac/packet-scheduler/enhanced-uplink-packet-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/exp-rule-downlink-packet-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/log-rule-downlink-packet-scheduler.o \
+./src/protocolStack/mac/packet-scheduler/mt-uplink-packet-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/mw-rule-downlink-packet-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler-v2.o \
@@ -46,6 +49,7 @@ OBJS += \
 ./src/protocolStack/mac/packet-scheduler/nbiot-ul-rr-scheduler-v2.o \
 ./src/protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/packet-scheduler.o \
+./src/protocolStack/mac/packet-scheduler/roundrobin-uplink-packet-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/ul-pf-packet-scheduler.o \
 ./src/protocolStack/mac/packet-scheduler/ul-rr-packet-scheduler.o \
@@ -61,6 +65,7 @@ CPP_DEPS += \
 ./src/protocolStack/mac/packet-scheduler/enhanced-uplink-packet-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/exp-rule-downlink-packet-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/log-rule-downlink-packet-scheduler.d \
+./src/protocolStack/mac/packet-scheduler/mt-uplink-packet-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/mw-rule-downlink-packet-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler-v2.d \
@@ -70,6 +75,7 @@ CPP_DEPS += \
 ./src/protocolStack/mac/packet-scheduler/nbiot-ul-rr-scheduler-v2.d \
 ./src/protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/packet-scheduler.d \
+./src/protocolStack/mac/packet-scheduler/roundrobin-uplink-packet-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/ul-pf-packet-scheduler.d \
 ./src/protocolStack/mac/packet-scheduler/ul-rr-packet-scheduler.d \
@@ -80,7 +86,7 @@ CPP_DEPS += \
 src/protocolStack/mac/packet-scheduler/%.o: ../src/protocolStack/mac/packet-scheduler/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -O0 -g3 -w -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -O0 -g3 -w -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

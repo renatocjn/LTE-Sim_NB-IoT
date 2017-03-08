@@ -13,7 +13,7 @@
 NbIotUlRrSchedulerV2::NbIotUlRrSchedulerV2(int scSpacing, int scGroupSize):
 NbIotUlScheduler(scSpacing, scGroupSize) {
 	currUser = 0;
-	ruOccupied = 0;
+	ruOccupied = NULL;
 }
 
 NbIotUlRrSchedulerV2::~NbIotUlRrSchedulerV2() {
@@ -32,8 +32,8 @@ void NbIotUlRrSchedulerV2::RBsAllocation() {
 	int nRuToSchedule = scToSchedule/scGroupSize;
 	int sc = 0;
 
-	if (ruOccupied == 0) {
-		ruOccupied = new bool[nRuToSchedule];
+	if (ruOccupied == NULL) {
+		ruOccupied = new bool[nRuToSchedule]();
 		for (int i=0; i<nRuToSchedule; i++) ruOccupied[i] = false;
 	}
 

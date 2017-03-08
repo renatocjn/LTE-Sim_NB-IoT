@@ -13,7 +13,7 @@
 class NbIotUlRrSchedulerV2: public NbIotUlScheduler {
 private:
 	int currUser;
-	bool ruOccupied[];
+	bool *ruOccupied;
 public:
 	NbIotUlRrSchedulerV2(int scSpacing, int scGroupSize);
 	virtual ~NbIotUlRrSchedulerV2();

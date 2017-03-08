@@ -124,13 +124,13 @@ static void SingleCellM2mUnderNbIotLongDelay(double radius, int nbUE, char* ulSc
 
 	enb->SetNbIotDLScheduler(new NbIotDlScheduler());
 	if (strcmp(ulScheduler, "roundrobin") == 0 || strcmp(ulScheduler, "rr") == 0)
-		enb->SetNbIotULScheduler(new NbIotUlScheduler(nbIotClusterSize), nbIotClusterSize, _15KHz);
+		enb->SetNbIotULScheduler(new NbIotUlScheduler(_15KHz, nbIotClusterSize));
 
 	else if (strcmp(ulScheduler, "maximumthroughput") == 0 || strcmp(ulScheduler, "mt") == 0)
-		enb->SetNbIotULScheduler(new NbIotUlMtScheduler(nbIotClusterSize), nbIotClusterSize, _15KHz);
+		enb->SetNbIotULScheduler(new NbIotUlMtScheduler(_15KHz, nbIotClusterSize));
 
 	else if (strcmp(ulScheduler, "proportionallyfair") == 0 || strcmp(ulScheduler, "pf") == 0)
-		enb->SetNbIotULScheduler(new NbIotUlPfScheduler(nbIotClusterSize), nbIotClusterSize, _15KHz);
+		enb->SetNbIotULScheduler(new NbIotUlPfScheduler(_15KHz, nbIotClusterSize));
 
 	else {
 		std::cout << "\tThe Scheduler \"" << ulScheduler
