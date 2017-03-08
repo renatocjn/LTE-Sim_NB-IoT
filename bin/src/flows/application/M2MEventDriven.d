@@ -1,4 +1,5 @@
-src/flows/application/M2MEventDriven.d: \
+src/flows/application/M2MEventDriven.d \
+ src/flows/application/M2MEventDriven.o: \
  ../src/flows/application/M2MEventDriven.cpp \
  ../src/flows/application/M2MEventDriven.h \
  ../src/flows/application/Application.h \

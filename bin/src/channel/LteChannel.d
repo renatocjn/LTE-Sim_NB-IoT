@@ -1,5 +1,5 @@
-src/channel/LteChannel.d: ../src/channel/LteChannel.cpp \
- ../src/channel/LteChannel.h \
+src/channel/LteChannel.d src/channel/LteChannel.o: \
+ ../src/channel/LteChannel.cpp ../src/channel/LteChannel.h \
  ../src/channel/../core/spectrum/transmitted-signal.h \
  ../src/channel/../protocolStack/packet/packet-burst.h \
  ../src/channel/../protocolStack/packet/Packet.h \

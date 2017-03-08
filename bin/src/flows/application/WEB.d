@@ -1,5 +1,6 @@
-src/flows/application/WEB.d: ../src/flows/application/WEB.cpp \
- ../src/flows/application/WEB.h ../src/flows/application/Application.h \
+src/flows/application/WEB.d src/flows/application/WEB.o: \
+ ../src/flows/application/WEB.cpp ../src/flows/application/WEB.h \
+ ../src/flows/application/Application.h \
  ../src/flows/application/../../core/eventScheduler/simulator.h \
  ../src/flows/application/../../core/eventScheduler/event.h \
  ../src/flows/application/../../core/eventScheduler/calendar.h \

@@ -1,6 +1,6 @@
-src/networkTopology/Building.d: ../src/networkTopology/Building.cpp \
- ../src/networkTopology/Building.h ../src/networkTopology/Femtocell.h \
- ../src/networkTopology/Cell.h \
+src/networkTopology/Building.d src/networkTopology/Building.o: \
+ ../src/networkTopology/Building.cpp ../src/networkTopology/Building.h \
+ ../src/networkTopology/Femtocell.h ../src/networkTopology/Cell.h \
  ../src/networkTopology/../core/cartesianCoodrdinates/CartesianCoordinates.h \
  ../src/networkTopology/../device/UserEquipment.h \
  ../src/networkTopology/../device/NetworkNode.h \

@@ -382,20 +382,7 @@ void ENodeB::SetNbIotDLScheduler(NbIotDlScheduler *scheduler) {
 	m_nbiotDlScheduler->SetMacEntity(GetProtocolStack()->GetMacEntity());
 }
 
-void ENodeB::SetNbIotULScheduler(NbIotUlScheduler *scheduler, int scClusterSize, int scSpacing) {
-	if (scSpacing == 15) {
-		if (scClusterSize == 1)
-			inBetweenUlNbIotScheduling = 0.008;
-		if (scClusterSize == 3)
-			inBetweenUlNbIotScheduling = 0.004;
-		if (scClusterSize == 6)
-			inBetweenUlNbIotScheduling = 0.002;
-		if (scClusterSize == 12)
-			inBetweenUlNbIotScheduling = 0.001;
-	} else {
-		inBetweenUlNbIotScheduling = 0.032;
-	}
-	m_nextNbIotUl = 0.0;
+void ENodeB::SetNbIotULScheduler(NbIotUlScheduler *scheduler) {
 	m_nbiotUlScheduler = scheduler;
 	m_nbiotUlScheduler->SetMacEntity(GetProtocolStack()->GetMacEntity());
 }
@@ -413,14 +400,13 @@ ENodeB::GetNbIotUlScheduler() {
 void ENodeB::NBIotUlResourceBlokAllocation(void) {
 	if (m_nbiotUlScheduler != NULL &&
 			GetNbOfUserEquipmentRecords() > 0 &&
-			Simulator::Init()->Now() >= m_nextNbIotUl) {
+			Simulator::Init()->Now() >= m_nbiotUlScheduler->GetNextScheduleTime()) {
 #ifdef NBIOT_DEBUG
 		std::cout << "[NBIOT_DEBUG] Starting NB-IoT UL scheduling at " << Simulator::Init()->Now() << std::endl;
 #endif
 		m_nbiotUlScheduler->Schedule();
-		m_nextNbIotUl = Simulator::Init()->Now() + inBetweenUlNbIotScheduling;
 #ifdef NBIOT_DEBUG
-		std::cout << "[NBIOT_DEBUG] Next UL schedule at " << m_nextNbIotUl << std::endl;
+		std::cout << "[NBIOT_DEBUG] Next UL schedule at " << m_nbiotUlScheduler->GetNextScheduleTime() << std::endl;
 #endif
 	}
 }

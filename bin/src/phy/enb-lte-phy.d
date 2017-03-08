@@ -1,4 +1,4 @@
-src/phy/enb-lte-phy.d: ../src/phy/enb-lte-phy.cpp \
+src/phy/enb-lte-phy.d src/phy/enb-lte-phy.o: ../src/phy/enb-lte-phy.cpp \
  ../src/phy/enb-lte-phy.h ../src/phy/lte-phy.h \
  ../src/phy/../device/NetworkNode.h \
  ../src/phy/../device/../networkTopology/Cell.h \

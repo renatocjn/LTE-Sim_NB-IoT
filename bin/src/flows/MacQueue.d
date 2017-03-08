@@ -1,5 +1,5 @@
-src/flows/MacQueue.d: ../src/flows/MacQueue.cpp ../src/flows/MacQueue.h \
- ../src/flows/../protocolStack/packet/Packet.h \
+src/flows/MacQueue.d src/flows/MacQueue.o: ../src/flows/MacQueue.cpp \
+ ../src/flows/MacQueue.h ../src/flows/../protocolStack/packet/Packet.h \
  ../src/flows/../protocolStack/packet/Header.h \
  ../src/flows/../protocolStack/packet/../protocols/TransportProtocol.h \
  ../src/flows/../protocolStack/packet/PacketTAGs.h \

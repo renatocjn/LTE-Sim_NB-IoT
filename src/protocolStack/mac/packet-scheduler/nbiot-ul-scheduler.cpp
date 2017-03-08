@@ -10,12 +10,24 @@
 #include "../../../core/spectrum/nbiot-bandwidth-manager.h"
 #include "../../../phy/lte-phy.h"
 
-NbIotUlScheduler::NbIotUlScheduler(int scGroupSize) {
+NbIotUlScheduler::NbIotUlScheduler(int scSpacing, int scGroupSize) {
 	SetMacEntity(0);
 	setNodeTypeToSchedule(NetworkNode::TYPE_NBIOT_UE);
 	CreateUsersToSchedule();
-	currUser = 0;
 	this->scGroupSize = scGroupSize;
+
+	if (scSpacing == 15) {
+		if (scGroupSize == 1)
+			ruDuration = 0.008;
+		if (scGroupSize == 3)
+			ruDuration = 0.004;
+		if (scGroupSize == 6)
+			ruDuration = 0.002;
+		if (scGroupSize == 12)
+			ruDuration = 0.001;
+	} else {
+		ruDuration = 0.032;
+	}
 }
 
 NbIotUlScheduler::~NbIotUlScheduler() {
@@ -33,9 +45,9 @@ void NbIotUlScheduler::RBsAllocation() {
 
 	NbIotBandwidthManager *bwManager = (NbIotBandwidthManager*) users->at(0)->m_userToSchedule->GetPhy()->GetBandwidthManager();
 	int scToSchedule = bwManager->GetUlBandwidth();
-	int nUsersToSchedule = scToSchedule/scGroupSize;
+	int nUsersToSchedule = scToSchedule / scGroupSize;
 	int sc = 0;
-	for(int i=0; i<nUsersToSchedule; i++) {
+	for (int i = 0; i < nUsersToSchedule; i++) {
 		if (currUser >= users->size())
 			currUser = 0;
 
@@ -43,16 +55,17 @@ void NbIotUlScheduler::RBsAllocation() {
 
 		double sinr = selectedUser->m_channelContition.at(0);
 		int mcs = amcModule.GetMCSFromCQI(amcModule.GetCQIFromSinr(sinr));
-		int tbs = ((amcModule.GetTBSizeFromMCS (mcs, scGroupSize)) / 8);
+		int tbs = ((amcModule.GetTBSizeFromMCS(mcs, 1)) / 8);
 
-		for (int j=0; j<scGroupSize; j++)
-			selectedUser->m_listOfAllocatedRBs.push_back(sc+j);
+		for (int j = 0; j < scGroupSize; j++)
+			selectedUser->m_listOfAllocatedRBs.push_back(sc + j);
 		selectedUser->m_transmittedData = tbs;
 		selectedUser->m_selectedMCS = mcs;
 
 		currUser++;
 		sc += scGroupSize;
 	}
+	UpdateNextScheduleTime(ruDuration);
 }
 
 double NbIotUlScheduler::ComputeSchedulingMetric(RadioBearer* bearer, double spectralEfficiency, int subChannel) {
@@ -61,4 +74,16 @@ double NbIotUlScheduler::ComputeSchedulingMetric(RadioBearer* bearer, double spe
 
 double NbIotUlScheduler::ComputeSchedulingMetric(UserToSchedule* user, int subchannel) {
 	return 0.0;
+}
+
+const void NbIotUlScheduler::UpdateNextScheduleTime(double deltat) {
+	nextScheduleT += deltat;
+}
+
+const double NbIotUlScheduler::GetNextScheduleTime() {
+	return nextScheduleT;
+}
+
+const double NbIotUlScheduler::GetRuDuration() {
+	return ruDuration;
 }

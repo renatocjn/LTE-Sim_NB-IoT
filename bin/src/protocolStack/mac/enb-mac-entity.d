@@ -1,4 +1,5 @@
-src/protocolStack/mac/enb-mac-entity.d: \
+src/protocolStack/mac/enb-mac-entity.d \
+ src/protocolStack/mac/enb-mac-entity.o: \
  ../src/protocolStack/mac/enb-mac-entity.cc \
  ../src/protocolStack/mac/enb-mac-entity.h \
  ../src/protocolStack/mac/mac-entity.h \

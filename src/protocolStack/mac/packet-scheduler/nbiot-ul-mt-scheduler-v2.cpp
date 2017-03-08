@@ -5,7 +5,7 @@
  *      Author: great
  */
 
-#include "nbiot-ul-mt-scheduler.h"
+#include "nbiot-ul-mt-scheduler-v2.h"
 #include "../../../utility/eesm-effective-sinr.h"
 #include <limits>
 #include "../../../protocolStack/mac/ul-nbiot-AMCModule.h"
@@ -13,13 +13,13 @@
 #include "../../../phy/lte-phy.h"
 #include "../../../core/spectrum/nbiot-bandwidth-manager.h"
 
-NbIotUlMtScheduler::NbIotUlMtScheduler(int scSpacing, int scGroupSize) :
-		NbIotUlPfScheduler(scSpacing, scGroupSize) {
+NbIotUlMtSchedulerV2::NbIotUlMtSchedulerV2(int scSpacing, int scGroupSize) :
+		NbIotUlPfSchedulerV2(scSpacing, scGroupSize) {
 }
 
-NbIotUlMtScheduler::~NbIotUlMtScheduler() {
+NbIotUlMtSchedulerV2::~NbIotUlMtSchedulerV2() {
 }
 
-double NbIotUlMtScheduler::ComputeSchedulingMetric(UserToSchedule* user, int ruI, double effectiveSinr) {
+double NbIotUlMtSchedulerV2::ComputeSchedulingMetric(UserToSchedule* user, int ruI, double effectiveSinr) {
 	return effectiveSinr * 3000.0;
 }

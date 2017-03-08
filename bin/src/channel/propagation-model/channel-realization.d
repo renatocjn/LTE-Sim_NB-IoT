@@ -1,4 +1,5 @@
-src/channel/propagation-model/channel-realization.d: \
+src/channel/propagation-model/channel-realization.d \
+ src/channel/propagation-model/channel-realization.o: \
  ../src/channel/propagation-model/channel-realization.cpp \
  ../src/channel/propagation-model/channel-realization.h \
  ../src/channel/propagation-model/../../device/UserEquipment.h \

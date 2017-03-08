@@ -1,4 +1,4 @@
-src/LTE-Sim.d: ../src/LTE-Sim.cpp ../src/TEST/test.h \
+src/LTE-Sim.d src/LTE-Sim.o: ../src/LTE-Sim.cpp ../src/TEST/test.h \
  ../src/TEST/test-attach-to-the-channel.h \
  ../src/TEST/../channel/LteChannel.h ../src/TEST/../phy/enb-lte-phy.h \
  ../src/TEST/../phy/lte-phy.h ../src/TEST/../phy/../device/NetworkNode.h \
@@ -182,7 +182,8 @@ src/LTE-Sim.d: ../src/LTE-Sim.cpp ../src/TEST/test.h \
  ../src/scenarios/../protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler.h \
  ../src/scenarios/../protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.h \
  ../src/scenarios/../protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler.h \
- ../src/scenarios/../protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler.h
+ ../src/scenarios/../protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler.h \
+ ../src/scenarios/single-cell-m2m-under-nbiot-longDelay.h
 
 ../src/TEST/test.h:
 
@@ -583,3 +584,5 @@ src/LTE-Sim.d: ../src/LTE-Sim.cpp ../src/TEST/test.h \
 ../src/scenarios/../protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler.h:
 
 ../src/scenarios/../protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler.h:
+
+../src/scenarios/single-cell-m2m-under-nbiot-longDelay.h:

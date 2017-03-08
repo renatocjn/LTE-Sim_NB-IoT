@@ -1,4 +1,5 @@
-src/protocolStack/rrc/ho/position-based-ho-manager.d: \
+src/protocolStack/rrc/ho/position-based-ho-manager.d \
+ src/protocolStack/rrc/ho/position-based-ho-manager.o: \
  ../src/protocolStack/rrc/ho/position-based-ho-manager.cpp \
  ../src/protocolStack/rrc/ho/position-based-ho-manager.h \
  ../src/protocolStack/rrc/ho/ho-manager.h \
