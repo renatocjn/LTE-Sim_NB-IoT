@@ -123,6 +123,7 @@ private:
 	NbIotUlScheduler* m_nbiotUlScheduler;
 	NbIotDlScheduler* m_nbiotDlScheduler;
 	double m_nextNbIotDl;
+	double m_nextNbIotUl;
 };
 
 #endif /* ENODEB_H_ */

@@ -15,7 +15,8 @@
 #include "../../../core/spectrum/nbiot-bandwidth-manager.h"
 
 NbIotUlPfSchedulerV2::NbIotUlPfSchedulerV2(int scSpacing, int scGroupSize) :
-		NbIotUlScheduler(scSpacing, scGroupSize) {
+	NbIotUlScheduler(scSpacing, scGroupSize) {
+	ruOccupied = NULL;
 }
 
 NbIotUlPfSchedulerV2::~NbIotUlPfSchedulerV2() {
@@ -32,6 +33,12 @@ void NbIotUlPfSchedulerV2::RBsAllocation() {
 	int scToSchedule = bwManager->GetUlBandwidth();
 	int nRU = scToSchedule / scGroupSize;
 	int sc = 0;
+
+	if (ruOccupied == NULL) {
+		ruOccupied = new int[nRU]();
+		for (int i=0; i<nRU; i++) ruOccupied[i] = 0;
+	}
+
 #ifdef NBIOT_DEBUG
 	std::cout << "[NBIOT_DEBUG] scToSchedule " << scToSchedule << std::endl;
 	std::cout << "[NBIOT_DEBUG] nRU " << nRU << std::endl;
@@ -94,12 +101,14 @@ void NbIotUlPfSchedulerV2::RBsAllocation() {
 		UserToSchedule *selectedUser = users->at(selectedUserI);
 
 		int mcs = amcModule.GetMCSFromCQI(amcModule.GetCQIFromSinr(effSinr[selectedUserI][i]));
-		int nru = 0, tbs;
+		int nSF = 0, tbs;
 		do {
-			nru++;
-			if (nru == 7 || nru == 9) nru++;
-			tbs = ((amcModule.GetTBSizeFromMCS(mcs, nru)) / 8);
-		} while (tbs < selectedUser->m_dataToTransmit && nru < amcModule.GetMaxNumberOfRuForMCS(mcs));
+			nSF++;
+			if (nSF == 7 || nSF == 9) nSF++;
+			tbs = ((amcModule.GetTBSizeFromMCS(mcs, nSF)) / 8);
+		} while (tbs < selectedUser->m_dataToTransmit && nSF < amcModule.GetMaxNumberOfRuForMCS(mcs));
+
+		if (minDuration < nSF) minDuration = nSF;
 
 		for (int j = 0; j < scGroupSize; j++) {
 			selectedUser->m_listOfAllocatedRBs.push_back(i * scGroupSize + j);

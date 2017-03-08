@@ -33,8 +33,8 @@ void NbIotUlRrSchedulerV2::RBsAllocation() {
 	int sc = 0;
 
 	if (ruOccupied == NULL) {
-		ruOccupied = new bool[nRuToSchedule]();
-		for (int i=0; i<nRuToSchedule; i++) ruOccupied[i] = false;
+		ruOccupied = new int[nRuToSchedule]();
+		for (int i=0; i<nRuToSchedule; i++) ruOccupied[i] = 0;
 	}
 
 	for(int i=0; i<nRuToSchedule; i++) {

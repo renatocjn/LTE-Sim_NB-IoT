@@ -11,6 +11,8 @@
 #include "nbiot-ul-scheduler.h"
 
 class NbIotUlPfSchedulerV2: public NbIotUlScheduler {
+private:
+	int *ruOccupied;
 public:
 	NbIotUlPfSchedulerV2(int scSpacing, int scGroupSize);
 	virtual ~NbIotUlPfSchedulerV2();

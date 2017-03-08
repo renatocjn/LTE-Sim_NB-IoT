@@ -15,10 +15,7 @@ if __name__ == "__main__":
 
 	xlabel = "Numero de UEs"
 	experimentDirectory = "Executions/default"
-	superTitle = "Default Execution"
 
-	if len(argv) > 3:
-		superTitle = argv[3]
 	if len(argv) > 2:
 		xlabel = argv[2]
 	if len(argv) > 1:

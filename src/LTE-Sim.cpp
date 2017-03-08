@@ -40,6 +40,7 @@
 #include "scenarios/multi-cell.h"
 #include "scenarios/single-cell-with-streets.h"
 #include "scenarios/multi-cell-sinrplot.h"
+#include "scenarios/nbiot-affect-evaluation.h"
 #include "TEST/scalability-test-macro-with-femto.h"
 #include "TEST/test-sinr-femto.h"
 #include "TEST/test-throughput-macro-with-femto.h"
@@ -65,7 +66,8 @@ int main(int argc, char *argv[]) {
 	if (argc > 1) {
 
 		/* Help */
-		if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "-H") || !strcmp(argv[1], "--help") || !strcmp(argv[1], "--Help")) {
+		if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "-H")
+				|| !strcmp(argv[1], "--help") || !strcmp(argv[1], "--Help")) {
 			Help();
 			return 0;
 		}
@@ -99,8 +101,9 @@ int main(int argc, char *argv[]) {
 				seed = atoi(argv[13]);
 			else
 				seed = -1;
-			SingleCellWithoutInterference(radius, nbUE, nbVoIP, nbVideo, nbBE, nbCBR, sched_type, frame_struct, speed, maxDelay, video_bit_rate,
-					seed);
+			SingleCellWithoutInterference(radius, nbUE, nbVoIP, nbVideo, nbBE,
+					nbCBR, sched_type, frame_struct, speed, maxDelay,
+					video_bit_rate, seed);
 		}
 		if (strcmp(argv[1], "SingleCellWithI") == 0) {
 			int nbCells = atoi(argv[2]);
@@ -120,8 +123,9 @@ int main(int argc, char *argv[]) {
 				seed = atoi(argv[14]);
 			else
 				seed = -1;
-			SingleCellWithInterference(nbCells, radius, nbUE, nbVoIP, nbVideo, nbBE, nbCBR, sched_type, frame_struct, speed, maxDelay, video_bit_rate,
-					seed);
+			SingleCellWithInterference(nbCells, radius, nbUE, nbVoIP, nbVideo,
+					nbBE, nbCBR, sched_type, frame_struct, speed, maxDelay,
+					video_bit_rate, seed);
 		}
 		if (strcmp(argv[1], "SingleCellM2mUnderLTE") == 0) {
 			double radius = atof(argv[2]);
@@ -145,8 +149,10 @@ int main(int argc, char *argv[]) {
 				seed = atoi(argv[6]);
 			else
 				seed = -1;
-			SingleCellM2mUnderNbIot(radius, nbUE, ulScheduler, nbIotClusterSize, seed);
-		}if (strcmp(argv[1], "SingleCellM2mUnderNbIotLongDelay") == 0) {
+			SingleCellM2mUnderNbIot(radius, nbUE, ulScheduler, nbIotClusterSize,
+					seed);
+		}
+		if (strcmp(argv[1], "SingleCellM2mUnderNbIotLongDelay") == 0) {
 			double radius = atof(argv[2]);
 			int nbUE = atoi(argv[3]);
 			char* ulScheduler = argv[4];
@@ -156,9 +162,17 @@ int main(int argc, char *argv[]) {
 				seed = atoi(argv[6]);
 			else
 				seed = -1;
-			SingleCellM2mUnderNbIotLongDelay(radius, nbUE, ulScheduler, nbIotClusterSize, seed);
+			SingleCellM2mUnderNbIotLongDelay(radius, nbUE, ulScheduler,
+					nbIotClusterSize, seed);
 		}
-
+		if (strcmp(argv[1], "NbIotEffectEvaluation") == 0) {
+			int nbUE = atoi(argv[2]);
+			int nbNbiot = atoi(argv[3]);
+			int bandwidth = atoi(argv[4]);
+			int seed = -1;
+			if (argc == 6) seed = atoi(argv[5]);
+			NbIotEffectEvaluation(nbUE, nbNbiot, bandwidth, seed);
+		}
 		if (strcmp(argv[1], "MultiCell") == 0) {
 			int nbCells = atoi(argv[2]);
 			double radius = atof(argv[3]);
@@ -177,9 +191,10 @@ int main(int argc, char *argv[]) {
 				seed = atoi(argv[14]);
 			else
 				seed = -1;
-			MultiCell(nbCells, radius, nbUE, nbVoIP, nbVideo, nbBE, nbCBR, sched_type, frame_struct, speed, maxDelay, video_bit_rate, seed);
+			MultiCell(nbCells, radius, nbUE, nbVoIP, nbVideo, nbBE, nbCBR,
+					sched_type, frame_struct, speed, maxDelay, video_bit_rate,
+					seed);
 		}
-
 		if (strcmp(argv[1], "SingleCellWithFemto") == 0) {
 			double radius = atof(argv[2]);
 			int nbBuilding = atoi(argv[3]);
@@ -202,8 +217,10 @@ int main(int argc, char *argv[]) {
 				seed = atoi(argv[18]);
 			else
 				seed = -1;
-			SingleCellWithFemto(radius, nbBuilding, buildingType, activityRatio, nbUE, nbFemtoUE, nbVoIP, nbVideo, nbBE, nbCBR, sched_type,
-					frame_struct, speed, accessPolicy, maxDelay, video_bit_rate, seed);
+			SingleCellWithFemto(radius, nbBuilding, buildingType, activityRatio,
+					nbUE, nbFemtoUE, nbVoIP, nbVideo, nbBE, nbCBR, sched_type,
+					frame_struct, speed, accessPolicy, maxDelay, video_bit_rate,
+					seed);
 		}
 		if (strcmp(argv[1], "SingleCellWithStreets") == 0) {
 			int nbStreets = atoi(argv[2]);
@@ -224,8 +241,9 @@ int main(int argc, char *argv[]) {
 				seed = atoi(argv[15]);
 			else
 				seed = -1;
-			SingleCellWithStreets(radius, nbStreets, nbUE, nbFemtoUE, nbVoIP, nbVideo, nbBE, nbCBR, sched_type, frame_struct, speed, maxDelay,
-					video_bit_rate, seed);
+			SingleCellWithStreets(radius, nbStreets, nbUE, nbFemtoUE, nbVoIP,
+					nbVideo, nbBE, nbCBR, sched_type, frame_struct, speed,
+					maxDelay, video_bit_rate, seed);
 		}
 
 		/* other dedicated simulations */
@@ -298,7 +316,8 @@ int main(int argc, char *argv[]) {
 				seed = atoi(argv[9]);
 			else
 				seed = -1;
-			MultiCellSinrPlot(nbCells, radius, nbUE, sched_type, frame_struct, speed, model, seed);
+			MultiCellSinrPlot(nbCells, radius, nbUE, sched_type, frame_struct,
+					speed, model, seed);
 		}
 		if (strcmp(argv[1], "testfme") == 0) {
 			TestUplinkFME();
