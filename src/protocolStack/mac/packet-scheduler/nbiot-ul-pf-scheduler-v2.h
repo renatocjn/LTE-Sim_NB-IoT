@@ -8,11 +8,9 @@
 #ifndef SRC_PROTOCOLSTACK_MAC_PACKET_SCHEDULER_NBIOT_UL_PF_SCHEDULER_V2_H_
 #define SRC_PROTOCOLSTACK_MAC_PACKET_SCHEDULER_NBIOT_UL_PF_SCHEDULER_V2_H_
 
-#include "nbiot-ul-scheduler.h"
+#include "nbiot-ul-rr-scheduler-v2.h"
 
-class NbIotUlPfSchedulerV2: public NbIotUlScheduler {
-private:
-	int *ruOccupied;
+class NbIotUlPfSchedulerV2: public NbIotUlRrSchedulerV2 {
 public:
 	NbIotUlPfSchedulerV2(int scSpacing, int scGroupSize);
 	virtual ~NbIotUlPfSchedulerV2();
