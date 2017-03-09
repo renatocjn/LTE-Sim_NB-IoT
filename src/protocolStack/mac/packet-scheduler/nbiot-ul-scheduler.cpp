@@ -55,8 +55,8 @@ void NbIotUlScheduler::RBsAllocation() {
 		UserToSchedule *selectedUser = users->at(currUser);
 
 		vector<double> temp;
-		for (int j = i * scGroupSize; j < i * scGroupSize + scGroupSize; j++) {
-			temp.push_back(selectedUser->m_channelContition.at(j));
+		for (int j = 0; j < scGroupSize; j++) {
+			temp.push_back(selectedUser->m_channelContition.at(sc + j));
 		}
 
 		double sinr = GetEesmEffectiveSinr(temp);

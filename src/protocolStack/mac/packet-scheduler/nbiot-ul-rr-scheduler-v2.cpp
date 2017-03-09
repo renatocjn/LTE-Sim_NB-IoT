@@ -51,17 +51,17 @@ void NbIotUlRrSchedulerV2::RBsAllocation() {
 		UserToSchedule *selectedUser = users->at(currUser);
 
 		vector<double> temp;
-		for (int j=i*scGroupSize; j<i*scGroupSize+scGroupSize; j++) {
-			temp.push_back(selectedUser->m_channelContition.at(j));
+		for (int j = 0; j < scGroupSize; j++) {
+			temp.push_back(selectedUser->m_channelContition.at(sc + j));
 		}
-
 		double sinr = GetEesmEffectiveSinr(temp);
 		int mcs = amcModule.GetMCSFromCQI(amcModule.GetCQIFromSinr(sinr));
 
 		int transmittedData, nsf = 0;
 		do {
 			nsf++;
-			if (nsf == 7 || nsf == 9) nsf++;
+			if (nsf == 7 || nsf == 9)
+				nsf++;
 			transmittedData = amcModule.GetTBSizeFromMCS(mcs, nsf) / 8;
 		} while (transmittedData < selectedUser->m_dataToTransmit && nsf < amcModule.GetMaxNumberOfRuForMCS(mcs));
 
