@@ -57,13 +57,13 @@ void NbIotUlRrSchedulerV2::RBsAllocation() {
 		double sinr = GetEesmEffectiveSinr(temp);
 		int mcs = amcModule.GetMCSFromCQI(amcModule.GetCQIFromSinr(sinr));
 
-		int transmittedData, nsf = 0;
+		int transmittedData, nRU = 0;
 		do {
-			nsf++;
-			if (nsf == 7 || nsf == 9)
-				nsf++;
-			transmittedData = amcModule.GetTBSizeFromMCS(mcs, nsf) / 8;
-		} while (transmittedData < selectedUser->m_dataToTransmit && nsf < amcModule.GetMaxNumberOfRuForMCS(mcs));
+			nRU++;
+			if (nRU == 7 || nRU == 9)
+				nRU++;
+			transmittedData = amcModule.GetTBSizeFromMCS(mcs, nRU) / 8;
+		} while (transmittedData < selectedUser->m_dataToTransmit && nRU < amcModule.GetMaxNumberOfRuForMCS(mcs));
 
 		for (int j = 0; j < scGroupSize; j++)
 			selectedUser->m_listOfAllocatedRBs.push_back(sc + j);
@@ -73,11 +73,11 @@ void NbIotUlRrSchedulerV2::RBsAllocation() {
 		currUser++;
 		sc += scGroupSize;
 
-		OccupyRu(i, nsf);
-		if (minDuration > nsf)
-			minDuration = nsf;
+		OccupyRu(i, nRU);
+		if (minDuration > nRU)
+			minDuration = nRU;
 	}
-	UpdateNextScheduleTime(minDuration);
+	UpdateNextScheduleTime(minDuration*GetRuDuration());
 }
 
 double NbIotUlRrSchedulerV2::ComputeSchedulingMetric(RadioBearer* bearer, double spectralEfficiency, int subChannel) {
@@ -112,5 +112,5 @@ const bool NbIotUlRrSchedulerV2::IsRuFree(int i) {
 }
 
 const void NbIotUlRrSchedulerV2::OccupyRu(int i, int ms) {
-	ruOccupied[i] = 0.001 * ((double) ms);
+	ruOccupied[i] = ((double) ms) * GetRuDuration();
 }

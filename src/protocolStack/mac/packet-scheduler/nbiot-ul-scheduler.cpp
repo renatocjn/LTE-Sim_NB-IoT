@@ -10,6 +10,7 @@
 #include "../../../core/spectrum/nbiot-bandwidth-manager.h"
 #include "../../../phy/lte-phy.h"
 #include "../../../utility/eesm-effective-sinr.h"
+#include "../../../core/eventScheduler/simulator.h"
 
 NbIotUlScheduler::NbIotUlScheduler(int scSpacing, int scGroupSize) {
 	SetMacEntity(0);
@@ -83,7 +84,7 @@ double NbIotUlScheduler::ComputeSchedulingMetric(UserToSchedule* user, int subch
 }
 
 const void NbIotUlScheduler::UpdateNextScheduleTime(double deltat) {
-	nextScheduleT += deltat;
+	nextScheduleT = Simulator::Init()->Now() + deltat;
 }
 
 const double NbIotUlScheduler::GetNextScheduleTime() {
