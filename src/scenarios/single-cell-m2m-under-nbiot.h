@@ -23,6 +23,9 @@
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler-v2.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler-v2.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-ul-rr-scheduler-v2.h"
 #include "../channel/LteChannel.h"
 #include "../phy/enb-lte-phy.h"
 #include "../phy/ue-lte-phy.h"
@@ -71,8 +74,6 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, 
 
 	//int cluster = 4;
 	double bandwidth = 3;
-
-	std::cout << "Radius: " << radius << std::endl;
 
 	// CREATE COMPONENT MANAGER
 	Simulator *simulator = Simulator::Init();
@@ -133,6 +134,15 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, 
 
 	else if (strcmp(ulScheduler, "proportionallyfair") == 0 || strcmp(ulScheduler, "pf") == 0)
 		enb->SetNbIotULScheduler(new NbIotUlPfScheduler(_15KHz, nbIotClusterSize));
+
+	else if (strcmp(ulScheduler, "roundrobinv2") == 0 || strcmp(ulScheduler, "rrv2") == 0)
+			enb->SetNbIotULScheduler(new NbIotUlRrSchedulerV2(_15KHz, nbIotClusterSize));
+
+	else if (strcmp(ulScheduler, "maximumthroughputv2") == 0 || strcmp(ulScheduler, "mtv2") == 0)
+			enb->SetNbIotULScheduler(new NbIotUlMtSchedulerV2(_15KHz, nbIotClusterSize));
+
+	else if (strcmp(ulScheduler, "proportionallyfairv2") == 0 || strcmp(ulScheduler, "pfv2") == 0)
+			enb->SetNbIotULScheduler(new NbIotUlPfSchedulerV2(_15KHz, nbIotClusterSize));
 
 	else {
 		std::cout << "\tThe Scheduler \"" << ulScheduler

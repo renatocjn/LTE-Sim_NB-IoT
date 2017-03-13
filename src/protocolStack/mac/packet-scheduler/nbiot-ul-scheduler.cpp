@@ -9,6 +9,8 @@
 #include "../ul-nbiot-AMCModule.h"
 #include "../../../core/spectrum/nbiot-bandwidth-manager.h"
 #include "../../../phy/lte-phy.h"
+#include "../../../utility/eesm-effective-sinr.h"
+#include "../../../core/eventScheduler/simulator.h"
 
 NbIotUlScheduler::NbIotUlScheduler(int scSpacing, int scGroupSize) {
 	SetMacEntity(0);
@@ -53,7 +55,12 @@ void NbIotUlScheduler::RBsAllocation() {
 
 		UserToSchedule *selectedUser = users->at(currUser);
 
-		double sinr = selectedUser->m_channelContition.at(0);
+		vector<double> temp;
+		for (int j = 0; j < scGroupSize; j++) {
+			temp.push_back(selectedUser->m_channelContition.at(sc + j));
+		}
+
+		double sinr = GetEesmEffectiveSinr(temp);
 		int mcs = amcModule.GetMCSFromCQI(amcModule.GetCQIFromSinr(sinr));
 		int tbs = ((amcModule.GetTBSizeFromMCS(mcs, 1)) / 8);
 
@@ -77,7 +84,7 @@ double NbIotUlScheduler::ComputeSchedulingMetric(UserToSchedule* user, int subch
 }
 
 const void NbIotUlScheduler::UpdateNextScheduleTime(double deltat) {
-	nextScheduleT += deltat;
+	nextScheduleT = Simulator::Init()->Now() + deltat;
 }
 
 const double NbIotUlScheduler::GetNextScheduleTime() {
