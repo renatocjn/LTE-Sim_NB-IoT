@@ -64,19 +64,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: LTE-Sim_NBIot
+all: lte-sim-r5
 
 # Tool invocations
-LTE-Sim_NBIot: $(OBJS) $(USER_OBJS)
+lte-sim-r5: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++  -o "LTE-Sim_NBIot" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++  -o "lte-sim-r5" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CPP_DEPS)$(C_DEPS) LTE-Sim_NBIot
+	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CPP_DEPS)$(C_DEPS) lte-sim-r5
 	-@echo ' '
 
 .PHONY: all clean dependents

@@ -42,6 +42,8 @@
 #include "../protocolStack/packet/packet-burst.h"
 
 ENodeB::ENodeB() {
+	m_nbiotUlScheduler = NULL;
+	m_nbiotDlScheduler = NULL;
 }
 
 ENodeB::ENodeB(int idElement, Cell *cell) {
@@ -68,6 +70,9 @@ ENodeB::ENodeB(int idElement, Cell *cell) {
 	Classifier *classifier = new Classifier();
 	classifier->SetDevice(this);
 	SetClassifier(classifier);
+
+	m_nbiotUlScheduler = NULL;
+	m_nbiotDlScheduler = NULL;
 }
 
 ENodeB::ENodeB(int idElement, Cell *cell, double posx, double posy) {
@@ -92,6 +97,9 @@ ENodeB::ENodeB(int idElement, Cell *cell, double posx, double posy) {
 	Classifier *classifier = new Classifier();
 	classifier->SetDevice(this);
 	SetClassifier(classifier);
+
+	m_nbiotUlScheduler = NULL;
+	m_nbiotDlScheduler = NULL;
 }
 
 ENodeB::~ENodeB() {
