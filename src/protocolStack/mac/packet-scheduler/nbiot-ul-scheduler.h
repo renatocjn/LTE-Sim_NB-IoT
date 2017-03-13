@@ -12,8 +12,8 @@
 
 class NbIotUlScheduler: public EnhancedUplinkPacketScheduler {
 private:
-	int currUser = 0.0;
-	double nextScheduleT = 0.0;
+	int currUser;
+	double nextScheduleT;
 	double ruDuration;
 protected:
 	int scGroupSize;

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+#set -e
 
 if [ ! -e "Executions" ]; then
 	echo "You are in the wrong folder"
@@ -15,7 +15,7 @@ outFolder="defaultM2M"
 
 nUeList="25 50 75 100 125 150 175 200 225 250 275 300"
 #nUeList="25 50 75"
-ulSchedulerList="pf mt rr"
+ulSchedulerList="mt rr"
 scClusterSizeList="1 3 6 12"
 
 # for traffic in mixed; do

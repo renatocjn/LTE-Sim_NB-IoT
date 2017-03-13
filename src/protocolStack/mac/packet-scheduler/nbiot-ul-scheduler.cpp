@@ -17,6 +17,8 @@ NbIotUlScheduler::NbIotUlScheduler(int scSpacing, int scGroupSize) {
 	setNodeTypeToSchedule(NetworkNode::TYPE_NBIOT_UE);
 	CreateUsersToSchedule();
 	this->scGroupSize = scGroupSize;
+	nextScheduleT = 0.0;	
+	currUser = 0;
 
 	if (scSpacing == 15) {
 		if (scGroupSize == 1)
