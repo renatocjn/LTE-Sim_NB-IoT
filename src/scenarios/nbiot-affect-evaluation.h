@@ -101,7 +101,7 @@ static void NbIotEffectEvaluation(int nbUE, int nbNbiot, int bandwidth, int seed
 			<< c->GetCellCenterPosition()->GetCoordinateY() << std::endl;
 
 	BandwidthManager* h2hspectrum = new BandwidthManager(bandwidth, bandwidth, 0, 0);
-	NbIotBandwidthManager* nbiotSpectrum;
+	NbIotBandwidthManager* nbiotSpectrum = NULL;
 	for (int i=0; i<nbNbiot; i++)
 		nbiotSpectrum = createNbIotBwManager(h2hspectrum, _15KHz);
 
