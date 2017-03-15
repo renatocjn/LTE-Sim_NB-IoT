@@ -83,7 +83,7 @@ static bool _channel_AWGN_ = false;
 //#define PLOT_USER_POSITION
 //#define TEST_UL_SINR
 //#define TEST_DL_SINR
-#define NBIOT_DEBUG
+//#define NBIOT_DEBUG
 
 
 #endif /* PARAMETERS_H_ */

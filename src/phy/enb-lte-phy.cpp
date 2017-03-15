@@ -57,6 +57,8 @@ EnbLtePhy::EnbLtePhy() {
 	SetInterference(NULL);
 	SetTxPower(43); //dBm
 
+	m_nbiotbwmgr = NULL;
+
 	#ifdef TEST_UL_SINR
 	counters = std::map<NetworkNode*, int>();
 	#endif

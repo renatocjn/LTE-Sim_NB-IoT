@@ -71,6 +71,13 @@ void NbIotUlScheduler::RBsAllocation() {
 		selectedUser->m_transmittedData = tbs;
 		selectedUser->m_selectedMCS = mcs;
 
+#ifdef NBIOT_DEBUG
+		std::cout << "[NBIOT_DEBUG] Selected user "
+				<< selectedUser->m_userToSchedule->GetIDNetworkNode()
+				<< " for RU " << i << " MCS: " << mcs << " txBytes: " << tbs
+				<< std::endl;
+#endif
+
 		currUser++;
 		sc += scGroupSize;
 	}

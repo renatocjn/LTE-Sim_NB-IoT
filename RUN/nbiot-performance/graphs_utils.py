@@ -119,9 +119,11 @@ def getMetricsForFile(filePath):
 	justiceRatio = square(sum(justiceRatios))/(sum(square(justiceRatios))*len(users))
 	if isnan(justiceRatio): justiceRatio=0.0
 
-	m2mThroughput = m2mThroughput / d
+	#m2mThroughput = m2mThroughput / d
+	m2mThroughput = 0
 	h2hThroughput = h2hThroughput / d
-	m2mDeliveryRate = m2mRxPkgs / (m2mRxPkgs+m2mLostPkgs)
+	#m2mDeliveryRate = m2mRxPkgs / (m2mRxPkgs+m2mLostPkgs)
+	m2mDeliveryRate = 0
 	h2hDeliveryRate = h2hRxPkgs / (h2hRxPkgs+h2hLostPkgs)
 
 	#print filePath
