@@ -41,10 +41,13 @@
 
 UplinkPacketScheduler::UplinkPacketScheduler() {
 	setNodeTypeToSchedule(NetworkNode::TYPE_UE);
+//	m_servedUsers = std::set<int>();
+	m_usersToSchedule = NULL;
 }
 
 
 UplinkPacketScheduler::~UplinkPacketScheduler() {
+//	std::cout << "servedUsers " << m_servedUsers.size() << std::endl;
 	Destroy();
 	DeleteUsersToSchedule();
 }
@@ -267,6 +270,8 @@ void UplinkPacketScheduler::DoStopSchedule(void) {
 	for (UsersToSchedule::iterator it = users->begin(); it != users->end(); it++) {
 		UserToSchedule *user = (*it);
 		if (user->m_transmittedData > 0) {
+
+//			m_servedUsers.insert(user->m_userToSchedule->GetIDNetworkNode());
 
 			//create PDCCH messages
 			for (int rb = 0; rb < user->m_listOfAllocatedRBs.size(); rb++) {

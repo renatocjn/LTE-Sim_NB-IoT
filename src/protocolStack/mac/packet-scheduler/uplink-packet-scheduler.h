@@ -25,6 +25,7 @@
 
 #include "packet-scheduler.h"
 #include "../../../flows/QoS/QoSParameters.h"
+//#include <set>
 
 class UplinkPacketScheduler: public PacketScheduler {
 public:
@@ -60,6 +61,7 @@ public:
     virtual double ComputeSchedulingMetric (UserToSchedule* user, int subchannel) = 0;
 private:
     UsersToSchedule* m_usersToSchedule;
+//	std::set<int> m_servedUsers;
 };
 
 #endif /* UPLINKPACKETSCHEDULER_H_ */

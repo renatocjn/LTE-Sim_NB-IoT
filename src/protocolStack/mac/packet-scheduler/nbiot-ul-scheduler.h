@@ -9,6 +9,7 @@
 #define SRC_PROTOCOLSTACK_MAC_PACKET_SCHEDULER_NBIOT_UL_SCHEDULER_H_
 
 #include "enhanced-uplink-packet-scheduler.h"
+#include <set>
 
 class NbIotUlScheduler: public EnhancedUplinkPacketScheduler {
 private:
@@ -17,6 +18,7 @@ private:
 	double ruDuration;
 protected:
 	int scGroupSize;
+	std::set<int> servedUsers;
 public:
 	NbIotUlScheduler(int scSpacing, int scGroupSize);
 	virtual ~NbIotUlScheduler();

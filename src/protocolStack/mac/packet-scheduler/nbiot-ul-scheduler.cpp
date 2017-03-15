@@ -19,6 +19,7 @@ NbIotUlScheduler::NbIotUlScheduler(int scSpacing, int scGroupSize) {
 	this->scGroupSize = scGroupSize;
 	nextScheduleT = 0.0;	
 	currUser = 0;
+	servedUsers = std::set<int>();
 
 	if (scSpacing == 15) {
 		if (scGroupSize == 1)
@@ -35,6 +36,7 @@ NbIotUlScheduler::NbIotUlScheduler(int scSpacing, int scGroupSize) {
 }
 
 NbIotUlScheduler::~NbIotUlScheduler() {
+	std::cout << "servedUsers: " << servedUsers.size() << std::endl;
 	Destroy();
 	DeleteUsersToSchedule();
 }
@@ -70,6 +72,8 @@ void NbIotUlScheduler::RBsAllocation() {
 			selectedUser->m_listOfAllocatedRBs.push_back(sc + j);
 		selectedUser->m_transmittedData = tbs;
 		selectedUser->m_selectedMCS = mcs;
+
+		servedUsers.insert(selectedUser->m_userToSchedule->GetIDNetworkNode());
 
 #ifdef NBIOT_DEBUG
 		std::cout << "[NBIOT_DEBUG] Selected user "

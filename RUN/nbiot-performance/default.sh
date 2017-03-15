@@ -8,10 +8,10 @@ fi
 
 nChilds=0
 maxChilds=$(nproc)
-nRuns=4
+nRuns=10
 
 cellRadius="0.5" #500m
-outFolder="defaultM2M"
+outFolder="quickTest"
 
 #nUeList="25 50 75 100 125 150 175 200 225 250 275 300"
 #nUeList="25 50 75"
@@ -19,38 +19,11 @@ nUeList="5 10 20 25"
 ulSchedulerList="rr rrv2 pf pfv2 mt mtv2"
 scClusterSizeList="1 3 6 12"
 
-#for traffic in mixed; do
-#for scheduler in mt pf rr; do
-#for nUe in 25 50 75 100 125 150 125 200 225 250 275 300; do
-# for nUe in 25 50 75; do
-# for r in $(seq $nRuns); do
-#
-#  	if [ $nChilds -lt $maxChilds ]; then
-#  		nChilds=$(($nChilds+1))
-#  	else
-#  		wait
-#  		nChilds=0
-#  	fi
-#
-# 	outDir="Executions/$outFolder/lteOnly/traffic=$traffic/scheduler=$scheduler/nUe=$nUe/$r/"
-#  	mkdir -p "$outDir"
-#
-# 	seed=$((RANDOM * RANDOM))
-#  	#(time bin/LTE-Sim_NBIot SingleCellM2mUnderLTE $cellRadius $nUe $traffic $scheduler $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
-# done
-# done
-# wait
-# nChilds=0
-# ./RUN/nbiot-performance/makeScenarioGraphs.py "Executions/$outFolder/lteOnly/traffic=$traffic/scheduler=$scheduler/"
-# done
-#./RUN/nbiot-performance/makeLteComparationsGraphs.py "Executions/$outFolder/lteOnly/traffic=$traffic"
-#done
-
 for ulScheduler in $ulSchedulerList; do
 echo $ulScheduler
 for scClusterSize in $scClusterSizeList; do
 for nUe in $nUeList; do
-for r in $(seq $nRuns); do
+for r in $(seq 5 $nRuns); do
 
 	if [ $nChilds -lt $maxChilds ]; then
 		nChilds=$(($nChilds+1))
@@ -63,7 +36,7 @@ for r in $(seq $nRuns); do
 	mkdir -p "$outDir"
 
 	seed=$((RANDOM * RANDOM))
- 	(time bin/LTE-Sim_NBIot SingleCellM2mOnlyNbIot $cellRadius $nUe $ulScheduler $scClusterSize $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
+ 	(time bin/lte-sim-r5 SingleCellM2mOnlyNbIot $cellRadius $nUe $ulScheduler $scClusterSize $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
 done
 done
 wait
