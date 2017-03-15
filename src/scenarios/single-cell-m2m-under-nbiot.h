@@ -69,8 +69,8 @@
 static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, int nbIotClusterSize, int seed) {
 
 	// define simulation times
-	double duration = 35;
-	double flow_duration = 20;
+	double duration = 6;
+	double flow_duration = 5;
 
 	//int cluster = 4;
 	double bandwidth = 3;

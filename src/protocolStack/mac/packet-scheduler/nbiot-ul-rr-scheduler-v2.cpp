@@ -37,6 +37,11 @@ void NbIotUlRrSchedulerV2::RBsAllocation() {
 	int nRuToSchedule = scToSchedule / scGroupSize;
 	int sc = 0;
 
+#ifdef NBIOT_DEBUG
+	std::cout << "[NBIOT_DEBUG] scToSchedule " << scToSchedule << " nUsers "
+			<< users->size() << " nRU " << nRuToSchedule << std::endl;
+#endif
+
 	CreateRuUsageVectorIfNecessary(nRuToSchedule);
 	UpdateRuUsage();
 
@@ -72,6 +77,13 @@ void NbIotUlRrSchedulerV2::RBsAllocation() {
 
 		currUser++;
 		sc += scGroupSize;
+
+#ifdef NBIOT_DEBUG
+		std::cout << "[NBIOT_DEBUG] Selected user "
+				<< selectedUser->m_userToSchedule->GetIDNetworkNode()
+				<< " for RU " << i << " MCS: " << mcs << " txBytes: " << transmittedData
+				<< std::endl;
+#endif
 
 		OccupyRu(i, nRU);
 		if (minDuration > nRU)

@@ -59,6 +59,8 @@ EnbLtePhy::EnbLtePhy() {
 	
 	m_nbiotbwmgr = NULL;
 
+	m_nbiotbwmgr = NULL;
+
 	#ifdef TEST_UL_SINR
 	counters = std::map<NetworkNode*, int>();
 	#endif

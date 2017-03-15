@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
 	os.chdir(experimentDirectory)
 
-	markers = cycle(['*','o','v','s','d','x','+'])
+	markers = cycle(['*','o','v','s','d'])
 
 	comparators = glob('*=*')
 	plots = { c:dict() for c in comparators }
@@ -219,7 +219,7 @@ if __name__ == "__main__":
 		if "m2mDeliveryRate" not in figure:
 			f = pl.figure()
 			ax = f.add_axes(rect)
-			ax.set_ylim(-5,105)
+			#ax.set_ylim(-5,105)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
 			ax.set_ylabel("%")
