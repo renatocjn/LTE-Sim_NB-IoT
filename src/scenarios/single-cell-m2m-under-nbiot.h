@@ -62,7 +62,6 @@
 #include <math.h>
 #include <cstring>
 
-#define NBIOT_DEBUG
 #define _15KHz 15
 
 //static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* trafficType, char* scheduler, int seed) {
@@ -126,27 +125,40 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, 
 	enb->SetULScheduler(ENodeB::ULScheduler_TYPE_PF);
 
 	enb->SetNbIotDLScheduler(new NbIotDlScheduler());
-	if (strcmp(ulScheduler, "roundrobin") == 0 || strcmp(ulScheduler, "rr") == 0)
-		enb->SetNbIotULScheduler(new NbIotUlScheduler(_15KHz, nbIotClusterSize));
+	if (strcmp(ulScheduler, "roundrobin") == 0
+			|| strcmp(ulScheduler, "rr") == 0)
+		enb->SetNbIotULScheduler(
+				new NbIotUlScheduler(_15KHz, nbIotClusterSize));
 
-	else if (strcmp(ulScheduler, "maximumthroughput") == 0 || strcmp(ulScheduler, "mt") == 0)
-		enb->SetNbIotULScheduler(new NbIotUlMtScheduler(_15KHz, nbIotClusterSize));
+	else if (strcmp(ulScheduler, "maximumthroughput") == 0
+			|| strcmp(ulScheduler, "mt") == 0)
+		enb->SetNbIotULScheduler(
+				new NbIotUlMtScheduler(_15KHz, nbIotClusterSize));
 
-	else if (strcmp(ulScheduler, "proportionallyfair") == 0 || strcmp(ulScheduler, "pf") == 0)
-		enb->SetNbIotULScheduler(new NbIotUlPfScheduler(_15KHz, nbIotClusterSize));
+	else if (strcmp(ulScheduler, "proportionallyfair") == 0
+			|| strcmp(ulScheduler, "pf") == 0)
+		enb->SetNbIotULScheduler(
+				new NbIotUlPfScheduler(_15KHz, nbIotClusterSize));
 
-	else if (strcmp(ulScheduler, "roundrobinv2") == 0 || strcmp(ulScheduler, "rrv2") == 0)
-			enb->SetNbIotULScheduler(new NbIotUlRrSchedulerV2(_15KHz, nbIotClusterSize));
+	else if (strcmp(ulScheduler, "roundrobinv2") == 0
+			|| strcmp(ulScheduler, "rrv2") == 0)
+		enb->SetNbIotULScheduler(
+				new NbIotUlRrSchedulerV2(_15KHz, nbIotClusterSize));
 
-	else if (strcmp(ulScheduler, "maximumthroughputv2") == 0 || strcmp(ulScheduler, "mtv2") == 0)
-			enb->SetNbIotULScheduler(new NbIotUlMtSchedulerV2(_15KHz, nbIotClusterSize));
+	else if (strcmp(ulScheduler, "maximumthroughputv2") == 0
+			|| strcmp(ulScheduler, "mtv2") == 0)
+		enb->SetNbIotULScheduler(
+				new NbIotUlMtSchedulerV2(_15KHz, nbIotClusterSize));
 
-	else if (strcmp(ulScheduler, "proportionallyfairv2") == 0 || strcmp(ulScheduler, "pfv2") == 0)
-			enb->SetNbIotULScheduler(new NbIotUlPfSchedulerV2(_15KHz, nbIotClusterSize));
+	else if (strcmp(ulScheduler, "proportionallyfairv2") == 0
+			|| strcmp(ulScheduler, "pfv2") == 0)
+		enb->SetNbIotULScheduler(
+				new NbIotUlPfSchedulerV2(_15KHz, nbIotClusterSize));
 
 	else {
 		std::cout << "\tThe Scheduler \"" << ulScheduler
-				<< "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n" << std::endl;
+				<< "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n"
+				<< std::endl;
 		return;
 	}
 

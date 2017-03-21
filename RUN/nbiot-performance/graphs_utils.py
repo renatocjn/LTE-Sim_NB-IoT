@@ -67,7 +67,6 @@ def getMetricsForFile(filePath):
 	users = dict()
 	userAppType = dict()
 	appTypes = set()
-	m2mThroughput, h2hThroughput = 0.0, 0.0
 	m2mTxData, h2hTxData = 0.0, 0.0
 	m2mRxData, h2hRxData = 0.0, 0.0
 
@@ -118,10 +117,10 @@ def getMetricsForFile(filePath):
 	m2mThroughput = m2mRxData / d
 	h2hThroughput = h2hRxData / d
 	
-	if m2mTxData != 0: m2mDeliveryRate = m2mRxData / m2mTxData
+	if m2mTxData != 0: m2mDeliveryRate = float(m2mRxData) / float(m2mTxData)
 	else: m2mDeliveryRate = 0
 	
-	if h2hTxData != 0: h2hDeliveryRate = h2hRxData / h2hTxData
+	if h2hTxData != 0: h2hDeliveryRate = float(h2hRxData) / float(h2hTxData)
 	else: h2hDeliveryRate = 0
 
 	# print filePath

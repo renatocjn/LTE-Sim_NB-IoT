@@ -113,6 +113,7 @@ void NbIotUlPfScheduler::RBsAllocation() {
 				<< " for RU " << i << " MCS: " << mcs << " txBytes: " << tbs
 				<< std::endl;
 #endif
+		servedUsers.insert(selectedUser->m_userToSchedule->GetIDNetworkNode());
 		UpdateNextScheduleTime(GetRuDuration());
 	}
 }

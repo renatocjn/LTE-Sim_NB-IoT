@@ -62,10 +62,8 @@
 #include <math.h>
 #include <cstring>
 
-#define NBIOT_DEBUG
 #define _15KHz 15
 
-//static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* trafficType, char* scheduler, int seed) {
 static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 		int nbIotClusterSize, int seed) {
 
@@ -108,7 +106,7 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 	BandwidthManager* h2hspectrum = new BandwidthManager(bandwidth, bandwidth,
 			0, 0);
 	NbIotBandwidthManager* nbiotSpectrum = createNbIotBwManager(h2hspectrum,
-			_15KHz);
+	_15KHz);
 
 	std::vector<LteChannel*> *dlChannels = new std::vector<LteChannel*>;
 	std::vector<LteChannel*> *ulChannels = new std::vector<LteChannel*>;
@@ -195,9 +193,6 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 	int destinationPort = 101;
 	int applicationID = 0;
 
-	std::vector<VoIP*> *voipContainner = new std::vector<VoIP*>;
-	std::vector<CBR*> *cbrContainner = new std::vector<CBR*>;
-	std::vector<TraceBased*> *videoContainner = new std::vector<TraceBased*>;
 	std::vector<M2MTimeDriven*> *tdContainner = new std::vector<M2MTimeDriven*>;
 	std::vector<M2MEventDriven*> *edContainner =
 			new std::vector<M2MEventDriven*>;
@@ -336,16 +331,11 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 	simulator->Run();
 
 //Delete created objects
-	cbrContainner->clear();
-	delete cbrContainner;
-	voipContainner->clear();
-	delete voipContainner;
 	tdContainner->clear();
 	delete tdContainner;
 	edContainner->clear();
 	delete edContainner;
-	videoContainner->clear();
-	delete videoContainner;
+	delete enb->GetNbIotUlScheduler();
 	eNBs->clear();
 	delete eNBs;
 	delete frameManager;

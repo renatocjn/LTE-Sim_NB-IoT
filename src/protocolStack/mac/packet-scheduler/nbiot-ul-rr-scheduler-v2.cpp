@@ -85,6 +85,7 @@ void NbIotUlRrSchedulerV2::RBsAllocation() {
 				<< std::endl;
 #endif
 
+		servedUsers.insert(selectedUser->m_userToSchedule->GetIDNetworkNode());
 		OccupyRu(i, nRU);
 		if (minDuration > nRU)
 			minDuration = nRU;

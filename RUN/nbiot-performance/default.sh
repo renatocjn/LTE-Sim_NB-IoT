@@ -11,7 +11,7 @@ maxChilds=$(nproc)
 nRuns=10
 
 cellRadius="0.5" #500m
-outFolder="quickTest"
+outFolder="quickOnlyNbIot"
 
 #nUeList="25 50 75 100 125 150 175 200 225 250 275 300"
 #nUeList="25 50 75"
@@ -34,9 +34,11 @@ for r in $(seq 5 $nRuns); do
 
 	outDir="Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize/nUe=$nUe/$r/"
 	mkdir -p "$outDir"
-
-	seed=$((RANDOM * RANDOM))
- 	(time bin/lte-sim-r5 SingleCellM2mOnlyNbIot $cellRadius $nUe $ulScheduler $scClusterSize $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
+	
+	if [ ! -e $outDir/traceLteSim.txt ]; then 
+		seed=$((RANDOM * RANDOM))
+	 	(time bin/lte-sim-r5 OnlyNbIot $cellRadius $nUe $ulScheduler $scClusterSize $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
+	fi
 done
 done
 wait
@@ -51,7 +53,7 @@ for scClusterSize in $scClusterSizeList; do
 echo "cluster size = $scClusterSize"
 for ulScheduler in $ulSchedulerList; do
 for nUe in $nUeList; do
-for r in $(seq $nRuns); do
+for r in $(seq 5 $nRuns); do
 
 mkdir -p "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize/ulscheduler=$ulScheduler/nUe=$nUe/$r"
 ln --symbolic --relative "Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize/nUe=$nUe/$r/traceLteSim.txt" "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize/ulscheduler=$ulScheduler/nUe=$nUe/$r"

@@ -100,10 +100,13 @@ void NbIotUlPfSchedulerV2::RBsAllocation() {
 		selectedUser->m_transmittedData = tbs;
 		selectedUser->m_selectedMCS = mcs;
 		sc += scGroupSize;
+#ifdef NBIOT_DEBUG
 		std::cout << "[NBIOT_DEBUG] Selected user "
 				<< selectedUser->m_userToSchedule->GetIDNetworkNode()
 				<< " for RU " << i << " MCS: " << mcs << " nRU: " << nRU
 				<< " txBytes: " << tbs << std::endl;
+#endif
+		servedUsers.insert(selectedUser->m_userToSchedule->GetIDNetworkNode());
 	}
 	UpdateNextScheduleTime(GetRuDuration() * minDuration);
 }

@@ -34,6 +34,7 @@ if __name__ == "__main__":
 
 	comparators = glob('*=*')
 	plots = { c:dict() for c in comparators }
+	fullPlots = { c:dict() for c in comparators }
 	cdfs = { c:dict() for c in comparators }
 	X = set()
 
@@ -58,7 +59,7 @@ if __name__ == "__main__":
 
 	figure = dict();
 	rect = [0.1, 0.1, 0.8, 0.8]
-	for c in comparators:
+	for c in natsorted(comparators):
 		#print "cdfs:", cdfs[sch].keys()
 		#print "plots:", plots[sch].keys()
 		#if "queueDelay" not in figure:
@@ -239,7 +240,7 @@ if __name__ == "__main__":
 
 		for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
 			app = 'throughput_'+app
-			if plots[c][app]:
+			if app in plots[c]:
 				if app not in figure:
 					f = pl.figure()
 					ax = f.add_axes(rect)
@@ -253,7 +254,7 @@ if __name__ == "__main__":
 
 		for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
 			app = 'justiceRatio_'+app
-			if plots[c][app]:
+			if app in plots[c]:
 				if app not in figure:
 					f = pl.figure()
 					ax = f.add_axes(rect)
