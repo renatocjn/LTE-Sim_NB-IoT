@@ -69,8 +69,8 @@ static void NbIotEffectEvaluation(int nbUE, int nbNbiot, int bandwidth, int seed
 	int nbIotClusterSize = 3;
 
 	// define simulation times
-	double duration = 35;
-	double flow_duration = 20;
+	double duration = 7;
+	double flow_duration = 5;
 
 	//int cluster = 4;
 

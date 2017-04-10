@@ -111,7 +111,8 @@ double MacroCellUrbanAreaChannelRealization::GetPathLoss(void) {
 	m_pathLoss = 128.1 + (37.6 * log10(distance * 0.001));
 
 	UserEquipment* ue;
-	if (GetSourceNode()->GetNodeType() == NetworkNode::TYPE_UE) {
+	if (GetSourceNode()->GetNodeType() == NetworkNode::TYPE_UE ||
+			GetSourceNode()->GetNodeType() == NetworkNode::TYPE_NBIOT_UE) {
 		ue = (UserEquipment*) GetSourceNode();
 	} else {
 		ue = (UserEquipment*) GetDestinationNode();

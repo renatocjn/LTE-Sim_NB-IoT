@@ -60,12 +60,12 @@
 static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, char* scheduler, int seed) {
 
 	// define simulation times
-	double duration = 15;
-	double flow_duration = duration - 1;
+	double duration = 11;
+	double flow_duration = 5;
 	double nbiotTxBwConfiguration = 15; //15KHz
 
 	//int cluster = 4;
-	double bandwidth = 1.4;
+	double bandwidth = 3;
 
 	// CREATE COMPONENT MANAGER
 	Simulator *simulator = Simulator::Init();
@@ -166,7 +166,7 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 
 	//M2M traffic
 	int nbED = ceil(0.3 * nbM2M);
-	int nbTD = nbUE - nbM2M;
+	int nbTD = nbM2M - nbED;
 
 	//Mixed traffic;
 	int nbCBR = ceil(nbH2H * 0.35);
@@ -324,7 +324,8 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE, char* trafficType, ch
 
 			// create qos parameters
 			QoSParameters *qosParameters = new QoSParameters();
-			qosParameters->SetMaxDelay(0.300); // 300ms
+			//qosParameters->SetMaxDelay(0.300); // 300ms
+			qosParameters->SetMaxDelay(9999999); // inf
 
 			cbrApplication->SetQoSParameters(qosParameters);
 

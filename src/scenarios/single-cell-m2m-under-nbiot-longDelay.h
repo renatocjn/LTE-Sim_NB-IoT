@@ -284,7 +284,6 @@ static void SingleCellM2mUnderNbIotLongDelay(double radius, int nbUE,
 
 				// create qos parameters
 				QoSParameters *qosParameters = new QoSParameters();
-//				qosParameters->SetMaxDelay(0.050); //50ms
 				qosParameters->SetMaxDelay(10); //50ms
 				edApplication->SetQoSParameters(qosParameters);
 
@@ -309,7 +308,6 @@ static void SingleCellM2mUnderNbIotLongDelay(double radius, int nbUE,
 
 				// create qos parameters
 				QoSParameters *qosParameters = new QoSParameters();
-//				qosParameters->SetMaxDelay(tdApplication->GetInterval());
 				qosParameters->SetMaxDelay(10);
 				tdApplication->SetQoSParameters(qosParameters);
 

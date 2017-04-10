@@ -96,7 +96,7 @@ FemtoCellUrbanAreaChannelRealization::GetPathLoss (void)
   double floorPenetration = 0.0;
   //18.3 n ((n+2)/(n+1)-0.46)
 
-  if (GetSourceNode ()->GetNodeType () == NetworkNode::TYPE_UE
+  if ((GetSourceNode ()->GetNodeType () == NetworkNode::TYPE_UE  || GetSourceNode()->GetNodeType() == NetworkNode::TYPE_NBIOT_UE)
 		  && ( GetDestinationNode ()->GetNodeType () == NetworkNode::TYPE_ENODEB || GetDestinationNode ()->GetNodeType () == NetworkNode::TYPE_HOME_BASE_STATION) )
     {
 	  UserEquipment* ue = (UserEquipment*) GetSourceNode ();
@@ -113,7 +113,7 @@ FemtoCellUrbanAreaChannelRealization::GetPathLoss (void)
 	  distance =  ue->GetMobilityModel ()->GetAbsolutePosition ()->GetDistance (enb->GetMobilityModel ()->GetAbsolutePosition ());
     }
 
-  else if (GetDestinationNode ()->GetNodeType () == NetworkNode::TYPE_UE
+  else if ((GetDestinationNode ()->GetNodeType () == NetworkNode::TYPE_UE  || GetDestinationNode()->GetNodeType() == NetworkNode::TYPE_NBIOT_UE)
 		  && ( GetSourceNode ()->GetNodeType () == NetworkNode::TYPE_ENODEB || GetSourceNode ()->GetNodeType () == NetworkNode::TYPE_HOME_BASE_STATION) )
   {
 	  UserEquipment* ue = (UserEquipment*) GetDestinationNode ();

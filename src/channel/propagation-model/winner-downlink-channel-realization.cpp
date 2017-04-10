@@ -99,7 +99,7 @@ WinnerDownlinkChannelRealization::GetPathLoss (void)
 
   assert (GetDestinationNode ()->GetNodeType () == NetworkNode::TYPE_HOME_BASE_STATION  || GetSourceNode ()->GetNodeType () == NetworkNode::TYPE_HOME_BASE_STATION);
 
-  if (GetSourceNode ()->GetNodeType () == NetworkNode::TYPE_UE
+  if ((GetSourceNode ()->GetNodeType () == NetworkNode::TYPE_UE || GetSourceNode()->GetNodeType() == NetworkNode::TYPE_NBIOT_UE)
 		  && GetDestinationNode ()->GetNodeType () == NetworkNode::TYPE_HOME_BASE_STATION )
     {
 	  ue = (UserEquipment*) GetSourceNode ();
@@ -108,7 +108,7 @@ WinnerDownlinkChannelRealization::GetPathLoss (void)
 	  distance =  ue->GetMobilityModel ()->GetAbsolutePosition ()->GetDistance (enb->GetMobilityModel ()->GetAbsolutePosition ());
     }
 
-  else if (GetDestinationNode ()->GetNodeType () == NetworkNode::TYPE_UE
+  else if ((GetDestinationNode ()->GetNodeType () == NetworkNode::TYPE_UE || GetDestinationNode()->GetNodeType() == NetworkNode::TYPE_NBIOT_UE)
 		  && GetSourceNode ()->GetNodeType () == NetworkNode::TYPE_HOME_BASE_STATION )
     {
 	  ue = (UserEquipment*) GetDestinationNode ();

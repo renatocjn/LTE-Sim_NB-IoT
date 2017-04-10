@@ -22,7 +22,13 @@ def readDataFromFile(filePath):
 
 		if l[0] == "TX":
 			stats = dict()
-			stats["txSize"] = int(l[7])
+			stats["appType"] = l[1]
+			
+			#overhead for m2m and cbr traffic
+			if stats["appType"].startswith("M2M") or stats["appType"].startswith("CBR"):
+				stats["txSize"] = int(l[7]) - 5
+			else: stats["txSize"] = int(l[7])
+			
 			stats["src"] = int(l[9])
 			stats["dst"] = int(l[11])
 			stats["txTime"] = float(l[13])
@@ -77,9 +83,9 @@ def getMetricsForFile(filePath):
 		appTypes.add(p["appType"])
 
 		if p["appType"].startswith("M2M"):
-			m2mTxData += p["txSize"]
+			m2mTxData += 8.0 * p["txSize"] / 1000.0
 		else:
-			h2hTxData += p["txSize"]
+			h2hTxData += 8.0 * p["txSize"] / 1000.0
 
 		if p["txTime"] < firstTx:
 				firstTx = p["txTime"]
@@ -120,8 +126,10 @@ def getMetricsForFile(filePath):
 	if m2mTxData != 0: m2mDeliveryRate = float(m2mRxData) / float(m2mTxData)
 	else: m2mDeliveryRate = 0
 	
-	if h2hTxData != 0: h2hDeliveryRate = float(h2hRxData) / float(h2hTxData)
-	else: h2hDeliveryRate = 0
+	if h2hTxData != 0: 
+		h2hDeliveryRate = float(h2hRxData) / float(h2hTxData)
+	else: 
+		h2hDeliveryRate = 0
 
 	# print filePath
 	# pp(users_throughput)

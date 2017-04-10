@@ -68,7 +68,7 @@
 static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, int nbIotClusterSize, int seed) {
 
 	// define simulation times
-	double duration = 6;
+	double duration = 10;
 	double flow_duration = 5;
 
 	//int cluster = 4;
@@ -202,12 +202,20 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, 
 	int nbH2H = floor(0.3 * nbUE);
 	int nbM2M = nbUE - nbH2H;
 
+	//int nbH2H = nbUE;
+	//int nbM2M = 0;
+
 	int nbED = floor(0.3 * nbM2M);
 	int nbTD = nbM2M - nbED;
 
 	int nbCBR = floor(nbH2H * 0.35);
 	int nbVideo = floor(nbH2H * 0.45);
 	int nbVoIP = nbH2H - nbCBR - nbVideo;
+	
+	//int nbCBR = nbH2H;
+	//int nbVideo = 0;
+	//int nbVoIP = 0;
+
 
 //	std::cout << "Nb of H2H   Devices: " << nbH2H << std::endl;
 //	std::cout << "Nb of CBR   Devices: " << nbCBR << std::endl;
@@ -373,6 +381,7 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler, 
 				// create qos parameters
 				QoSParameters *qosParameters = new QoSParameters();
 				qosParameters->SetMaxDelay(0.300); // 300ms
+//				qosParameters->SetMaxDelay(9999999); // 300ms
 
 				cbrApplication->SetQoSParameters(qosParameters);
 

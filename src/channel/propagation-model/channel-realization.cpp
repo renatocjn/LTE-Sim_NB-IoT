@@ -141,10 +141,10 @@ void ChannelRealization::UpdateFastFading(void) {
 		numbOfSubChannels = GetDestinationNode()->GetPhy()->GetBandwidthManager()->GetDlSubChannels().size();
 	}
 
-	if (GetSourceNode()->GetNodeType() == NetworkNode::TYPE_UE) {
+	if (GetSourceNode()->GetNodeType() == NetworkNode::TYPE_UE  || GetSourceNode()->GetNodeType() == NetworkNode::TYPE_NBIOT_UE) {
 		UserEquipment* ue = (UserEquipment*) GetSourceNode();
 		speed = ue->GetMobilityModel()->GetSpeed();
-	} else if (GetDestinationNode()->GetNodeType() == NetworkNode::TYPE_UE) {
+	} else if (GetDestinationNode()->GetNodeType() == NetworkNode::TYPE_UE  || GetDestinationNode()->GetNodeType() == NetworkNode::TYPE_NBIOT_UE) {
 		UserEquipment* ue = (UserEquipment*) GetDestinationNode();
 		speed = ue->GetMobilityModel()->GetSpeed();
 	} else {

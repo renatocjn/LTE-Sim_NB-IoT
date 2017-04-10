@@ -52,7 +52,7 @@ ProtocolStack::ProtocolStack(NetworkNode* device)
     m_mac->SetDevice(device);
   }
 
-  else if (device->GetNodeType() == NetworkNode::TYPE_UE)
+  else if (device->GetNodeType() == NetworkNode::TYPE_UE || device->GetNodeType() == NetworkNode::TYPE_NBIOT_UE)
     {
 	  m_mac = new UeMacEntity ();
 	  m_mac->SetDevice(device);

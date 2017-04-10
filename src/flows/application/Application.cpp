@@ -312,7 +312,7 @@ void Application::Trace(Packet* p) {
 	}
 	}
 
-	if (GetDestination()->GetNodeType() == NetworkNode::TYPE_UE) {
+	if (GetDestination()->GetNodeType() == NetworkNode::TYPE_UE || GetDestination()->GetNodeType() == NetworkNode::TYPE_NBIOT_UE) {
 		UserEquipment* ue = (UserEquipment*) GetDestination();
 		std::cout << " ID " << p->GetID() << " B " << GetApplicationID() << " SIZE " << p->GetSize() << " SRC " << GetSource()->GetIDNetworkNode()
 				<< " DST " << GetDestination()->GetIDNetworkNode() << " T " << Simulator::Init()->Now() << " " << ue->IsIndoor() << std::endl;

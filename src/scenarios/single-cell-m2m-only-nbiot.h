@@ -68,7 +68,7 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 		int nbIotClusterSize, int seed) {
 
 	// define simulation times
-	double duration = 6;
+	double duration = 11;
 	double flow_duration = 5;
 
 	//int cluster = 4;
@@ -201,14 +201,16 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 	int idUE = 1;
 
 	//Mixed traffic;
-	// nbUE  = 30% H2H + 70% M2M (Ericsson Mobility Report, 2016)
-	// nbM2M = 30%  ED + 70%  TD (Maia et al, 2016)
+	// nbUE  = 30% H2H + 70% M2M              (Ericsson Mobility Report, 2016)
+	// nbM2M = 30% ED  + 70% TD               (Maia et al, 2016)
 	// nbH2H = 35% CBR + 45% Video + 20% VoIP (Self-Defined)
 
 	int nbM2M = nbUE;
 
 	int nbED = floor(0.3 * nbM2M);
 	int nbTD = nbM2M - nbED;
+	//int nbED = nbM2M;
+	//int nbTD = 0;
 
 //	std::cout << "Nb of H2H   Devices: " << nbH2H << std::endl;
 //	std::cout << "Nb of CBR   Devices: " << nbCBR << std::endl;
@@ -280,7 +282,8 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 			// create qos parameters
 			QoSParameters *qosParameters = new QoSParameters();
 			qosParameters->SetMaxDelay(0.050); //50ms
-//				qosParameters->SetMaxDelay(10); //50ms
+//			qosParameters->SetMaxDelay(999999); // inf
+//			qosParameters->SetMaxDelay(10); //10s
 			edApplication->SetQoSParameters(qosParameters);
 
 			//create classifier parameters
@@ -307,7 +310,7 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 			// create qos parameters
 			QoSParameters *qosParameters = new QoSParameters();
 			qosParameters->SetMaxDelay(tdApplication->GetInterval());
-//				qosParameters->SetMaxDelay(10);
+//			qosParameters->SetMaxDelay(10);
 			tdApplication->SetQoSParameters(qosParameters);
 
 			//create classifier parameters

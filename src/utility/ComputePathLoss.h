@@ -40,7 +40,7 @@ ComputePathLossForInterference (NetworkNode* src, NetworkNode* dst)
   double externalWallAttenuation = 20;
   double pathLoss = 0.0;
 
-  if (src->GetNodeType() == NetworkNode::TYPE_ENODEB && dst->GetNodeType () == NetworkNode::TYPE_UE)
+  if (src->GetNodeType() == NetworkNode::TYPE_ENODEB && (dst->GetNodeType () == NetworkNode::TYPE_UE || dst->GetNodeType() == NetworkNode::TYPE_NBIOT_UE))
     {
 	  //Path Loss Model For Urban Environment
 	  double distance = src->GetMobilityModel ()->GetAbsolutePosition ()->GetDistance (
@@ -61,7 +61,7 @@ ComputePathLossForInterference (NetworkNode* src, NetworkNode* dst)
 	  return pathLoss;
     }
 
-  if (src->GetNodeType() == NetworkNode::TYPE_HOME_BASE_STATION && dst->GetNodeType () == NetworkNode::TYPE_UE)
+  if (src->GetNodeType() == NetworkNode::TYPE_HOME_BASE_STATION && (dst->GetNodeType () == NetworkNode::TYPE_UE || dst->GetNodeType() == NetworkNode::TYPE_NBIOT_UE))
     {
 	  double minimumCouplingLoss = 45; //[dB] - see 3GPP TSG RAN WG4 #42bis (R4-070456)
 	  double floorPenetration = 0.0;
