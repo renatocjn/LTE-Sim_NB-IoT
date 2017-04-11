@@ -379,7 +379,7 @@ MacQueue::CheckForDropPackets (double maxDelay,
 				  std::cout << " UNKNOW";
 
 			  std::cout << " ID "<< GetPacketQueue ()->begin ()->GetPacket()->GetID()
-			  << " B " << bearerID << " T " << Simulator::Init()->Now ();
+			  << " B " << bearerID << " T " << Simulator::Init()->Now () << " FRAG " << GetPacketQueue ()->begin ()->GetFragmentOffset();
 
 			  if (GetPacketQueue ()->begin ()->GetPacket()->GetPacketTags() != NULL
 					  && GetPacketQueue ()->begin ()->GetPacket()->GetPacketTags()->GetApplicationType() ==

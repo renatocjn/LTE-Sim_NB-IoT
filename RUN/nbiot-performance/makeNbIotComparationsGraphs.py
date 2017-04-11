@@ -84,16 +84,16 @@ if __name__ == "__main__":
 		#ax = figure["droppedDelay"]['axes']
 		#ax.errorbar(X, plots[sch]["droppedDelay"]["y"], plots[sch]["droppedDelay"]["ci"], label=sch_labels[sch], marker=markers.next())
 
-	for c in natsorted(comparators):
-		if "rxDelay" not in figure:
-			f = pl.figure()
-			ax = f.add_axes(rect)
-			ax.margins(0.05, 0.05)
-			ax.set_xlabel(xlabel)
-			ax.set_ylabel("Millisegundos")
-			figure["rxDelay"] = {'figure': f, 'axes': ax}
-		ax = figure["rxDelay"]['axes']
-		ax.errorbar(X, plots[c]["rxDelay"]["y"], plots[c]["rxDelay"]["ci"], label=c, marker=markers.next())
+#	for c in natsorted(comparators):
+#		if "rxDelay" not in figure:
+#			f = pl.figure()
+#			ax = f.add_axes(rect)
+#			ax.margins(0.05, 0.05)
+#			ax.set_xlabel(xlabel)
+#			ax.set_ylabel("Millisegundos")
+#			figure["rxDelay"] = {'figure': f, 'axes': ax}
+#		ax = figure["rxDelay"]['axes']
+#		ax.errorbar(X, plots[c]["rxDelay"]["y"], plots[c]["rxDelay"]["ci"], label=c, marker=markers.next())
 
 		#if "rxDelayCDF" not in figure:
 			#f = pl.figure()
@@ -158,16 +158,16 @@ if __name__ == "__main__":
 		ax.errorbar(X, plots[c]["TxThroughput"]["y"], plots[c]["TxThroughput"]["ci"], label=c, marker=markers.next())
 
 	for c in natsorted(comparators):
-		if "deliveryRate" not in figure:
+		if "deliveryRatio" not in figure:
 			f = pl.figure()
 			ax = f.add_axes(rect)
 			ax.set_ylim(-5,105)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
 			ax.set_ylabel("%")
-			figure["deliveryRate"] = {'figure': f, 'axes': ax}
-		ax = figure["deliveryRate"]['axes']
-		ax.errorbar(X, plots[c]["deliveryRate"]["y"], plots[c]["deliveryRate"]["ci"], label=c, marker=markers.next())
+			figure["deliveryRatio"] = {'figure': f, 'axes': ax}
+		ax = figure["deliveryRatio"]['axes']
+		ax.errorbar(X, plots[c]["deliveryRatio"]["y"], plots[c]["deliveryRatio"]["ci"], label=c, marker=markers.next())
 
 	for c in natsorted(comparators):
 		if "transmittedPkgs" not in figure:
@@ -190,28 +190,28 @@ if __name__ == "__main__":
 		#ax = figure["lostPkgs"]['axes']
 		#ax.errorbar(X, plots[c]["lostPkgs"]["y"], plots[c]["lostPkgs"]["ci"], label=c_labels[c], marker=markers.next())
 
-	for c in natsorted(comparators):
-		if "droppedPkgs" not in figure:
-			f = pl.figure()
-			ax = f.add_axes(rect)
-			ax.margins(0.05, 0.05)
-			ax.set_xlabel(xlabel)
-			#ax.set_title("Nb dropped PKGs in L2")
-			figure["droppedPkgs"] = {'figure': f, 'axes': ax}
-		ax = figure["droppedPkgs"]['axes']
-		ax.errorbar(X, plots[c]["droppedPkgs"]["y"], plots[c]["droppedPkgs"]["ci"], label=c, marker=markers.next())
+#	for c in natsorted(comparators):
+#		if "droppedPkgs" not in figure:
+#			f = pl.figure()
+#			ax = f.add_axes(rect)
+#			ax.margins(0.05, 0.05)
+#			ax.set_xlabel(xlabel)
+#			#ax.set_title("Nb dropped PKGs in L2")
+#			figure["droppedPkgs"] = {'figure': f, 'axes': ax}
+#		ax = figure["droppedPkgs"]['axes']
+#		ax.errorbar(X, plots[c]["droppedPkgs"]["y"], plots[c]["droppedPkgs"]["ci"], label=c, marker=markers.next())
 
 	for c in natsorted(comparators):
-		if "h2hDeliveryRate" not in figure:
+		if "h2hDeliveryRatio" not in figure:
 			f = pl.figure()
 			ax = f.add_axes(rect)
 			ax.set_ylim(-5,105)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
 			ax.set_ylabel("%")
-			figure["h2hDeliveryRate"] = {'figure': f, 'axes': ax}
-		ax = figure["h2hDeliveryRate"]['axes']
-		ax.errorbar(X, plots[c]["h2hDeliveryRate"]["y"], plots[c]["h2hDeliveryRate"]["ci"], label=c, marker=markers.next())
+			figure["h2hDeliveryRatio"] = {'figure': f, 'axes': ax}
+		ax = figure["h2hDeliveryRatio"]['axes']
+		ax.errorbar(X, plots[c]["h2hDeliveryRatio"]["y"], plots[c]["h2hDeliveryRatio"]["ci"], label=c, marker=markers.next())
 
 	for c in natsorted(comparators):
 		if "h2hThroughput" not in figure:
@@ -225,16 +225,16 @@ if __name__ == "__main__":
 		ax.errorbar(X, plots[c]["h2hThroughput"]["y"], plots[c]["h2hThroughput"]["ci"], label=c, marker=markers.next())
 
 	for c in natsorted(comparators):
-		if "m2mDeliveryRate" not in figure:
+		if "m2mDeliveryRatio" not in figure:
 			f = pl.figure()
 			ax = f.add_axes(rect)
 			#ax.set_ylim(-5,105)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
 			ax.set_ylabel("%")
-			figure["m2mDeliveryRate"] = {'figure': f, 'axes': ax}
-		ax = figure["m2mDeliveryRate"]['axes']
-		ax.errorbar(X, plots[c]["m2mDeliveryRate"]["y"], plots[c]["m2mDeliveryRate"]["ci"], label=c, marker=markers.next())
+			figure["m2mDeliveryRatio"] = {'figure': f, 'axes': ax}
+		ax = figure["m2mDeliveryRatio"]['axes']
+		ax.errorbar(X, plots[c]["m2mDeliveryRatio"]["y"], plots[c]["m2mDeliveryRatio"]["ci"], label=c, marker=markers.next())
 
 	for c in natsorted(comparators):
 		if "m2mThroughput" not in figure:

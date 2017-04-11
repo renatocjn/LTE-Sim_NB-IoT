@@ -46,6 +46,7 @@ def readDataFromFile(filePath):
 		if l[0] == "DROP_QUEUE":
 			pkgs[l[3]]["dropped"] = True
 			pkgs[l[3]]["droppedTime"] = float(l[7])
+			if len(l) > 8: pkgs[l[3]]["frag"] = float(l[9])
 
 		# if l[0] == "UL_SINR":
 			# sinr.append(float(l[4]))
@@ -67,21 +68,30 @@ def getMetricsForFile(filePath):
 	transmittedData = 0
 	dataReceived = 0
 
-	rxDelayList = list()
-	# queueDelayList = list()
-	droppedDelayList = list()
+	#rxDelayList = list()
+	#queueDelayList = list()
+	#droppedDelayList = list()
 	users = dict()
 	userAppType = dict()
 	appTypes = set()
 	m2mTxData, h2hTxData = 0.0, 0.0
 	m2mRxData, h2hRxData = 0.0, 0.0
-
+	m2mDropped, h2hDropped = 0.0, 0.0
+	m2mFragSum, h2hFragSum = 0.0, 0.0
+	appTxData, appRxData = dict(), dict()
+	
 	for p in pkgs:
 		transmittedData += 8.0 * p["txSize"] / 1000.0
 		if p["user"] not in users: users[p["user"]] = 0.0
 		userAppType[p["user"]] = p["appType"]
 		appTypes.add(p["appType"])
-
+		
+		if p["appType"]	not in appTxData: 
+			appTxData[p["appType"]] = 0.0
+			appRxData[p["appType"]] = 0.0
+		
+		appTxData[p["appType"]] += 8.0 * p["txSize"] / 1000.0
+		
 		if p["appType"].startswith("M2M"):
 			m2mTxData += 8.0 * p["txSize"] / 1000.0
 		else:
@@ -92,7 +102,12 @@ def getMetricsForFile(filePath):
 		if p["delay"] == None:
 			lostPkgs += 1
 			if p["dropped"] == True:
-				droppedDelayList.append((p["droppedTime"] - p["txTime"]) * 1000.0)
+				if p["appType"].startswith("M2M"):
+					m2mDropped += 1
+					if "frag" in p: m2mFragSum += p["frag"] / 1000.0
+				else:
+					h2hDropped += 1
+					if "frag" in p: h2hFragSum += p["frag"] / 1000.0
 		else:
 			if p["appType"].startswith("M2M"):
 				m2mRxData += 8.0 * p["rxSize"] / 1000.0
@@ -102,12 +117,14 @@ def getMetricsForFile(filePath):
 			if p["txTime"] + p["delay"] > lastRx:
 				lastRx = p["txTime"] + p["delay"]
 
-			rxDelayList.append(p["delay"] * 1000.0)
+			appRxData[p["appType"]] += 8.0 * p["rxSize"] / 1000.0
+
+			#rxDelayList.append(p["delay"] * 1000.0)
 			dataReceived += 8.0 * p["rxSize"] / 1000.0
 			users[p["user"]] += 8.0 * p["rxSize"] / 1000.0
 
 	transmittedPkgs = len(pkgs)
-	droppedPkgs = len(droppedDelayList)
+	#droppedPkgs = len(droppedDelayList)
 	d = lastRx - firstTx
 	users_throughput = { uid:(rxData / d) for uid, rxData in users.iteritems() }
 	appTypeThroughput = { appType:list() for appType in appTypes }
@@ -123,13 +140,13 @@ def getMetricsForFile(filePath):
 	m2mThroughput = m2mRxData / d
 	h2hThroughput = h2hRxData / d
 	
-	if m2mTxData != 0: m2mDeliveryRate = float(m2mRxData) / float(m2mTxData)
-	else: m2mDeliveryRate = 0
+	if m2mTxData != 0: m2mDeliveryRatio = float(m2mRxData) / float(m2mTxData)
+	else: m2mDeliveryRatio = 0
 	
 	if h2hTxData != 0: 
-		h2hDeliveryRate = float(h2hRxData) / float(h2hTxData)
+		h2hDeliveryRatio = float(h2hRxData) / float(h2hTxData)
 	else: 
-		h2hDeliveryRate = 0
+		h2hDeliveryRatio = 0
 
 	# print filePath
 	# pp(users_throughput)
@@ -139,7 +156,7 @@ def getMetricsForFile(filePath):
 	# print
 
 	stats = {  # "rxDelayMean": mean(rxDelayList),
-			"rxDelay": rxDelayList,
+			#"rxDelay": rxDelayList,
 			# "queueDelayMean": mean(queueDelayList),
 			# "queueDelay": queueDelayList,
 			# "droppedDelayMean": mean(droppedDelayList),
@@ -148,25 +165,32 @@ def getMetricsForFile(filePath):
 			"userThroughput": users_throughput.values(),
 			"RxThroughput": dataReceived / d,
 			"TxThroughput": transmittedData / d,
-			"deliveryRate": 100.0 * dataReceived / transmittedData,
+			"deliveryRatio": 100.0 * dataReceived / transmittedData,
 			"transmittedPkgs": transmittedPkgs,
 			"justiceRatio": justiceRatio,
+			"m2mDropped": m2mDropped,
+			"m2mFragSum": m2mFragSum,
+			"h2hDropped": h2hDropped,
+			"h2hFragSum": h2hFragSum,
 			# "lostPkgs": lostPkgs,
-			"droppedPkgs": droppedPkgs,
-			"h2hDeliveryRate": 100.0 * h2hDeliveryRate,
-			"m2mDeliveryRate": 100.0 * m2mDeliveryRate,
+			#"droppedPkgs": droppedPkgs,
+			"h2hDeliveryRatio": 100.0 * h2hDeliveryRatio,
+			"m2mDeliveryRatio": 100.0 * m2mDeliveryRatio,
 			"h2hThroughput": h2hThroughput,
 			"m2mThroughput": m2mThroughput
 			}
 			# "SINRs": sinr}
 
-	if isnan(stats['deliveryRate']): stats['deliveryRate'] = 0
+	if isnan(stats['deliveryRatio']): stats['deliveryRatio'] = 0
 
 	# pp(appTypeThroughput)
 	for appType, throughputList in appTypeThroughput.iteritems():
 		stats["justiceRatio_" + appType] = square(sum(throughputList)) / (sum(square(throughputList)) * len(throughputList))
 		if isnan(stats["justiceRatio_" + appType]): stats["justiceRatio_" + appType] = 0.0
 		stats["throughput_" + appType] = throughputList
+
+	for app, rxdata in appRxData.iteritems(): 
+		stats["deliveryRatio_"+app] = 100.0* rxdata / appTxData[app]
 
 	del maxThroughput
 	# del appTypeThroughput
