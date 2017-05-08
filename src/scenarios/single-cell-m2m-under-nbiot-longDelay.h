@@ -142,22 +142,6 @@ static void SingleCellM2mUnderNbIotLongDelay(double radius, int nbUE,
 			|| strcmp(ulScheduler, "pf") == 0)
 		enb->SetNbIotULScheduler(
 				new NbIotUlPfScheduler(_15KHz, nbIotClusterSize));
-
-	else if (strcmp(ulScheduler, "roundrobinv2") == 0
-			|| strcmp(ulScheduler, "rrv2") == 0)
-		enb->SetNbIotULScheduler(
-				new NbIotUlRrSchedulerV2(_15KHz, nbIotClusterSize));
-
-	else if (strcmp(ulScheduler, "maximumthroughputv2") == 0
-			|| strcmp(ulScheduler, "mtv2") == 0)
-		enb->SetNbIotULScheduler(
-				new NbIotUlMtSchedulerV2(_15KHz, nbIotClusterSize));
-
-	else if (strcmp(ulScheduler, "proportionallyfairv2") == 0
-			|| strcmp(ulScheduler, "pfv2") == 0)
-		enb->SetNbIotULScheduler(
-				new NbIotUlPfSchedulerV2(_15KHz, nbIotClusterSize));
-
 	else {
 		std::cout << "\tThe Scheduler \"" << ulScheduler
 				<< "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n"

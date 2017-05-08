@@ -17,6 +17,8 @@ public:
 	virtual ~M2MTimeDriven();
 private:
 	static const int PKGSIZE = 125;
+
+	// average of ~ 400 bps of traffic generated per user
 	static const double INTERVAL_MIN = 0.05;
 	static const double INTERVAL_MAX = 5.0;
 };

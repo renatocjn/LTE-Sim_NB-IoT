@@ -109,7 +109,7 @@ RadioBearer::UpdateAverageTransmissionRate ()
 
   double txBytes = GetTransmittedBytes();
   double lUpdate = GetLastUpdate();
-  double rate = (txBytes * 8)/(Simulator::Init()->Now() - lUpdate);
+  double rate = (txBytes * 0.008)/(Simulator::Init()->Now() - lUpdate); //kbps
 
   double beta = 0.01;
 

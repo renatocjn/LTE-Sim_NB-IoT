@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+#set -e
 
 if [ ! -e "Executions" ]; then
 	echo "You are in the wrong folder"
@@ -34,7 +34,7 @@ for nNbiot in $nNbiotList; do
 	mkdir -p "$outDir"
 
 	seed=$((RANDOM * RANDOM))
- 	(time bin/LTE-Sim_NBIot NbIotEffectEvaluation $nUe $nNbiot $bw $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
+ 	(time bin/lte-sim-r5 NbIotEffectEvaluation $nUe $nNbiot $bw $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
 done
 done
 done

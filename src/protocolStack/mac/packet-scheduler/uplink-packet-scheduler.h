@@ -38,7 +38,8 @@ public:
 	    int m_transmittedData;	//bytes
 	    int m_dataToTransmit;		//bytes
 	    double m_averageSchedulingGrant; // in bytes
-	    double m_averageTransmissionRate;
+	    double m_averageTransmissionRate; //kbps
+	    double m_headOfLineDelay;
 	    QoSParameters* m_qosParameters;
 
 	    std::vector<int> m_listOfAllocatedRBs;

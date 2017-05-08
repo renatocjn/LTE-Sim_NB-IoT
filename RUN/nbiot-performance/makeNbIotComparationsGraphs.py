@@ -30,7 +30,21 @@ if __name__ == "__main__":
 
 	os.chdir(experimentDirectory)
 
-	markers = cycle(['*','o','v','d','s','^','p','H','<','>','h','.'])
+	#markers = cycle(['*','o','v','d','s','^','p','H','<','>','h','.'])
+	#markers = cycle(['*','o','v'])
+	markers = cycle(['*','o','v','d'])
+
+	legends = {
+		'rr' : "Round Robin",
+		'mt' : "Maximum Throughput",
+		'pf' : "Proportionally Fair",
+		'1' : "Configuration 1",
+		'3' : "Configuration 2",
+		'6' : "Configuration 3",
+		'12' : "Configuration 4"
+	}
+
+	func = lambda s : s.split("=")[-1]
 
 	comparators = glob('*=*')
 	plots = { c:dict() for c in comparators }
@@ -38,9 +52,9 @@ if __name__ == "__main__":
 	cdfs = { c:dict() for c in comparators }
 	X = set()
 
-	for c in comparators:
+	for c in natsorted(comparators):
 		scenarios = natsorted(glob(c+'/*=*'))
-		for scenario in scenarios:
+		for scenario in natsorted(scenarios):
 			x = clean(scenario.split('/')[-1])
 			if x > 200: continue
 			X.add(x)
@@ -59,7 +73,7 @@ if __name__ == "__main__":
 	os.chdir("graphs")
 
 	figure = dict();
-	rect = [0.15, 0.1, 0.75, 0.8]
+	rect = [0.2, 0.2, 0.7, 0.7]
 
 #	for c in natsorted(comparators):
 		#print "cdfs:", cdfs[sch].keys()
@@ -93,7 +107,7 @@ if __name__ == "__main__":
 #			ax.set_ylabel("Millisegundos")
 #			figure["rxDelay"] = {'figure': f, 'axes': ax}
 #		ax = figure["rxDelay"]['axes']
-#		ax.errorbar(X, plots[c]["rxDelay"]["y"], plots[c]["rxDelay"]["ci"], label=c, marker=markers.next())
+#		ax.errorbar(X, plots[c]["rxDelay"]["y"], plots[c]["rxDelay"]["ci"], label=legends[func(c)], marker=markers.next())
 
 		#if "rxDelayCDF" not in figure:
 			#f = pl.figure()
@@ -113,7 +127,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Kbit/s")
 			figure["userThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["userThroughput"]['axes']
-		ax.errorbar(X, plots[c]["userThroughput"]["y"], plots[c]["userThroughput"]["ci"], label=c, marker=markers.next())
+		ax.errorbar(X, plots[c]["userThroughput"]["y"], plots[c]["userThroughput"]["ci"], label=legends[func(c)], marker=markers.next())
 
 		#if "userThroughputCDF" not in figure:
 			#f = pl.figure()
@@ -133,7 +147,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Kbit/s")
 			figure["RxThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["RxThroughput"]['axes']
-		ax.errorbar(X, plots[c]["RxThroughput"]["y"], plots[c]["RxThroughput"]["ci"], label=c, marker=markers.next())
+		ax.errorbar(X, plots[c]["RxThroughput"]["y"], plots[c]["RxThroughput"]["ci"], label=legends[func(c)], marker=markers.next())
 
 	for c in natsorted(comparators):
 		if "justiceRatio" not in figure:
@@ -144,7 +158,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Jain Justice Ratio")
 			figure["justiceRatio"] = {'figure': f, 'axes': ax}
 		ax = figure["justiceRatio"]['axes']
-		ax.errorbar(X, plots[c]["justiceRatio"]["y"], plots[c]["justiceRatio"]["ci"], label=c, marker=markers.next())
+		ax.errorbar(X, plots[c]["justiceRatio"]["y"], plots[c]["justiceRatio"]["ci"], label=legends[func(c)], marker=markers.next())
 
 	for c in natsorted(comparators):
 		if "TxThroughput" not in figure:
@@ -155,7 +169,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Kbit/s")
 			figure["TxThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["TxThroughput"]['axes']
-		ax.errorbar(X, plots[c]["TxThroughput"]["y"], plots[c]["TxThroughput"]["ci"], label=c, marker=markers.next())
+		ax.errorbar(X, plots[c]["TxThroughput"]["y"], plots[c]["TxThroughput"]["ci"], label=legends[func(c)], marker=markers.next())
 
 	for c in natsorted(comparators):
 		if "deliveryRatio" not in figure:
@@ -167,7 +181,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("%")
 			figure["deliveryRatio"] = {'figure': f, 'axes': ax}
 		ax = figure["deliveryRatio"]['axes']
-		ax.errorbar(X, plots[c]["deliveryRatio"]["y"], plots[c]["deliveryRatio"]["ci"], label=c, marker=markers.next())
+		ax.errorbar(X, plots[c]["deliveryRatio"]["y"], plots[c]["deliveryRatio"]["ci"], label=legends[func(c)], marker=markers.next())
 
 	for c in natsorted(comparators):
 		if "transmittedPkgs" not in figure:
@@ -178,7 +192,7 @@ if __name__ == "__main__":
 			#ax.set_title("Nb transmitted PKGs")
 			figure["transmittedPkgs"] = {'figure': f, 'axes': ax}
 		ax = figure["transmittedPkgs"]['axes']
-		ax.errorbar(X, plots[c]["transmittedPkgs"]["y"], plots[c]["transmittedPkgs"]["ci"], label=c, marker=markers.next())
+		ax.errorbar(X, plots[c]["transmittedPkgs"]["y"], plots[c]["transmittedPkgs"]["ci"], label=legends[func(c)], marker=markers.next())
 
 		#if "lostPkgs" not in figure:
 			#f = pl.figure()
@@ -188,7 +202,7 @@ if __name__ == "__main__":
 			##ax.set_title("Nb lost packages")
 			#figure["lostPkgs"] = {'figure': f, 'axes': ax}
 		#ax = figure["lostPkgs"]['axes']
-		#ax.errorbar(X, plots[c]["lostPkgs"]["y"], plots[c]["lostPkgs"]["ci"], label=c_labels[c], marker=markers.next())
+		#ax.errorbar(X, plots[c]["lostPkgs"]["y"], plots[c]["lostPkgs"]["ci"], label=legends[func(c)]_labels[c], marker=markers.next())
 
 #	for c in natsorted(comparators):
 #		if "droppedPkgs" not in figure:
@@ -199,7 +213,7 @@ if __name__ == "__main__":
 #			#ax.set_title("Nb dropped PKGs in L2")
 #			figure["droppedPkgs"] = {'figure': f, 'axes': ax}
 #		ax = figure["droppedPkgs"]['axes']
-#		ax.errorbar(X, plots[c]["droppedPkgs"]["y"], plots[c]["droppedPkgs"]["ci"], label=c, marker=markers.next())
+#		ax.errorbar(X, plots[c]["droppedPkgs"]["y"], plots[c]["droppedPkgs"]["ci"], label=legends[func(c)], marker=markers.next())
 
 	for c in natsorted(comparators):
 		if "h2hDeliveryRatio" not in figure:
@@ -211,7 +225,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("%")
 			figure["h2hDeliveryRatio"] = {'figure': f, 'axes': ax}
 		ax = figure["h2hDeliveryRatio"]['axes']
-		ax.errorbar(X, plots[c]["h2hDeliveryRatio"]["y"], plots[c]["h2hDeliveryRatio"]["ci"], label=c, marker=markers.next())
+		ax.errorbar(X, plots[c]["h2hDeliveryRatio"]["y"], plots[c]["h2hDeliveryRatio"]["ci"], label=legends[func(c)], marker=markers.next())
 
 	for c in natsorted(comparators):
 		if "h2hThroughput" not in figure:
@@ -222,7 +236,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("Kbit/s")
 			figure["h2hThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["h2hThroughput"]['axes']
-		ax.errorbar(X, plots[c]["h2hThroughput"]["y"], plots[c]["h2hThroughput"]["ci"], label=c, marker=markers.next())
+		ax.errorbar(X, plots[c]["h2hThroughput"]["y"], plots[c]["h2hThroughput"]["ci"], label=legends[func(c)], marker=markers.next())
 
 	for c in natsorted(comparators):
 		if "m2mDeliveryRatio" not in figure:
@@ -234,7 +248,7 @@ if __name__ == "__main__":
 			ax.set_ylabel("%")
 			figure["m2mDeliveryRatio"] = {'figure': f, 'axes': ax}
 		ax = figure["m2mDeliveryRatio"]['axes']
-		ax.errorbar(X, plots[c]["m2mDeliveryRatio"]["y"], plots[c]["m2mDeliveryRatio"]["ci"], label=c, marker=markers.next())
+		ax.errorbar(X, plots[c]["m2mDeliveryRatio"]["y"], plots[c]["m2mDeliveryRatio"]["ci"], label=legends[func(c)], marker=markers.next())
 
 	for c in natsorted(comparators):
 		if "m2mThroughput" not in figure:
@@ -245,12 +259,54 @@ if __name__ == "__main__":
 			ax.set_ylabel("Kbit/s")
 			figure["m2mThroughput"] = {'figure': f, 'axes': ax}
 		ax = figure["m2mThroughput"]['axes']
-		ax.errorbar(X, plots[c]["m2mThroughput"]["y"], plots[c]["m2mThroughput"]["ci"], label=c, marker=markers.next())
+		ax.errorbar(X, plots[c]["m2mThroughput"]["y"], plots[c]["m2mThroughput"]["ci"], label=legends[func(c)], marker=markers.next())
 
 	for c in natsorted(comparators):
-		for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
-			app = 'throughput_'+app
-			if app in plots[c]:
+		if "h2hDropped" not in figure:
+			f = pl.figure()
+			ax = f.add_axes(rect)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			figure["h2hDropped"] = {'figure': f, 'axes': ax}
+		ax = figure["h2hDropped"]['axes']
+		ax.errorbar(X, plots[c]["h2hDropped"]["y"], plots[c]["h2hDropped"]["ci"], label=legends[func(c)], marker=markers.next())
+		
+	for c in natsorted(comparators):
+		if "m2mDropped" not in figure:
+			f = pl.figure()
+			ax = f.add_axes(rect)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			figure["m2mDropped"] = {'figure': f, 'axes': ax}
+		ax = figure["m2mDropped"]['axes']
+		ax.errorbar(X, plots[c]["m2mDropped"]["y"], plots[c]["m2mDropped"]["ci"], label=legends[func(c)], marker=markers.next())
+		
+	for c in natsorted(comparators):
+		if "m2mFragSum" not in figure:
+			f = pl.figure()
+			ax = f.add_axes(rect)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			ax.set_ylabel("KBytes")
+			figure["m2mFragSum"] = {'figure': f, 'axes': ax}
+		ax = figure["m2mFragSum"]['axes']
+		ax.errorbar(X, plots[c]["m2mFragSum"]["y"], plots[c]["m2mFragSum"]["ci"], label=legends[func(c)], marker=markers.next())
+
+	for c in natsorted(comparators):
+		if "h2hFragSum" not in figure:
+			f = pl.figure()
+			ax = f.add_axes(rect)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			ax.set_ylabel("KBytes")			
+			figure["h2hFragSum"] = {'figure': f, 'axes': ax}
+		ax = figure["h2hFragSum"]['axes']
+		ax.errorbar(X, plots[c]["h2hFragSum"]["y"], plots[c]["h2hFragSum"]["ci"], label=legends[func(c)], marker=markers.next())
+
+	for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
+		app = 'throughput_'+app
+		if app in plots[c]:
+			for c in natsorted(comparators):
 				if app not in figure:
 					f = pl.figure()
 					ax = f.add_axes(rect)
@@ -260,12 +316,13 @@ if __name__ == "__main__":
 					#ax.set_title("Nb dropped PKGs in L2")
 					figure[app] = {'figure': f, 'axes': ax}
 				ax = figure[app]['axes']
-				ax.errorbar(X, plots[c][app]["y"], plots[c][app]["ci"], label=c, marker=markers.next())
+				ax.errorbar(X, plots[c][app]["y"], plots[c][app]["ci"], label=legends[func(c)], marker=markers.next())
 
-	for c in natsorted(comparators):
-		for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
-			app = 'justiceRatio_'+app
-			if app in plots[c]:
+
+	for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
+		app = 'justiceRatio_'+app
+		if app in plots[c]:
+			for c in natsorted(comparators):
 				if app not in figure:
 					f = pl.figure()
 					ax = f.add_axes(rect)
@@ -275,8 +332,23 @@ if __name__ == "__main__":
 					#ax.set_title("Nb dropped PKGs in L2")
 					figure[app] = {'figure': f, 'axes': ax}
 				ax = figure[app]['axes']
-				ax.errorbar(X, plots[c][app]["y"], plots[c][app]["ci"], label=c, marker=markers.next())
+				ax.errorbar(X, plots[c][app]["y"], plots[c][app]["ci"], label=legends[func(c)], marker=markers.next())
 
+
+	for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
+		app = 'deliveryRatio_'+app
+		if app in plots[c]:
+			for c in natsorted(comparators):
+				if app not in figure:
+					f = pl.figure()
+					ax = f.add_axes(rect)
+					ax.margins(0.05, 0.05)
+					ax.set_xlabel(xlabel)
+					ax.set_ylabel("%")
+					#ax.set_title("Nb dropped PKGs in L2")
+					figure[app] = {'figure': f, 'axes': ax}
+				ax = figure[app]['axes']
+				ax.errorbar(X, plots[c][app]["y"], plots[c][app]["ci"], label=legends[func(c)], marker=markers.next())
 
 	del plots
 

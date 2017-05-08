@@ -39,9 +39,9 @@ if __name__ == "__main__":
 	cdfs = { c:dict() for c in comparators }
 	X = set()
 
-	for c in comparators:
+	for c in natsorted(comparators):
 		scenarios = natsorted(glob(c+'/*=*'))
-		for scenario in scenarios:
+		for scenario in natsorted(scenarios):
 			x = clean(scenario.split('/')[-1])
 			if x > 200: continue
 			X.add(x)
@@ -56,8 +56,8 @@ if __name__ == "__main__":
 	X = natsorted(X)
 
 
-	if not os.path.isdir("graphsCut"):	os.mkdir("graphsCut")
-	os.chdir("graphsCut")
+	if not os.path.isdir("../superGraphs"):	os.mkdir("../superGraphs")
+	os.chdir("../superGraphs")
 
 	figure = dict();
 	figsize = 10, 5
@@ -248,6 +248,48 @@ if __name__ == "__main__":
 		ax = figure["m2mThroughput"]['axes']
 		ax.errorbar(X, plots[c]["m2mThroughput"]["y"], plots[c]["m2mThroughput"]["ci"], label=c, marker=markers.next())
 
+	for c in natsorted(comparators):
+		if "h2hDropped" not in figure:
+			f = pl.figure(figsize=figsize)
+			ax = f.add_axes(rect)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			figure["h2hDropped"] = {'figure': f, 'axes': ax}
+		ax = figure["h2hDropped"]['axes']
+		ax.errorbar(X, plots[c]["h2hDropped"]["y"], plots[c]["h2hDropped"]["ci"], label=c, marker=markers.next())
+		
+	for c in natsorted(comparators):
+		if "m2mDropped" not in figure:
+			f = pl.figure(figsize=figsize)
+			ax = f.add_axes(rect)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			figure["m2mDropped"] = {'figure': f, 'axes': ax}
+		ax = figure["m2mDropped"]['axes']
+		ax.errorbar(X, plots[c]["m2mDropped"]["y"], plots[c]["m2mDropped"]["ci"], label=c, marker=markers.next())
+		
+	for c in natsorted(comparators):
+		if "m2mFragSum" not in figure:
+			f = pl.figure(figsize=figsize)
+			ax = f.add_axes(rect)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			ax.set_ylabel("KBytes")
+			figure["m2mFragSum"] = {'figure': f, 'axes': ax}
+		ax = figure["m2mFragSum"]['axes']
+		ax.errorbar(X, plots[c]["m2mFragSum"]["y"], plots[c]["m2mFragSum"]["ci"], label=c, marker=markers.next())
+
+	for c in natsorted(comparators):
+		if "h2hFragSum" not in figure:
+			f = pl.figure(figsize=figsize)
+			ax = f.add_axes(rect)
+			ax.margins(0.05, 0.05)
+			ax.set_xlabel(xlabel)
+			ax.set_ylabel("KBytes")			
+			figure["h2hFragSum"] = {'figure': f, 'axes': ax}
+		ax = figure["h2hFragSum"]['axes']
+		ax.errorbar(X, plots[c]["h2hFragSum"]["y"], plots[c]["h2hFragSum"]["ci"], label=c, marker=markers.next())
+
 	for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
 		app = 'throughput_'+app
 		if app in plots[c]:
@@ -288,7 +330,7 @@ if __name__ == "__main__":
 					ax = f.add_axes(rect)
 					ax.margins(0.05, 0.05)
 					ax.set_xlabel(xlabel)
-					ax.set_ylabel("Jain Justice Ratio")
+					ax.set_ylabel("%")
 					#ax.set_title("Nb dropped PKGs in L2")
 					figure[app] = {'figure': f, 'axes': ax}
 				ax = figure[app]['axes']

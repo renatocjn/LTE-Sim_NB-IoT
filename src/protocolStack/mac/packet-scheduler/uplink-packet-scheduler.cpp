@@ -116,6 +116,7 @@ void UplinkPacketScheduler::SelectUsersToSchedule() {
 			user->m_transmittedData = 0;
 			user->m_channelContition = record->GetUplinkChannelStatusIndicator();
 			user->m_averageSchedulingGrant = record->GetSchedulingGrants();
+			user->m_headOfLineDelay = bearer->GetHeadOfLinePacketDelay();
 
 			GetUsersToSchedule()->push_back(user);
 		}
