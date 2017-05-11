@@ -41,6 +41,7 @@
 #include "scenarios/single-cell-with-streets.h"
 #include "scenarios/multi-cell-sinrplot.h"
 #include "scenarios/nbiot-affect-evaluation.h"
+#include "scenarios/modified-m2m-traffic.h"
 #include "TEST/scalability-test-macro-with-femto.h"
 #include "TEST/test-sinr-femto.h"
 #include "TEST/test-throughput-macro-with-femto.h"
@@ -131,14 +132,13 @@ int main(int argc, char *argv[]) {
 		if (strcmp(argv[1], "SingleCellM2mUnderLTE") == 0) {
 			double radius = atof(argv[2]);
 			int nbUE = atoi(argv[3]);
-			char* trafficType = argv[4];
-			char* scheduler = argv[5];
+			char* scheduler = argv[4];
 			int seed;
-			if (argc == 7)
-				seed = atoi(argv[6]);
+			if (argc == 6)
+				seed = atoi(argv[5]);
 			else
 				seed = -1;
-			SingleCellM2mUnderLTE(radius, nbUE, trafficType, scheduler, seed);
+			SingleCellM2mUnderLTE(radius, nbUE, scheduler, seed);
 		}
 		if (strcmp(argv[1], "SingleCellM2mUnderNbIot") == 0) {
 			double radius = atof(argv[2]);
@@ -177,6 +177,19 @@ int main(int argc, char *argv[]) {
 			else
 				seed = -1;
 			SingleCellM2mUnderNbIotLongDelay(radius, nbUE, ulScheduler,
+					nbIotClusterSize, seed);
+		}
+		if (strcmp(argv[1], "modifiedM2mTraffic") == 0) {
+			double radius = atof(argv[2]);
+			int nbUE = atoi(argv[3]);
+			char* ulScheduler = argv[4];
+			int nbIotClusterSize = atoi(argv[5]);
+			int seed;
+			if (argc == 7)
+				seed = atoi(argv[6]);
+			else
+				seed = -1;
+			modifiedM2mTraffic(radius, nbUE, ulScheduler,
 					nbIotClusterSize, seed);
 		}
 		if (strcmp(argv[1], "NbIotEffectEvaluation") == 0) {

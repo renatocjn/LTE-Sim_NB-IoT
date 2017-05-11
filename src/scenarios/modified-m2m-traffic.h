@@ -23,8 +23,8 @@
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler.h"
-#include "../protocolStack/mac/packet-scheduler/nbiot-ul-exp-delay-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-mlwdf-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-ul-exp-delay-scheduler.h"
 #include "../channel/LteChannel.h"
 #include "../phy/enb-lte-phy.h"
 #include "../phy/ue-lte-phy.h"
@@ -40,6 +40,8 @@
 #include "../flows/application/TraceBased.h"
 #include "../flows/application/M2MEventDriven.h"
 #include "../flows/application/M2MTimeDriven.h"
+#include "../flows/application/M2MEventDrivenV2.h"
+#include "../flows/application/M2MTimeDrivenV2.h"
 #include "../device/IPClassifier/ClassifierParameters.h"
 #include "../flows/QoS/QoSParameters.h"
 #include "../flows/QoS/QoSForEXP.h"
@@ -63,7 +65,8 @@
 
 #define _15KHz 15
 
-static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
+//static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* trafficType, char* scheduler, int seed) {
+static void modifiedM2mTraffic(double radius, int nbUE, char* ulScheduler,
 		int nbIotClusterSize, int seed) {
 
 	// define simulation times
@@ -105,7 +108,7 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 	BandwidthManager* h2hspectrum = new BandwidthManager(bandwidth, bandwidth,
 			0, 0);
 	NbIotBandwidthManager* nbiotSpectrum = createNbIotBwManager(h2hspectrum,
-	_15KHz);
+			_15KHz);
 
 	std::vector<LteChannel*> *dlChannels = new std::vector<LteChannel*>;
 	std::vector<LteChannel*> *ulChannels = new std::vector<LteChannel*>;
@@ -145,11 +148,11 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 				new NbIotUlPfScheduler(_15KHz, nbIotClusterSize));
 	else if (strcmp(ulScheduler, "expDelay") == 0
 			|| strcmp(ulScheduler, "exponentialdelay") == 0)
-		enb->SetNbIotULScheduler(
-				new NbIotUlExpDelayScheduler(_15KHz, nbIotClusterSize));
+			enb->SetNbIotULScheduler(
+					new NbIotUlExpDelayScheduler(_15KHz, nbIotClusterSize));
 	else if (strcmp(ulScheduler, "mlwdf") == 0)
-		enb->SetNbIotULScheduler(
-				new NbIotUlMLWDFScheduler(_15KHz, nbIotClusterSize));
+			enb->SetNbIotULScheduler(
+					new NbIotUlMLWDFScheduler(_15KHz, nbIotClusterSize));
 	else {
 		std::cout << "\tThe Scheduler \"" << ulScheduler
 				<< "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n"
@@ -183,24 +186,32 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 	int destinationPort = 101;
 	int applicationID = 0;
 
-	std::vector<M2MTimeDriven*> *tdContainner = new std::vector<M2MTimeDriven*>;
-	std::vector<M2MEventDriven*> *edContainner =
-			new std::vector<M2MEventDriven*>;
+	std::vector<VoIP*> *voipContainner = new std::vector<VoIP*>;
+	std::vector<CBR*> *cbrContainner = new std::vector<CBR*>;
+	std::vector<TraceBased*> *videoContainner = new std::vector<TraceBased*>;
+	std::vector<M2MTimeDrivenV2*> *tdContainner = new std::vector<M2MTimeDrivenV2*>;
+	std::vector<M2MEventDrivenV2*> *edContainner = new std::vector<M2MEventDrivenV2*>;
 
 	//Create UEs
 	int idUE = 1;
 
 	//Mixed traffic;
-	// nbUE  = 30% H2H + 70% M2M              (Ericsson Mobility Report, 2016)
-	// nbM2M = 30% ED  + 70% TD               (Maia et al, 2016)
+	// nbUE  = 30% H2H + 70% M2M (Ericsson Mobility Report, 2016)
+	// nbM2M = 30%  ED + 70%  TD (Maia et al, 2016)
 	// nbH2H = 35% CBR + 45% Video + 20% VoIP (Self-Defined)
 
+	//int nbH2H = floor(0.3 * nbUE);
+	//int nbM2M = nbUE - nbH2H;
+
+	int nbH2H = 0;
 	int nbM2M = nbUE;
 
-	int nbED = floor(0.3 * nbM2M);
+	int nbED = floor(0.5 * nbM2M);
 	int nbTD = nbM2M - nbED;
-//	int nbED = nbM2M;
-//	int nbTD = 0;
+
+	int nbCBR = floor(nbH2H * 0.35);
+	int nbVideo = floor(nbH2H * 0.45);
+	int nbVoIP = nbH2H - nbCBR - nbVideo;
 
 //	std::cout << "Nb of H2H   Devices: " << nbH2H << std::endl;
 //	std::cout << "Nb of CBR   Devices: " << nbCBR << std::endl;
@@ -255,65 +266,154 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 		double start_time = 0.1 + GetRandomVariable(0.4);
 		double duration_time = start_time + flow_duration;
 
-		nbM2M--;
-		ue->GetPhy()->SetBandwidthManager(nbiotSpectrum);
-		ue->SetNodeType(NetworkNode::TYPE_NBIOT_UE);
-		if (nbED > 0) {
-			nbED--;
-			M2MEventDriven* edApplication = new M2MEventDriven();
-			edApplication->SetSource(ue);
-			edApplication->SetDestination(enb);
-			edApplication->SetApplicationID(applicationID);
-			edApplication->SetStartTime(start_time);
-			edApplication->SetStopTime(duration_time);
+		if (nbM2M > 0) {
+			nbM2M--;
+			ue->GetPhy()->SetBandwidthManager(nbiotSpectrum);
+			ue->SetNodeType(NetworkNode::TYPE_NBIOT_UE);
+			if (nbED > 0) {
+				nbED--;
+				M2MEventDrivenV2* edApplication = new M2MEventDrivenV2();
+				edApplication->SetSource(ue);
+				edApplication->SetDestination(enb);
+				edApplication->SetApplicationID(applicationID);
+				edApplication->SetStartTime(start_time);
+				edApplication->SetStopTime(duration_time);
 
-			//edApplication->SetSize(80);
+				// create qos parameters
+				QoSParameters *qosParameters = new QoSParameters();
+				qosParameters->SetMaxDelay(0.050); //50ms
+//				qosParameters->SetMaxDelay(10); //50ms
+				edApplication->SetQoSParameters(qosParameters);
 
-			// create qos parameters
-			QoSParameters *qosParameters = new QoSParameters();
-			qosParameters->SetMaxDelay(0.050); //50ms
-//			qosParameters->SetMaxDelay(999999); // inf
-//			qosParameters->SetMaxDelay(10); //10s
-			edApplication->SetQoSParameters(qosParameters);
+				//create classifier parameters
+				ClassifierParameters *cp = new ClassifierParameters(
+						ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0,
+						destinationPort,
+						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
+				edApplication->SetClassifierParameters(cp);
 
-			//create classifier parameters
-			ClassifierParameters *cp = new ClassifierParameters(
-					ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0,
-					destinationPort,
-					TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
-			edApplication->SetClassifierParameters(cp);
+				edContainner->push_back(edApplication);
+				std::cout << "CREATED M2M_ED APPLICATION, ID " << applicationID
+						<< std::endl;
+			} else {
+				nbTD--;
+				M2MTimeDrivenV2* tdApplication = new M2MTimeDrivenV2();
+				tdApplication->SetSource(ue);
+				tdApplication->SetDestination(enb);
+				tdApplication->SetApplicationID(applicationID);
+				tdApplication->SetStartTime(start_time);
+				tdApplication->SetStopTime(duration_time);
 
-			edContainner->push_back(edApplication);
-			std::cout << "CREATED M2M_ED APPLICATION, ID " << applicationID
-					<< std::endl;
-		} else {
-			nbTD--;
-			M2MTimeDriven* tdApplication = new M2MTimeDriven();
-			tdApplication->SetSource(ue);
-			tdApplication->SetDestination(enb);
-			tdApplication->SetApplicationID(applicationID);
-			tdApplication->SetStartTime(start_time);
-			tdApplication->SetStopTime(duration_time);
+				// create qos parameters
+				QoSParameters *qosParameters = new QoSParameters();
+				qosParameters->SetMaxDelay(tdApplication->GetInterval());
+//				qosParameters->SetMaxDelay(10);
+				tdApplication->SetQoSParameters(qosParameters);
 
-			//tdApplication->SetSize(80);
+				//create classifier parameters
+				ClassifierParameters *cp = new ClassifierParameters(
+						ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0,
+						destinationPort,
+						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
+				tdApplication->SetClassifierParameters(cp);
 
-			// create qos parameters
-			QoSParameters *qosParameters = new QoSParameters();
-			qosParameters->SetMaxDelay(tdApplication->GetInterval());
-//			qosParameters->SetMaxDelay(10);
-			tdApplication->SetQoSParameters(qosParameters);
+				tdContainner->push_back(tdApplication);
+				std::cout << "CREATED M2M_TD APPLICATION, ID " << applicationID
+						<< ", Interval: " << tdApplication->GetInterval()
+						<< std::endl;
+			}
+		} else if (nbH2H > 0) {
+			nbH2H--;
+			ue->GetPhy()->SetBandwidthManager(h2hspectrum);
+			if (nbVoIP > 0) {
+				nbVoIP--;
+				VoIP* voIPApplication = new VoIP();
+				voIPApplication->SetSource(ue);
+				voIPApplication->SetDestination(enb);
+				voIPApplication->SetApplicationID(applicationID);
+				voIPApplication->SetStartTime(start_time);
+				voIPApplication->SetStopTime(duration_time);
 
-			//create classifier parameters
-			ClassifierParameters *cp = new ClassifierParameters(
-					ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0,
-					destinationPort,
-					TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
-			tdApplication->SetClassifierParameters(cp);
+				QoSParameters *qos = new QoSParameters();
+				qos->SetMaxDelay(0.100); //100ms
+				voIPApplication->SetQoSParameters(qos);
 
-			tdContainner->push_back(tdApplication);
-			std::cout << "CREATED M2M_TD APPLICATION, ID " << applicationID
-					<< ", Interval: " << tdApplication->GetInterval()
-					<< std::endl;
+				//create classifier parameters
+				ClassifierParameters *cp = new ClassifierParameters(
+						ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0,
+						destinationPort,
+						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
+				voIPApplication->SetClassifierParameters(cp);
+
+				std::cout << "CREATED VOIP APPLICATION, ID " << applicationID
+						<< std::endl;
+
+				voipContainner->push_back(voIPApplication);
+
+			} else if (nbVideo > 0) {
+				nbVideo--;
+				TraceBased* videoApplication = new TraceBased();
+				videoApplication->SetSource(ue);
+				videoApplication->SetDestination(enb);
+				videoApplication->SetApplicationID(applicationID);
+				videoApplication->SetStartTime(start_time);
+				videoApplication->SetStopTime(duration_time);
+
+				string video_trace("foreman_H264_");
+				//string video_trace ("highway_H264_");
+				//string video_trace ("mobile_H264_");
+
+				string _file(
+						path + "src/flows/application/Trace/" + video_trace
+								+ "128k.dat");
+				videoApplication->SetTraceFile(_file);
+				std::cout << "		selected video @ 128k " << _file << std::endl;
+
+				QoSParameters *qos = new QoSParameters();
+				qos->SetMaxDelay(0.150); //150ms
+				videoApplication->SetQoSParameters(qos);
+
+				//create classifier parameters
+				ClassifierParameters *cp = new ClassifierParameters(
+						ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0,
+						destinationPort,
+						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
+				videoApplication->SetClassifierParameters(cp);
+
+				std::cout << "CREATED VIDEO APPLICATION, ID " << applicationID
+						<< std::endl;
+
+				videoContainner->push_back(videoApplication);
+			} else if (nbCBR > 0) {
+				nbCBR--;
+				CBR* cbrApplication = new CBR();
+				cbrApplication->SetSource(ue);
+				cbrApplication->SetDestination(enb);
+				cbrApplication->SetApplicationID(applicationID);
+				cbrApplication->SetStartTime(start_time);
+				cbrApplication->SetStopTime(duration_time);
+				cbrApplication->SetInterval(0.016);
+				cbrApplication->SetSize(256);
+
+				// create qos parameters
+				QoSParameters *qosParameters = new QoSParameters();
+				qosParameters->SetMaxDelay(0.300); // 300ms
+//				qosParameters->SetMaxDelay(9999999); // 300ms
+
+				cbrApplication->SetQoSParameters(qosParameters);
+
+				//create classifier parameters
+				ClassifierParameters *cp = new ClassifierParameters(
+						ue->GetIDNetworkNode(), enb->GetIDNetworkNode(), 0,
+						destinationPort,
+						TransportProtocol::TRANSPORT_PROTOCOL_TYPE_UDP);
+				cbrApplication->SetClassifierParameters(cp);
+
+				std::cout << "CREATED CBR APPLICATION, ID " << applicationID
+						<< std::endl;
+
+				cbrContainner->push_back(cbrApplication);
+			}
 		}
 		destinationPort++;
 		applicationID++;
@@ -324,11 +424,16 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 	simulator->Run();
 
 //Delete created objects
+	cbrContainner->clear();
+	delete cbrContainner;
+	voipContainner->clear();
+	delete voipContainner;
 	tdContainner->clear();
 	delete tdContainner;
 	edContainner->clear();
 	delete edContainner;
-	//delete enb->GetNbIotUlScheduler();
+	videoContainner->clear();
+	delete videoContainner;
 	eNBs->clear();
 	delete eNBs;
 	delete frameManager;

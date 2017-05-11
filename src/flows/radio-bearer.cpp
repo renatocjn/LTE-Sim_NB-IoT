@@ -50,7 +50,7 @@ RadioBearer::RadioBearer()
   rlc->SetRadioBearer (this);
   SetRlcEntity(rlc);
 
-  m_averageTransmissionRate = 100000; //start value = 1kbps
+  m_averageTransmissionRate = 1;
   ResetTransmittedBytes ();
 }
 
@@ -261,7 +261,8 @@ RadioBearer::GetHeadOfLinePacketDelay (void)
 	    }
 	  else
 	    {
-          HOL = now - GetMacQueue ()->Peek ().GetTimeStamp ();
+		  if (GetMacQueue()->IsEmpty()) HOL = 0;
+		  else HOL = now - GetMacQueue ()->Peek ().GetTimeStamp ();
 	    }
     }
   else

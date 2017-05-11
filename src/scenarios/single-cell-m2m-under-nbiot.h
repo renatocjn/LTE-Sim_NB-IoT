@@ -23,6 +23,8 @@
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-pf-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-ul-exp-delay-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/nbiot-ul-mlwdf-scheduler.h"
 #include "../channel/LteChannel.h"
 #include "../phy/enb-lte-phy.h"
 #include "../phy/ue-lte-phy.h"
@@ -104,7 +106,7 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler,
 	BandwidthManager* h2hspectrum = new BandwidthManager(bandwidth, bandwidth,
 			0, 0);
 	NbIotBandwidthManager* nbiotSpectrum = createNbIotBwManager(h2hspectrum,
-			_15KHz);
+	_15KHz);
 
 	std::vector<LteChannel*> *dlChannels = new std::vector<LteChannel*>;
 	std::vector<LteChannel*> *ulChannels = new std::vector<LteChannel*>;
@@ -142,6 +144,13 @@ static void SingleCellM2mUnderNbIot(double radius, int nbUE, char* ulScheduler,
 			|| strcmp(ulScheduler, "pf") == 0)
 		enb->SetNbIotULScheduler(
 				new NbIotUlPfScheduler(_15KHz, nbIotClusterSize));
+	else if (strcmp(ulScheduler, "expDelay") == 0
+			|| strcmp(ulScheduler, "exponentialdelay") == 0)
+		enb->SetNbIotULScheduler(
+				new NbIotUlExpDelayScheduler(_15KHz, nbIotClusterSize));
+	else if (strcmp(ulScheduler, "mlwdf") == 0)
+		enb->SetNbIotULScheduler(
+				new NbIotUlMLWDFScheduler(_15KHz, nbIotClusterSize));
 	else {
 		std::cout << "\tThe Scheduler \"" << ulScheduler
 				<< "\" is not yet implemented!\n\tOptions are:\n\troundrobin(rr)\n\tmaximumthroughput(mt)\n\tproportionallyfair(pf)\n"

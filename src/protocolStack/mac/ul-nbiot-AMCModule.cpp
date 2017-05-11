@@ -49,5 +49,6 @@ int UlNbIotAMCModule::GetTBSizeFromMCS(int mcs, int nbRUs) {
 
 int
 UlNbIotAMCModule::GetMaxNumberOfRuForMCS(int mcs) {
+	if (mcs > 12) mcs = 12;
 	return tbsTableSizes[mcs];
 }
