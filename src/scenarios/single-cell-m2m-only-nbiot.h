@@ -272,8 +272,6 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 			// create qos parameters
 			QoSParameters *qosParameters = new QoSParameters();
 			qosParameters->SetMaxDelay(0.050); //50ms
-//			qosParameters->SetMaxDelay(999999); // inf
-//			qosParameters->SetMaxDelay(10); //10s
 			edApplication->SetQoSParameters(qosParameters);
 
 			//create classifier parameters
@@ -295,12 +293,9 @@ static void SingleCellM2mOnlyNbIot(double radius, int nbUE, char* ulScheduler,
 			tdApplication->SetStartTime(start_time);
 			tdApplication->SetStopTime(duration_time);
 
-			//tdApplication->SetSize(80);
-
 			// create qos parameters
 			QoSParameters *qosParameters = new QoSParameters();
 			qosParameters->SetMaxDelay(tdApplication->GetInterval());
-//			qosParameters->SetMaxDelay(10);
 			tdApplication->SetQoSParameters(qosParameters);
 
 			//create classifier parameters

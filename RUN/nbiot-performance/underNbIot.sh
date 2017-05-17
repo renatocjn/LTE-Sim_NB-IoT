@@ -11,52 +11,50 @@ maxChilds=$(nproc)
 nRuns=30
 
 cellRadius="0.5" #500m
-outFolder="default"
+outFolder="onlyNbIot"
 
-nUeList="25 50 75 100 125 150 175 200"
+nUeList="25 200 350 500 700 850 1000"
 #nUeList="25 75 125 200"
-#ulSchedulerList="rr rrv2 pf pfv2 mt mtv2"
-ulSchedulerList="rr pf mt"
+ulSchedulerList="rr pf mt mlwdf expDelay"
 scClusterSizeList="1 3 6 12"
 
-#for r in $(seq $nRuns); do
-#for nUe in $nUeList; do
-#for ulScheduler in $ulSchedulerList; do
-#echo $ulScheduler
-#for scClusterSize in $scClusterSizeList; do
+for r in $(seq $nRuns); do
+for nUe in $nUeList; do
+for ulScheduler in $ulSchedulerList; do
+echo $ulScheduler
+for scClusterSize in $scClusterSizeList; do
 
+	if [ $nChilds -lt $maxChilds ]; then
+		nChilds=$(($nChilds+1))
+	else
+		wait
+		nChilds=0
+	fi
 
-#	if [ $nChilds -lt $maxChilds ]; then
-#		nChilds=$(($nChilds+1))
-#	else
-#		wait
-#		nChilds=0
-#	fi
-#
-#	outDir="Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize/nUe=$nUe/$r/"
-#	mkdir -p "$outDir"
-#	
-#	if [ ! -e $outDir/traceLteSim.txt ]; then 
-#		seed=$((RANDOM * RANDOM))
-#	 	(time bin/lte-sim-r5 SingleCellM2mUnderNbIot $cellRadius $nUe $ulScheduler $scClusterSize $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
-#	fi
-#done
-#done
-#done
-#done
-#wait
-#nChilds=0
+	outDir="Executions/$outFolder/clusterSizeComparation/ulScheduler=$ulScheduler/scClusterSize=$scClusterSize/nUe=$nUe/$r/"
+	mkdir -p "$outDir"
+	
+	if [ ! -e $outDir/traceLteSim.txt ]; then 
+		seed=$((RANDOM * RANDOM))
+	 	(time bin/lte-sim-r5 OnlyNbIot $cellRadius $nUe $ulScheduler $scClusterSize $seed) > $outDir/traceLteSim.txt 2> $outDir/time.txt &
+	fi
+done
+done
+done
+done
+wait
+nChilds=0
 
 #./RUN/nbiot-performance/makeSuperNbIotGraphs.py "Executions/$outFolder/clusterSizeComparation"
 
-for sched in $ulSchedulerList; do
-	RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/clusterSizeComparation/ulScheduler=$sched"
-done 
+#for sched in $ulSchedulerList; do
+#	RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/clusterSizeComparation/ulScheduler=$sched"
+#done 
 
 
 
-for scClusterSize in $scClusterSizeList; do
-echo "cluster size = $scClusterSize"
+#for scClusterSize in $scClusterSizeList; do
+#echo "cluster size = $scClusterSize"
 #for ulScheduler in $ulSchedulerList; do
 #for nUe in $nUeList; do
 #for r in $(seq $nRuns); do
@@ -72,8 +70,8 @@ echo "cluster size = $scClusterSize"
 #done
 #done
 #done
-RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize"
-done
+#RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize"
+#done
 
-#cd "Executions/"
-#tar cfz "$outFolder.tar.gz" "$outFolder"
+cd "Executions/"
+tar cfz "$outFolder.tar.gz" "$outFolder"

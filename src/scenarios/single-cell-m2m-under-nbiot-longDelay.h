@@ -68,8 +68,8 @@ static void SingleCellM2mUnderNbIotLongDelay(double radius, int nbUE,
 		char* ulScheduler, int nbIotClusterSize, int seed) {
 
 	// define simulation times
-	double duration = 35;
-	double flow_duration = 20;
+	double duration = 16;
+	double flow_duration = 5;
 
 	//int cluster = 4;
 	double bandwidth = 3;
@@ -197,8 +197,11 @@ static void SingleCellM2mUnderNbIotLongDelay(double radius, int nbUE,
 	// nbM2M = 30%  ED + 70%  TD (Maia et al, 2016)
 	// nbH2H = 35% CBR + 45% Video + 20% VoIP (Self-Defined)
 
-	int nbH2H = floor(0.3 * nbUE);
-	int nbM2M = nbUE - nbH2H;
+//	int nbH2H = floor(0.3 * nbUE);
+//	int nbM2M = nbUE - nbH2H;
+
+	int nbM2M = nbUE;
+	int nbH2H = 0;
 
 	int nbED = floor(0.3 * nbM2M);
 	int nbTD = nbM2M - nbED;

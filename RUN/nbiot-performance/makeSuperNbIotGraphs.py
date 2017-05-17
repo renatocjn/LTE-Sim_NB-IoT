@@ -8,6 +8,8 @@ import pylab as pl
 from natsort import natsorted
 from graphs_utils import *
 from itertools import cycle
+from pprint import pprint as pp
+
 
 if __name__ == "__main__":
 
@@ -43,7 +45,6 @@ if __name__ == "__main__":
 		scenarios = natsorted(glob(c+'/*=*'))
 		for scenario in natsorted(scenarios):
 			x = clean(scenario.split('/')[-1])
-			if x > 200: continue
 			X.add(x)
 
 			statistics, cdf = getStatisticsForScenario (scenario)
@@ -53,6 +54,10 @@ if __name__ == "__main__":
 				if k not in plots[c]: plots[c][k] = {"y":list(), "ci":list()}
 				plots[c][k]["y"].append(y)
 				plots[c][k]["ci"].append(ci)
+
+		#print X
+		#pp(plots[c])
+		#raw_input("press enter")
 	X = natsorted(X)
 
 
@@ -62,7 +67,7 @@ if __name__ == "__main__":
 	figure = dict();
 	figsize = 10, 5
 	rect = [0.1, 0.15, 0.4, 0.75]
-	
+
 		#print "cdfs:", cdfs[sch].keys()
 		#print "plots:", plots[sch].keys()
 		#if "queueDelay" not in figure:

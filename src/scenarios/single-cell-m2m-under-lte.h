@@ -63,10 +63,10 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE,
 	// define simulation times
 	double duration = 11;
 	double flow_duration = 5;
-	double nbiotTxBwConfiguration = 15; //15KHz
+	//double nbiotTxBwConfiguration = 15; //15KHz
 
 	//int cluster = 4;
-	double bandwidth = 3;
+	double bandwidth = 10;
 
 	// CREATE COMPONENT MANAGER
 	Simulator *simulator = Simulator::Init();
@@ -172,15 +172,15 @@ static void SingleCellM2mUnderLTE(double radius, int nbUE,
 	//Create UEs
 	int idUE = 1;
 
-	int nbH2H = ceil(0.3 * nbUE);
+	int nbH2H = floor(0.3 * nbUE);
 	int nbM2M = nbUE - nbH2H;
 
 	//M2M traffic
-	int nbED = ceil(0.3 * nbM2M);
+	int nbED = floor(0.3 * nbM2M);
 	int nbTD = nbM2M - nbED;
 
-	int nbCBR = ceil(nbH2H * 0.35);
-	int nbVideo = ceil(nbH2H * 0.45);
+	int nbCBR = floor(nbH2H * 0.35);
+	int nbVideo = floor(nbH2H * 0.45);
 	int nbVoIP = nbH2H - nbCBR - nbVideo;
 
 	for (int i = 0; i < nbUE; i++) {
