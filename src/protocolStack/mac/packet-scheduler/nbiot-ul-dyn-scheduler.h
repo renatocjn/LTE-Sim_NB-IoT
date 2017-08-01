@@ -22,7 +22,7 @@ private:
 	UlNbIotAMCModule amc;
 	double allocationTimes[NUMBER_OF_SUBCARRIERS];
 	double* allocationLimits[NUMBER_OF_CONFIGURATIONS];
-	double lastUpdate = 0;
+	double lastUpdate;
 
 	set<UserToSchedule*> reservedUsers;
 

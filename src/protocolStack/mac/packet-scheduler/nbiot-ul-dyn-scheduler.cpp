@@ -34,6 +34,7 @@ NbIotUlDynScheduler::NbIotUlDynScheduler(double rho) :
 	}
 
 	this->rho = rho;
+	this->lastUpdate = 0.0;
 }
 
 NbIotUlDynScheduler::~NbIotUlDynScheduler() {
