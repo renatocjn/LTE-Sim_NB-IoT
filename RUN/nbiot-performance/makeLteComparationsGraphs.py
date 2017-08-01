@@ -6,6 +6,7 @@ from glob import glob
 import os
 import pylab as pl
 from natsort import natsorted
+from pprint import pprint as pp
 from graphs_utils import *
 
 if __name__ == "__main__":
@@ -40,7 +41,7 @@ if __name__ == "__main__":
 	cdfs = {'rr': dict(), 'pf': dict(), 'mt': dict()}
 
 	for sch in schedulers:
-		scenarios = natsorted(glob('scheduler='+sch+'/*=*'))
+		scenarios = natsorted(glob('ulScheduler='+sch+'/*=*'))
 		for scenario in scenarios:
 			x = clean(scenario)
 			X.add(x)
@@ -63,7 +64,7 @@ if __name__ == "__main__":
 	os.chdir("graphs")
 
 	figure = dict();
-	rect = [0.1, 0.1, 0.8, 0.8]
+	rect = [0.15, 0.15, 0.8, 0.8]
 	for sch in schedulers:
 		#print "cdfs:", cdfs[sch].keys()
 		#print "plots:", plots[sch].keys()
@@ -88,15 +89,15 @@ if __name__ == "__main__":
 		#ax.errorbar(X, plots[sch]["droppedDelay"]["y"], plots[sch]["droppedDelay"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 
-		if "rxDelay" not in figure:
-			f = pl.figure()
-			ax = f.add_axes(rect)
-			ax.margins(0.05, 0.05)
-			ax.set_xlabel(xlabel)
-			ax.set_ylabel("Millisegundos")
-			figure["rxDelay"] = {'figure': f, 'axes': ax}
-		ax = figure["rxDelay"]['axes']
-		ax.errorbar(X, plots[sch]["rxDelay"]["y"], plots[sch]["rxDelay"]["ci"], label=sch_labels[sch], marker=markers[sch])
+#		if "rxDelay" not in figure:
+#			f = pl.figure()
+#			ax = f.add_axes(rect)
+#			ax.margins(0.05, 0.05)
+#			ax.set_xlabel(xlabel)
+#			ax.set_ylabel("Millisegundos")
+#			figure["rxDelay"] = {'figure': f, 'axes': ax}
+#		ax = figure["rxDelay"]['axes']
+#		ax.errorbar(X, plots[sch]["rxDelay"]["y"], plots[sch]["rxDelay"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 		#if "rxDelayCDF" not in figure:
 			#f = pl.figure()
@@ -158,16 +159,16 @@ if __name__ == "__main__":
 		ax.errorbar(X, plots[sch]["TxThroughput"]["y"], plots[sch]["TxThroughput"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 
-		if "deliveryRate" not in figure:
+		if "deliveryRatio" not in figure:
 			f = pl.figure()
 			ax = f.add_axes(rect)
 			ax.set_ylim(-5,105)
 			ax.margins(0.05, 0.05)
 			ax.set_xlabel(xlabel)
 			ax.set_ylabel("%")
-			figure["deliveryRate"] = {'figure': f, 'axes': ax}
-		ax = figure["deliveryRate"]['axes']
-		ax.errorbar(X, plots[sch]["deliveryRate"]["y"], plots[sch]["deliveryRate"]["ci"], label=sch_labels[sch], marker=markers[sch])
+			figure["deliveryRatio"] = {'figure': f, 'axes': ax}
+		ax = figure["deliveryRatio"]['axes']
+		ax.errorbar(X, plots[sch]["deliveryRatio"]["y"], plots[sch]["deliveryRatio"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 
 		if "transmittedPkgs" not in figure:
@@ -191,15 +192,15 @@ if __name__ == "__main__":
 		#ax.errorbar(X, plots[sch]["lostPkgs"]["y"], plots[sch]["lostPkgs"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 
-		if "droppedPkgs" not in figure:
-			f = pl.figure()
-			ax = f.add_axes(rect)
-			ax.margins(0.05, 0.05)
-			ax.set_xlabel(xlabel)
+#		if "droppedPkgs" not in figure:
+#			f = pl.figure()
+#			ax = f.add_axes(rect)
+#			ax.margins(0.05, 0.05)
+#			ax.set_xlabel(xlabel)
 			#ax.set_title("Nb dropped PKGs in L2")
-			figure["droppedPkgs"] = {'figure': f, 'axes': ax}
-		ax = figure["droppedPkgs"]['axes']
-		ax.errorbar(X, plots[sch]["droppedPkgs"]["y"], plots[sch]["droppedPkgs"]["ci"], label=sch_labels[sch], marker=markers[sch])
+#			figure["droppedPkgs"] = {'figure': f, 'axes': ax}
+#		ax = figure["droppedPkgs"]['axes']
+#		ax.errorbar(X, plots[sch]["droppedPkgs"]["y"], plots[sch]["droppedPkgs"]["ci"], label=sch_labels[sch], marker=markers[sch])
 
 		for app in ['VIDEO','CBR','VOIP','M2M_ED','M2M_TD']:
 			app = 'throughput_'+app

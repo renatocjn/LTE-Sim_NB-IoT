@@ -38,13 +38,11 @@
 #include "../../../flows/radio-bearer.h"
 #include "../../../device/NetworkNode.h"
 
-
 UplinkPacketScheduler::UplinkPacketScheduler() {
 	setNodeTypeToSchedule(NetworkNode::TYPE_UE);
 //	m_servedUsers = std::set<int>();
 	m_usersToSchedule = NULL;
 }
-
 
 UplinkPacketScheduler::~UplinkPacketScheduler() {
 //	std::cout << "servedUsers " << m_servedUsers.size() << std::endl;
@@ -52,11 +50,9 @@ UplinkPacketScheduler::~UplinkPacketScheduler() {
 	DeleteUsersToSchedule();
 }
 
-
 void UplinkPacketScheduler::CreateUsersToSchedule(void) {
 	m_usersToSchedule = new UsersToSchedule();
 }
-
 
 void UplinkPacketScheduler::DeleteUsersToSchedule(void) {
 	if (m_usersToSchedule != NULL) {
@@ -65,7 +61,6 @@ void UplinkPacketScheduler::DeleteUsersToSchedule(void) {
 		delete m_usersToSchedule;
 	}
 }
-
 
 void UplinkPacketScheduler::ClearUsersToSchedule() {
 	UsersToSchedule* records = GetUsersToSchedule();
@@ -78,12 +73,10 @@ void UplinkPacketScheduler::ClearUsersToSchedule() {
 	GetUsersToSchedule()->clear();
 }
 
-
 UplinkPacketScheduler::UsersToSchedule*
 UplinkPacketScheduler::GetUsersToSchedule(void) {
 	return m_usersToSchedule;
 }
-
 
 void UplinkPacketScheduler::SelectUsersToSchedule() {
 	CreateUsersToSchedule();
@@ -95,13 +88,15 @@ void UplinkPacketScheduler::SelectUsersToSchedule() {
 
 #ifdef SCHEDULER_DEBUG
 	std::cout << "UplinkPacketScheduler::SelectUsersToSchedule () "
-			" users " << node->GetUserEquipmentRecords()->size() << std::endl;
+	" users " << node->GetUserEquipmentRecords()->size() << std::endl;
 #endif
 
 	for (iter = records->begin(); iter != records->end(); iter++) {
 		record = (*iter);
 		if (record->GetSchedulingRequest() > 0) {
-			if (record->GetUE()->GetNodeType() != getNodeTypeToSchedule()) continue;
+			if (record->GetUE()->GetNodeType() != getNodeTypeToSchedule())
+				continue;
+//			std::cout << "UE " << record->GetUE()->GetIDNetworkNode() << " schedulingReq " << record->GetSchedulingRequest() << std::endl;
 
 			UserToSchedule* user = new UserToSchedule();
 			user->m_userToSchedule = (NetworkNode*) record->GetUE();
@@ -117,6 +112,7 @@ void UplinkPacketScheduler::SelectUsersToSchedule() {
 			user->m_channelContition = record->GetUplinkChannelStatusIndicator();
 			user->m_averageSchedulingGrant = record->GetSchedulingGrants();
 			user->m_headOfLineDelay = bearer->GetHeadOfLinePacketDelay();
+			user->m_headOfLinePkgSize = bearer->GetHeadOfLinePacketSize();
 
 			GetUsersToSchedule()->push_back(user);
 		}
@@ -125,7 +121,6 @@ void UplinkPacketScheduler::SelectUsersToSchedule() {
 	std::cout << "users to be schedule = " << GetUsersToSchedule()->size() << std::endl;
 #endif
 }
-
 
 void UplinkPacketScheduler::DoSchedule(void) {
 #ifdef SCHEDULER_DEBUG
@@ -144,8 +139,7 @@ void UplinkPacketScheduler::DoSchedule(void) {
 
 	SelectUsersToSchedule();
 
-	for (UsersToSchedule::iterator it2 = GetUsersToSchedule()->begin();
-			it2 != GetUsersToSchedule()->end(); it2++) {
+	for (UsersToSchedule::iterator it2 = GetUsersToSchedule()->begin(); it2 != GetUsersToSchedule()->end(); it2++) {
 		(*it2)->m_userToSchedule->GetProtocolStack()->GetRrcEntity()->GetRadioBearerContainer()->at(0)->UpdateAverageTransmissionRate();
 	}
 
@@ -156,7 +150,6 @@ void UplinkPacketScheduler::DoSchedule(void) {
 
 	DeleteUsersToSchedule();
 }
-
 
 void UplinkPacketScheduler::RBsAllocation() {
 #ifdef SCHEDULER_DEBUG
@@ -262,7 +255,6 @@ void UplinkPacketScheduler::RBsAllocation() {
 	}
 }
 
-
 void UplinkPacketScheduler::DoStopSchedule(void) {
 //Finalize the allocation
 	PdcchMapIdealControlMessage *pdcchMsg = new PdcchMapIdealControlMessage();
@@ -276,8 +268,7 @@ void UplinkPacketScheduler::DoStopSchedule(void) {
 
 			//create PDCCH messages
 			for (int rb = 0; rb < user->m_listOfAllocatedRBs.size(); rb++) {
-				pdcchMsg->AddNewRecord(PdcchMapIdealControlMessage::UPLINK, user->m_listOfAllocatedRBs.at(rb), user->m_userToSchedule,
-						user->m_selectedMCS);
+				pdcchMsg->AddNewRecord(PdcchMapIdealControlMessage::UPLINK, user->m_listOfAllocatedRBs.at(rb), user->m_userToSchedule, user->m_selectedMCS);
 			}
 
 			//update users informations

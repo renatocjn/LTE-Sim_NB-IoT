@@ -17,7 +17,7 @@ NbIotUlScheduler::NbIotUlScheduler(int scSpacing, int scGroupSize) {
 	setNodeTypeToSchedule(NetworkNode::TYPE_NBIOT_UE);
 	CreateUsersToSchedule();
 	this->scGroupSize = scGroupSize;
-	nextScheduleT = 0.0;	
+	nextScheduleT = 0.0;
 	currUser = 0;
 	servedUsers = std::set<int>();
 
@@ -31,7 +31,8 @@ NbIotUlScheduler::NbIotUlScheduler(int scSpacing, int scGroupSize) {
 		if (scGroupSize == 12)
 			ruDuration = 0.001;
 	} else {
-		ruDuration = 0.032;
+		this->scGroupSize = 12;
+		ruDuration = 0.001;
 	}
 }
 
@@ -68,18 +69,15 @@ void NbIotUlScheduler::RBsAllocation() {
 		int mcs = amcModule.GetMCSFromCQI(amcModule.GetCQIFromSinr(sinr));
 		int tbs = ((amcModule.GetTBSizeFromMCS(mcs, 1)) / 8);
 
-		for (int j = 0; j < scGroupSize; j++)
-			selectedUser->m_listOfAllocatedRBs.push_back(sc + j);
+
+		selectedUser->m_listOfAllocatedRBs.push_back(i);
 		selectedUser->m_transmittedData = tbs;
 		selectedUser->m_selectedMCS = mcs;
 
 		servedUsers.insert(selectedUser->m_userToSchedule->GetIDNetworkNode());
 
 #ifdef NBIOT_DEBUG
-		std::cout << "[NBIOT_DEBUG] Selected user "
-				<< selectedUser->m_userToSchedule->GetIDNetworkNode()
-				<< " for RU " << i << " MCS: " << mcs << " txBytes: " << tbs
-				<< std::endl;
+		std::cout << "[NBIOT_DEBUG] Selected user " << selectedUser->m_userToSchedule->GetIDNetworkNode() << " for RU " << i << " MCS " << mcs << " txBytes " << tbs << std::endl;
 #endif
 
 		currUser++;
@@ -88,7 +86,7 @@ void NbIotUlScheduler::RBsAllocation() {
 	UpdateNextScheduleTime(ruDuration);
 }
 
-double NbIotUlScheduler::ComputeSchedulingMetric(RadioBearer* bearer, double spectralEfficiency, int subChannel) {
+double NbIotUlScheduler::ComputeSchedulingMetric(RadioBearer* bearer, double spectralEfficiency) {
 	return 0.0;
 }
 

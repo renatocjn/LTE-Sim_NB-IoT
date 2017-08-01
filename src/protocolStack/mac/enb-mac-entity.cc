@@ -163,6 +163,7 @@ EnbMacEntity::ReceiveSchedulingRequestIdealControlMessage (SchedulingRequestIdea
 
   if (record != NULL)
 	{
+//	  std::cout << "SetSchedulingRequest UE " << record->GetUE()->GetIDNetworkNode() << " " << bufferStatusReport << std::endl;
 	  record->SetSchedulingRequest (bufferStatusReport);
 	}
   else

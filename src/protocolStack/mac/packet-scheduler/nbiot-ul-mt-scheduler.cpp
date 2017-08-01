@@ -20,7 +20,6 @@ NbIotUlMtScheduler::NbIotUlMtScheduler(int scSpacing, int scGroupSize) :
 NbIotUlMtScheduler::~NbIotUlMtScheduler() {
 }
 
-double NbIotUlMtScheduler::ComputeSchedulingMetric(UserToSchedule* user,
-		int ruI, double effectiveSinr) {
+double NbIotUlMtScheduler::ComputeSchedulingMetric(UserToSchedule* user, double effectiveSinr) {
 	return effectiveSinr * 3000.0;
 }

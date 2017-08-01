@@ -28,7 +28,8 @@ NbIotDlScheduler::~NbIotDlScheduler() {
 void NbIotDlScheduler::RBsAllocation() {
 	PacketScheduler::FlowsToSchedule *flows = GetFlowsToSchedule();
 	DlNbIotAMCModule amcModule;
-	NbIotBandwidthManager *bwManager = (NbIotBandwidthManager*) flows->at(0)->GetBearer()->GetDestination()->GetPhy()->GetBandwidthManager();
+	NbIotBandwidthManager *bwManager =
+			(NbIotBandwidthManager*) flows->at(0)->GetBearer()->GetDestination()->GetPhy()->GetBandwidthManager();
 
 	double dlRb = bwManager->GetDlSubChannels().at(0);
 	double maxMetric = -std::numeric_limits<double>::max();
@@ -36,7 +37,8 @@ void NbIotDlScheduler::RBsAllocation() {
 
 	for (int i = 0; i < flows->size(); i++) {
 		FlowToSchedule *f = flows->at(i);
-		double currMetric = ComputeSchedulingMetric(f->GetBearer(), f->GetSpectralEfficiency().at(0), 0);
+		double currMetric = ComputeSchedulingMetric(f->GetBearer(),
+				f->GetSpectralEfficiency().at(0), 0);
 		if (currMetric > maxMetric) {
 			maxMetric = currMetric;
 			bestFlow = f;
@@ -45,10 +47,12 @@ void NbIotDlScheduler::RBsAllocation() {
 
 	int mcs = amcModule.GetMCSFromCQI(bestFlow->m_cqiFeedbacks.at(0));
 	int nSF = 1;
-	while ( (amcModule.GetTBSizeFromMCS(mcs, nSF)/8) < bestFlow->GetDataToTransmit()
-			&& nSF < amcModule.GetMaxNumberOfSfForMCS(mcs)){
+	while ((amcModule.GetTBSizeFromMCS(mcs, nSF) / 8)
+			< bestFlow->GetDataToTransmit()
+			&& nSF < amcModule.GetMaxNumberOfSfForMCS(mcs)) {
 		nSF++;
-		if (nSF == 7 || nSF == 9) nSF++; //skip these since it does not show on AMC table;
+		if (nSF == 7 || nSF == 9)
+			nSF++; //skip these since it does not show on AMC table;
 	}
 	lastScheduleDuration = nSF;
 	int transportBlockSize = amcModule.GetTBSizeFromMCS(mcs, nSF);
@@ -59,19 +63,20 @@ void NbIotDlScheduler::RBsAllocation() {
 //	bestFlow->m_listOfSelectedMCS.push_back(mcs);
 
 	PdcchMapIdealControlMessage *pdcchMsg = new PdcchMapIdealControlMessage();
-	pdcchMsg->AddNewRecord(PdcchMapIdealControlMessage::DOWNLINK, dlRb, bestFlow->GetBearer()->GetDestination(), mcs);
+	pdcchMsg->AddNewRecord(PdcchMapIdealControlMessage::DOWNLINK, dlRb,
+			bestFlow->GetBearer()->GetDestination(), mcs);
 	if (pdcchMsg->GetMessage()->size() > 0) {
-		GetMacEntity()->GetDevice()->GetPhy()->SendIdealControlMessage(pdcchMsg);
+		GetMacEntity()->GetDevice()->GetPhy()->SendIdealControlMessage(
+				pdcchMsg);
 	}
 	delete pdcchMsg;
 }
 
-double
-NbIotDlScheduler::ComputeSchedulingMetric(RadioBearer* bearer, double spectralEfficiency, int subChannel) {
+double NbIotDlScheduler::ComputeSchedulingMetric(RadioBearer* bearer,
+		double spectralEfficiency, int subChannel) {
 	return spectralEfficiency / bearer->GetAverageTransmissionRate();
 }
 
-int
-NbIotDlScheduler::GetDurationOfLastSchedule() {
+int NbIotDlScheduler::GetDurationOfLastSchedule() {
 	return lastScheduleDuration;
 }

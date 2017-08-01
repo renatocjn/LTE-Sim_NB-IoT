@@ -395,6 +395,7 @@ MacQueue::CheckForDropPackets (double maxDelay,
     	  int size = GetPacketQueue ()->begin ()->GetSize() - GetPacketQueue ()->begin ()->GetFragmentOffset();
     	  UpdateQueueSize (-size);
     	  Dequeue ();
+    	  std::cout << "AfterDrop queue size " << GetPacketQueue()->size() << std::endl;
 	    }
 	  else
 	    {

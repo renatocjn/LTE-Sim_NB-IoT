@@ -25,8 +25,8 @@ public:
 
 	virtual void RBsAllocation();
 
-	virtual double ComputeSchedulingMetric (RadioBearer *bearer, double spectralEfficiency, int subChannel);
-	virtual double ComputeSchedulingMetric (UserToSchedule* user, int subchannel);
+	virtual double ComputeSchedulingMetric(RadioBearer *bearer, double spectralEfficiency);
+	virtual double ComputeSchedulingMetric(UserToSchedule* user, int subchannel);
 
 	const void UpdateNextScheduleTime(double t);
 	const double GetNextScheduleTime();

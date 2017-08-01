@@ -15,7 +15,7 @@ public:
 	NbIotUlMLWDFScheduler(int scSpacing, int scGroupSize);
 	virtual ~NbIotUlMLWDFScheduler();
 
-	virtual double ComputeSchedulingMetric (UserToSchedule* user, int ruIdx, double effectiveSinr);
+	virtual double ComputeSchedulingMetric(UserToSchedule* user, double effectiveSinr);
 };
 
 #endif /* SRC_PROTOCOLSTACK_MAC_PACKET_SCHEDULER_NBIOT_UL_PF_SCHEDULER_H_ */

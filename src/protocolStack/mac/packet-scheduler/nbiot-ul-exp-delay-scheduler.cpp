@@ -11,13 +11,13 @@
 #include "../../../core/eventScheduler/simulator.h"
 
 NbIotUlExpDelayScheduler::NbIotUlExpDelayScheduler(int scSpacing, int scGroupSize) :
-	NbIotUlPfScheduler(scSpacing, scGroupSize) {
+		NbIotUlPfScheduler(scSpacing, scGroupSize) {
 }
 
 NbIotUlExpDelayScheduler::~NbIotUlExpDelayScheduler() {
 }
 
-double NbIotUlExpDelayScheduler::ComputeSchedulingMetric(UserToSchedule* user, int ruI, double effectiveSinr) {
+double NbIotUlExpDelayScheduler::ComputeSchedulingMetric(UserToSchedule* user, double effectiveSinr) {
 //	#ifdef NBIOT_DEBUG
 //		if (((float)rand())/RAND_MAX < 0.001 && Simulator::Init()->Now() > 2.0) {
 //			std::cout << "[NBIOT_DEBUG_TMP] curr time:           " << Simulator::Init()->Now() << std::endl;
@@ -27,5 +27,5 @@ double NbIotUlExpDelayScheduler::ComputeSchedulingMetric(UserToSchedule* user, i
 //			std::cout << "[NBIOT_DEBUG_TMP]" << std::endl;
 //		}
 //	#endif
-	return exp(user->m_headOfLineDelay/user->m_qosParameters->GetMaxDelay());
+	return exp(user->m_headOfLineDelay / user->m_qosParameters->GetMaxDelay());
 }

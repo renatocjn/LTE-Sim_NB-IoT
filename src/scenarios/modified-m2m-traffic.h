@@ -25,6 +25,7 @@
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-mt-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-mlwdf-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-exp-delay-scheduler.h"
+#include "../protocolStack/mac/ul-nbiot-AMCModule.h"
 #include "../channel/LteChannel.h"
 #include "../phy/enb-lte-phy.h"
 #include "../phy/ue-lte-phy.h"

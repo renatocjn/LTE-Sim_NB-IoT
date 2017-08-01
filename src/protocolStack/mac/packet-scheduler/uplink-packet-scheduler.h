@@ -40,6 +40,7 @@ public:
 	    double m_averageSchedulingGrant; // in bytes
 	    double m_averageTransmissionRate; //kbps
 	    double m_headOfLineDelay;
+	    int m_headOfLinePkgSize;
 	    QoSParameters* m_qosParameters;
 
 	    std::vector<int> m_listOfAllocatedRBs;

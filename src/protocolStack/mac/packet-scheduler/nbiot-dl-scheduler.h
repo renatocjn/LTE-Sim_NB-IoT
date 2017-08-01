@@ -10,7 +10,7 @@
 
 #include "downlink-packet-scheduler.h"
 
-class NbIotDlScheduler : public DownlinkPacketScheduler{
+class NbIotDlScheduler: public DownlinkPacketScheduler {
 private:
 	int lastScheduleDuration;
 public:
@@ -18,7 +18,8 @@ public:
 	virtual ~NbIotDlScheduler();
 
 	virtual void RBsAllocation();
-	virtual double ComputeSchedulingMetric (RadioBearer *bearer, double spectralEfficiency, int subChannel);
+	virtual double ComputeSchedulingMetric(RadioBearer *bearer,
+			double spectralEfficiency, int subChannel);
 	int GetDurationOfLastSchedule();
 };
 

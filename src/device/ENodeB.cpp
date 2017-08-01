@@ -37,6 +37,8 @@
 #include "../protocolStack/mac/packet-scheduler/ul-mt-packet-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/ul-pf-packet-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/ul-rr-packet-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/ul-mlwdf-packet-scheduler.h"
+#include "../protocolStack/mac/packet-scheduler/ul-expDelay-packet-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-dl-scheduler.h"
 #include "../protocolStack/mac/packet-scheduler/nbiot-ul-scheduler.h"
 #include "../protocolStack/packet/packet-burst.h"
@@ -51,8 +53,7 @@ ENodeB::ENodeB(int idElement, Cell *cell) {
 	SetNodeType(NetworkNode::TYPE_ENODEB);
 	SetCell(cell);
 
-	CartesianCoordinates *position = new CartesianCoordinates(cell->GetCellCenterPosition()->GetCoordinateX(),
-			cell->GetCellCenterPosition()->GetCoordinateY());
+	CartesianCoordinates *position = new CartesianCoordinates(cell->GetCellCenterPosition()->GetCoordinateX(), cell->GetCellCenterPosition()->GetCoordinateY());
 	Mobility* m = new ConstantPosition();
 	m->SetAbsolutePosition(position);
 	SetMobilityModel(m);
@@ -332,6 +333,16 @@ void ENodeB::SetULScheduler(ULSchedulerType type) {
 		scheduler->SetMacEntity(mac);
 		mac->SetUplinkPacketScheduler(scheduler);
 		break;
+	case ENodeB::ULScheduler_TYPE_MLWDF:
+		scheduler = new MlwdfUplinkPacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetUplinkPacketScheduler(scheduler);
+		break;
+	case ENodeB::ULScheduler_TYPE_EXPDELAY:
+		scheduler = new ExpDelayUplinkPacketScheduler();
+		scheduler->SetMacEntity(mac);
+		mac->SetUplinkPacketScheduler(scheduler);
+		break;
 	default:
 		std::cout << "ERROR: invalid scheduler type" << std::endl;
 		scheduler = new MaximumThroughputUplinkPacketScheduler();
@@ -406,9 +417,7 @@ ENodeB::GetNbIotUlScheduler() {
 }
 
 void ENodeB::NBIotUlResourceBlokAllocation(void) {
-	if (m_nbiotUlScheduler != NULL &&
-			GetNbOfUserEquipmentRecords() > 0 &&
-			Simulator::Init()->Now() >= m_nextNbIotUl) {
+	if (m_nbiotUlScheduler != NULL && GetNbOfUserEquipmentRecords() > 0 && Simulator::Init()->Now() >= m_nextNbIotUl) {
 #ifdef NBIOT_DEBUG
 		std::cout << "[NBIOT_DEBUG] Starting NB-IoT UL scheduling at " << Simulator::Init()->Now() << std::endl;
 #endif
@@ -421,10 +430,8 @@ void ENodeB::NBIotUlResourceBlokAllocation(void) {
 }
 
 void ENodeB::NBIotDlResourceBlokAllocation(void) {
-	if (m_nbiotDlScheduler != NULL &&
-			GetNbOfUserEquipmentRecords() > 0 &&
-			Simulator::Init()->Now() >= m_nextNbIotDl) {
+	if (m_nbiotDlScheduler != NULL && GetNbOfUserEquipmentRecords() > 0 && Simulator::Init()->Now() >= m_nextNbIotDl) {
 		m_nbiotDlScheduler->Schedule();
-		m_nextNbIotDl = Simulator::Init()->Now() + (0.001*GetNbIotDLScheduler()->GetDurationOfLastSchedule());
+		m_nextNbIotDl = Simulator::Init()->Now() + (0.001 * GetNbIotDLScheduler()->GetDurationOfLastSchedule());
 	}
 }

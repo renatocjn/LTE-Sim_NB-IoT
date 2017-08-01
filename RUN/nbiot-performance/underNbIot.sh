@@ -8,20 +8,26 @@ fi
 
 nChilds=0
 maxChilds=$(nproc)
-nRuns=30
+#nRuns=30
+nRuns=3
 
 cellRadius="0.5" #500m
-outFolder="onlyNbIot"
+#outFolder="onlyNbIot"
+outFolder="testeDyn"
 
-nUeList="25 200 350 500 700 850 1000"
+#nUeList="25 200 350 500 700 850 1000"
 #nUeList="25 75 125 200"
-ulSchedulerList="rr pf mt mlwdf expDelay"
-scClusterSizeList="1 3 6 12"
+nUeList="50 125 200"
+#ulSchedulerList="rr pf mt mlwdf expDelay"
+ulSchedulerList="mlwdf"
+#scClusterSizeList="1 3 6 12"
+scClusterSizeList="1 3 6"
 
 for r in $(seq $nRuns); do
+echo Run $r
 for nUe in $nUeList; do
+echo "   nUe $nUe"
 for ulScheduler in $ulSchedulerList; do
-echo $ulScheduler
 for scClusterSize in $scClusterSizeList; do
 
 	if [ $nChilds -lt $maxChilds ]; then
@@ -45,7 +51,7 @@ done
 wait
 nChilds=0
 
-#./RUN/nbiot-performance/makeSuperNbIotGraphs.py "Executions/$outFolder/clusterSizeComparation"
+./RUN/nbiot-performance/makeSuperNbIotGraphs.py "Executions/$outFolder/clusterSizeComparation"
 
 #for sched in $ulSchedulerList; do
 #	RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/clusterSizeComparation/ulScheduler=$sched"
@@ -73,5 +79,5 @@ nChilds=0
 #RUN/nbiot-performance/makeNbIotComparationsGraphs.py "Executions/$outFolder/schedComparation/scClusterSize=$scClusterSize"
 #done
 
-cd "Executions/"
-tar cfz "$outFolder.tar.gz" "$outFolder"
+#cd "Executions/"
+#tar cfz "$outFolder.tar.gz" "$outFolder"

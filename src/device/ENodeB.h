@@ -82,7 +82,9 @@ public:
 		ULScheduler_TYPE_MAXIMUM_THROUGHPUT,
 		ULScheduler_TYPE_FME,
 		ULScheduler_TYPE_ROUNDROBIN,
-		ULScheduler_TYPE_PF
+		ULScheduler_TYPE_PF,
+		ULScheduler_TYPE_MLWDF,
+		ULScheduler_TYPE_EXPDELAY
 	  };
 
 	ENodeB ();

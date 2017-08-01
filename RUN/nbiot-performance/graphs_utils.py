@@ -7,17 +7,14 @@ import pylab as pl
 import itertools as it
 from natsort import natsorted
 
-def readDataFromFile(filePath):
-	print filePath
-	inputfile = open(filePath)
-	lines = inputfile.readlines()
-	inputfile.close()
+def readDataFromFile(f):
+	if type(f) is not file: f = open(f)
 
-	pkgLines = filter (lambda x: x.startswith("RX") or x.startswith("TX") or x.startswith("DROP_QUEUE") or x.startswith("UL_SINR"), lines)
+	checker = lambda x: x.startswith("RX") or x.startswith("TX") or x.startswith("DROP_QUEUE") or x.startswith("UL_SINR")
 
 	pkgs = dict()
 	sinr = list()
-	for l in pkgLines:
+	for l in f:
 		l = l.split()
 
 		if l[0] == "TX":
@@ -51,8 +48,7 @@ def readDataFromFile(filePath):
 		# if l[0] == "UL_SINR":
 			# sinr.append(float(l[4]))
 
-	del lines
-	del pkgLines
+	f.close()
 	# return pkgs.values(), sinr
 	return pkgs.values()
 

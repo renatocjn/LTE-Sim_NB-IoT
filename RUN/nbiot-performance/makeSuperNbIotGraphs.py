@@ -65,7 +65,7 @@ if __name__ == "__main__":
 	os.chdir("../superGraphs")
 
 	figure = dict();
-	figsize = 10, 5
+	figsize = 10, 7
 	rect = [0.1, 0.15, 0.4, 0.75]
 
 		#print "cdfs:", cdfs[sch].keys()
